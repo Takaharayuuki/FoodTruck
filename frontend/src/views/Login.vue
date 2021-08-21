@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1 class="text-4x text-center font-semibold">ログイン</h1>
-    <div class="w-full max-w-xs mx-auto">
+    <div class="w-full max-w-lg mx-auto">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="mb-4">
+        <div class="text-left mb-4">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="userEmail"
@@ -29,7 +29,7 @@
             placeholder="foodtruck@example.com"
           />
         </div>
-        <div class="mb-6">
+        <div class="text-left mb-6">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="password"
@@ -68,6 +68,8 @@
               rounded
               focus:outline-none
               focus:shadow-outline
+              w-1/2
+              mr-1
             "
             type="button"
           >
@@ -76,10 +78,14 @@
           <a
             class="
               inline-block
-              align-baseline
               font-bold
               text-sm text-blue-500
               hover:text-blue-800
+              rounded
+              w-1/2
+              py-2
+              px-4
+              border border-blue-500
             "
             href="#"
           >
