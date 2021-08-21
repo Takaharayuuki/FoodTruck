@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-4x text-center font-semibold">ログイン</h1>
+    <h1 class="text-4x text-center font-semibold">新規登録</h1>
     <div class="w-full max-w-lg mx-auto">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="text-left mb-4">
@@ -29,6 +29,34 @@
             placeholder="foodtruck@example.com"
           />
         </div>
+
+        <div class="text-left mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="userName"
+          >
+            ユーザーネーム
+          </label>
+          <input
+            class="
+              shadow
+              appearance-none
+              border
+              rounded
+              w-full
+              py-2
+              px-3
+              text-gray-700
+              leading-tight
+              focus:outline-none
+              focus:shadow-outline
+            "
+            id="userName"
+            type="text"
+            placeholder="田中 太郎"
+          />
+        </div>
+
         <div class="text-left mb-6">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
@@ -73,7 +101,7 @@
             "
             type="button"
           >
-            ログイン
+            登録
           </button>
           <router-link
             class="
@@ -87,9 +115,9 @@
               px-4
               border border-blue-500
             "
-            to="/register"
+            to="/login"
           >
-            新規登録
+            ログイン
           </router-link>
         </div>
       </form>
@@ -101,6 +129,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Login",
+  name: "",
 });
 </script>
