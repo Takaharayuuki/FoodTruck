@@ -1,11 +1,13 @@
 <template>
-  <common-header></common-header>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/register">Register</router-link>
+  <div class="top-kv">
+    <common-header></common-header>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/register">Register</router-link>
+    </div>
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
 </template>
 
 <script lang="ts">
@@ -15,4 +17,11 @@ export default defineComponent({
   name: "TopLayout",
 });
 </script>
-
+<style scoped>
+.top-kv {
+  background-image: url("../assets/sample.jpg");
+  width: 100%;
+  height: 71vh;
+  background-size: cover;
+}
+</style>

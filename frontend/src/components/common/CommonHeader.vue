@@ -1,5 +1,5 @@
 <template>
-  <header class="relative bg-yellow-500">
+  <header :class="route.path === '/' ? '' : 'bg-yellow-500'" class="relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div
         class="
@@ -7,14 +7,14 @@
           justify-between
           items-center
           border-gray-100
-          py-6
+          py-2
           md:justify-start md:space-x-10
         "
       >
         <div class="flex justify-start lg:w-0 lg:flex-1">
-          <a href="#">
+          <router-link to="/">
             <h1 class="text-4xl text-white">FoodTruck</h1>
-          </a>
+          </router-link>
         </div>
         <div class="-mr-2 -my-2 md:hidden">
           <button
@@ -96,8 +96,8 @@
               text-base
               font-medium
               text-white
-              bg-indigo-600
-              hover:bg-indigo-700
+              bg-blue-500
+              hover:bg-blue-700
             "
           >
             新規登録
@@ -110,8 +110,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "CommonHeader",
+  setup() {
+    const route = useRoute();
+
+    return {
+      //データ
+      route,
+    };
+  },
 });
 </script>

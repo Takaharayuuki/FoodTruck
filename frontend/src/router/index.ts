@@ -12,6 +12,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/Top.vue'),
         meta: { title: 'トップページ', desc: '説明' }
       },
+    ]
+  },
+  {
+    path: "/",
+    name: "CommonLayout",
+    component: () => import('../layouts/common-layout.vue'),
+    children: [
       {
         path: "/login",
         name: "Login",
