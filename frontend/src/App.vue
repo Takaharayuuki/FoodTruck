@@ -3,12 +3,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watchEffect } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  watchEffect,
+  ref,
+  provide,
+  reactive,
+} from "vue";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "App",
   setup() {
+    // ログイン情報
+    const isLoggedIn = ref(false);
+    provide("isLoggedIn", isLoggedIn);
+
+    // ログインしたユーザの情報
+    const loginData = reactive<{ [key: string]: string }>({
+      userName: "",
+      userEmail: "",
+      password: "",
+    });
+    provide("loginData", loginData);
+
     /* ページタイトルの監視・変更 */
     const route = useRoute();
     onMounted(() => {
