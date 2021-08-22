@@ -36,6 +36,7 @@
                 focus:outline-none focus:shadow-outline
               "
               id="userEmail"
+              v-model="form.userEmail"
               type="text"
               placeholder="foodtruck@example.com"
             />
@@ -61,6 +62,7 @@
                 focus:outline-none focus:shadow-outline
               "
               id="password"
+              v-model="form.password"
               type="password"
               placeholder="******"
             />
@@ -80,6 +82,7 @@
                 mr-1
               "
               type="button"
+              @click="login"
             >
               ログイン
             </button>
@@ -103,13 +106,85 @@
         </form>
       </div>
     </div>
+    <button @click="getUser">ユーザ情報の取得</button>
+    <button @click="logout">ログアウト</button>
+    <pre>{{ loggedIn }}</pre>
+    <pre>{{ form }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "Login",
+  setup() {
+    const form = reactive({
+      userName: "",
+      userEmail: "",
+      password: "",
+    });
+
+    const loggedIn = ref(false);
+
+    function login() {
+      console.log(form);
+      axios
+        .get("sanctum/csrf-cookie", { withCredentials: true })
+        .then((response) => {
+          console.log(response);
+          axios
+            .post("api/auth/login", {
+              email: form.userEmail,
+              password: form.password,
+            })
+            .then((response) => {
+              console.log(response);
+              getUser();
+              loggedIn.value = true;
+            })
+            .catch((error) => {
+              console.log(`loginの方${error}`);
+              loggedIn.value = false;
+            });
+        })
+        .catch((error) => {
+          console.log(`csrfの方:  ${error}  `);
+        });
+    }
+    function logout() {
+      axios.post("api/auth/logout", {}).then((response) => {
+        console.log(response);
+        loggedIn.value = false;
+        form.userName = "";
+        form.userEmail = "";
+        form.password = "";
+      });
+    }
+    function getUser() {
+      axios
+        .get("api/user", { withCredentials: true })
+        .then((response) => {
+          form.userEmail = response.data.email;
+          form.userName = response.data.name;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          alert(error.response);
+          loggedIn.value = false;
+        });
+    }
+
+    return {
+      // データ
+      form,
+      loggedIn,
+      // 関数
+      login,
+      logout,
+      getUser,
+    };
+  },
 });
 </script>
