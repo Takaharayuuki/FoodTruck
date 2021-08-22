@@ -16,6 +16,7 @@
             <h1 class="text-4xl text-white">FoodTruck</h1>
           </router-link>
         </div>
+        <pre class="text-white">{{ loginData }}</pre>
         <div class="-mr-2 -my-2 md:hidden">
           <button
             type="button"
@@ -67,41 +68,60 @@
           >
             出店登録
           </a>
-          <router-link
-            to="/login"
-            class="
-              text-white
-              ml-8
-              whitespace-nowrap
-              text-base
-              font-medium
-              hover:text-gray-900
-            "
-          >
-            ログイン
-          </router-link>
-          <router-link
-            to="register"
-            class="
-              ml-8
-              whitespace-nowrap
-              inline-flex
-              items-center
-              justify-center
-              px-4
-              py-2
-              border border-transparent
-              rounded-md
-              shadow-sm
-              text-base
-              font-medium
-              text-white
-              bg-blue-500
-              hover:bg-blue-700
-            "
-          >
-            新規登録
-          </router-link>
+          <template v-if="!isLoggedIn">
+            <router-link
+              to="/login"
+              class="
+                text-white
+                ml-8
+                whitespace-nowrap
+                text-base
+                font-medium
+                hover:text-gray-900
+              "
+            >
+              ログイン
+            </router-link>
+            <router-link
+              to="register"
+              class="
+                ml-8
+                whitespace-nowrap
+                inline-flex
+                items-center
+                justify-center
+                px-4
+                py-2
+                border border-transparent
+                rounded-md
+                shadow-sm
+                text-base
+                font-medium
+                text-white
+                bg-blue-500
+                hover:bg-blue-700
+              "
+            >
+              新規登録
+            </router-link>
+          </template>
+          <template v-else>
+            <div
+              to="/login"
+              class="
+                text-white
+                ml-8
+                whitespace-nowrap
+                text-base
+                font-medium
+                hover:text-gray-900
+                cursor-pointer
+              "
+              @click="logout"
+            >
+              ログアウト
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -109,17 +129,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { defineComponent, inject } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
 
 export default defineComponent({
   name: "CommonHeader",
   setup() {
     const route = useRoute();
+    const router = useRouter();
+
+    /* ログインの有無 */
+    const isLoggedIn: any = inject("isLoggedIn");
+    // ログインしたユーザの情報
+    const loginData: any = inject("loginData");
+
+    function logout() {
+      axios.post("api/auth/logout", {}).then((response) => {
+        isLoggedIn.value = false;
+        loginData.userName = "";
+        loginData.userEmail = "";
+        loginData.password = "";
+        router.push("/login");
+      });
+    }
 
     return {
       //データ
       route,
+      isLoggedIn,
+      loginData,
+      // 関数
+      logout,
     };
   },
 });
