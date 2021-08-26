@@ -37,7 +37,7 @@
               "
               id="userEmail"
               v-model="formData.userEmail"
-              type="text"
+              type="email"
               placeholder="foodtruck@example.com"
             />
           </div>
@@ -137,20 +137,73 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, inject } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Register",
   setup() {
+    const router = useRouter();
     const formData = reactive({
       userEmail: "",
       userName: "",
       password: "",
     });
 
+    /* ログインの有無 */
+    const isLoggedIn: any = inject("isLoggedIn");
+
+    /* ログインしたユーザの情報 */
+    const loginData: any = inject("loginData");
+
+    /* 新規登録 */
     function signUp() {
-      console.log("新規登録");
+      axios
+        .post("api/register", {
+          email: formData.userEmail,
+          name: formData.userName,
+          password: formData.password,
+        })
+        .then((response) => {
+          // 新規登録が正常に完了したらログインしてTopへ
+          axios
+            .get("sanctum/csrf-cookie", { withCredentials: true })
+            .then((response) => {
+              axios
+                .post("api/auth/login", {
+                  email: formData.userEmail,
+                  password: formData.password,
+                })
+                .then((response) => {
+                  getUser();
+                  isLoggedIn.value = true;
+                  router.push("/");
+                })
+                .catch((error) => {
+                  isLoggedIn.value = false;
+                });
+            })
+            .catch((error) => {
+              console.log(`csrfの方:  ${error}  `);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    function getUser() {
+      axios
+        .get("api/user", { withCredentials: true })
+        .then((response) => {
+          loginData.userEmail = response.data.email;
+          loginData.userName = response.data.name;
+        })
+        .catch((error) => {
+          alert(error.response);
+          isLoggedIn.value = false;
+        });
     }
 
     return {
