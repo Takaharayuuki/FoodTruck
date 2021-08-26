@@ -36,6 +36,7 @@
                 focus:outline-none focus:shadow-outline
               "
               id="userEmail"
+              v-model="formData.userEmail"
               type="text"
               placeholder="foodtruck@example.com"
             />
@@ -61,6 +62,7 @@
                 focus:outline-none focus:shadow-outline
               "
               id="userName"
+              v-model="formData.userName"
               type="text"
               placeholder="田中 太郎"
             />
@@ -86,6 +88,7 @@
                 focus:outline-none focus:shadow-outline
               "
               id="password"
+              v-model="formData.password"
               type="password"
               placeholder="******"
             />
@@ -105,6 +108,7 @@
                 mr-1
               "
               type="button"
+              @click="signUp"
             >
               登録する
             </button>
@@ -126,15 +130,35 @@
             </router-link>
           </div>
         </form>
+        <pre>{{ formData }}</pre>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "Register",
+  setup() {
+    const formData = reactive({
+      userEmail: "",
+      userName: "",
+      password: "",
+    });
+
+    function signUp() {
+      console.log("新規登録");
+    }
+
+    return {
+      // データ
+      formData,
+      // 関数
+      signUp,
+    };
+  },
 });
 </script>
