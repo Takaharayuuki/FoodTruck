@@ -16,7 +16,7 @@ export default defineComponent({
 .top-kv {
   background-image: url("../assets/sample.jpg");
   width: 100%;
-  height: 62vh;
+  height: 52vh;
   background-size: cover;
 }
 </style>

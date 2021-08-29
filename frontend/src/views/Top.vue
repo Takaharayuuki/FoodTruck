@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="fixed top-96 w-full flex items-center justify-center">
+    <!-- 検索バー TODO: コンポーネント化する -->
+    <div class="pt-80 w-full flex items-center justify-center">
       <div
         class="
           flex
@@ -87,6 +88,13 @@
         </div>
       </div>
     </div>
+    <!-- メインカテゴリ -->
+    <main class="w-full mx-auto max-w-7xl">
+      <h2 class="text-2xl font-semibold">エリアから検索</h2>
+      <p></p>
+      <h2 class="text-2xl font-semibold">ジャンルから検索</h2>
+      <p></p>
+    </main>
   </div>
 </template>
 
