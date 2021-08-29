@@ -58,6 +58,7 @@
               <div class="col-span-2">
                 <button
                   type="button"
+                  @click="onSearch"
                   class="
                     w-full
                     h-full
@@ -91,8 +92,20 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Top",
+  setup() {
+    const router = useRouter();
+
+    function onSearch() {
+      router.push("/store_index");
+    }
+    return {
+      // 関数
+      onSearch,
+    };
+  },
 });
 </script>
