@@ -35,7 +35,7 @@ export default defineComponent({
     });
     const createTitleDesc = (routeInstance: RouteLocationNormalizedLoaded) => {
       if (routeInstance.meta.title) {
-        const setTitle = routeInstance.meta.title + " | FoodTruck";
+        const setTitle = "FoodTruck - " + routeInstance.meta.title;
         document.title = setTitle;
       } else {
         document.title = "FoodTruck";
