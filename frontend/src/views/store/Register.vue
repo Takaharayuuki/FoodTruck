@@ -4,7 +4,7 @@
     <div class="py-10 container mx-auto">
       <div class="max-w-3xl">
         <div class="mt-5 md:mt-0 md:col-span-2">
-          <form action="#" method="POST">
+          <form v-on:submit.prevent="save">
             <div class="shadow overflow-hidden sm:rounded-md">
               <div class="px-4 py-5 bg-white sm:p-6">
                 <div class="grid grid-cols-6 gap-6">
@@ -61,9 +61,11 @@
                         sm:text-sm
                       "
                     >
-                      <option>軽食/ジャンクフード</option>
-                      <option>和食</option>
                       <option>クレープ</option>
+                      <option>軽食 / ジャンクフード</option>
+                      <option>和食</option>
+                      <option>イタリアン</option>
+                      <option>ケバブ / トルコ料理</option>
                     </select>
                   </div>
 
@@ -130,7 +132,7 @@
                       type="text"
                       name="storeBusinessHour"
                       id="storeBusinessHour"
-                      v-model="storeData.businessHour"
+                      v-model="storeData.business_hours"
                       class="
                         h-10
                         border
@@ -274,6 +276,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "StoreRegister",
@@ -284,16 +287,30 @@ export default defineComponent({
       category: "",
       address: "",
       period: "",
-      businessHour: "",
+      business_hours: "",
       remark: "",
     });
     // 出店画像データ
     const file = ref<File | null>(null);
 
+    function save() {
+      axios
+        .post("api/stores", storeData)
+        .then((res) => {
+          console.log(res);
+          alert("登録が完了しました。");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return {
       // データ
       storeData,
       file,
+      // 関数
+      save,
     };
   },
 });
