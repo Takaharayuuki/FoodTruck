@@ -32,26 +32,13 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '新規登録ページ', desc: '説明' }
       },
       {
-        path: "/store",
-        name: "Register",
-        component: () => import('../views/Register.vue'),
-        meta: { title: '新規登録ページ', desc: '説明' }
-      }
-    ]
-  },
-  {
-    path: "/store",
-    name: "CommonLayout",
-    component: () => import('../layouts/common-layout.vue'),
-    children: [
-      {
-        path: "/register",
+        path: "/store_register",
         name: "StoreRegister",
         component: () => import('../views/store/Register.vue'),
         meta: { title: '出店新規登録ページ', desc: '説明' }
       }
     ]
-  }
+  },
 ]
 const router = createRouter({
   history: createWebHistory('/'),
