@@ -10,14 +10,15 @@
                 <div class="grid grid-cols-6 gap-6">
                   <div class="col-span-12">
                     <label
-                      for="first-name"
+                      for="storeName"
                       class="block text-sm font-medium text-gray-700"
                       >店舗名</label
                     >
                     <input
                       type="text"
-                      name="first-name"
-                      id="first-name"
+                      name="storeName"
+                      id="storeName"
+                      v-model="storeData.name"
                       autocomplete="given-name"
                       class="
                         h-10
@@ -36,14 +37,14 @@
 
                   <div class="col-span-6 sm:col-span-3">
                     <label
-                      for="country"
+                      for="category"
                       class="block text-sm font-medium text-gray-700"
                       >ジャンル</label
                     >
                     <select
-                      id="country"
-                      name="country"
-                      autocomplete="country"
+                      id="category"
+                      name="category"
+                      v-model="storeData.category"
                       class="
                         mt-1
                         block
@@ -68,14 +69,15 @@
 
                   <div class="col-span-12">
                     <label
-                      for="last-name"
+                      for="storeAddress"
                       class="block text-sm font-medium text-gray-700"
                       >出店場所</label
                     >
                     <input
                       type="text"
-                      name="last-name"
-                      id="last-name"
+                      name="storeAddress"
+                      id="storeAddress"
+                      v-model="storeData.address"
                       autocomplete="family-name"
                       class="
                         mt-1
@@ -94,15 +96,15 @@
 
                   <div class="col-span-12">
                     <label
-                      for="street-address"
+                      for="storePeriod"
                       class="block text-sm font-medium text-gray-700"
                       >出店期間</label
                     >
                     <input
                       type="text"
-                      name="street-address"
-                      id="street-address"
-                      autocomplete="street-address"
+                      name="storePeriod"
+                      id="storePeriod"
+                      v-model="storeData.period"
                       class="
                         h-10
                         border
@@ -120,15 +122,15 @@
 
                   <div class="col-span-12">
                     <label
-                      for="email-address"
+                      for="storeBusinessHour"
                       class="block text-sm font-medium text-gray-700"
                       >営業時間</label
                     >
                     <input
                       type="text"
-                      name="email-address"
-                      id="email-address"
-                      autocomplete="email"
+                      name="storeBusinessHour"
+                      id="storeBusinessHour"
+                      v-model="storeData.businessHour"
                       class="
                         h-10
                         border
@@ -146,14 +148,15 @@
 
                   <div class="col-span-12">
                     <label
-                      for="state"
+                      for="remark"
                       class="block text-sm font-medium text-gray-700"
                       >備考</label
                     >
                     <input
                       type="text"
-                      name="state"
-                      id="state"
+                      name="remark"
+                      id="remark"
+                      v-model="storeData.remark"
                       class="
                         h-10
                         border
@@ -265,16 +268,33 @@
         </div>
       </div>
     </div>
+    <pre>{{ storeData }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 
 export default defineComponent({
   name: "StoreRegister",
   setup() {
-    return {};
+    // 出店登録フォームデータ
+    const storeData = reactive({
+      name: "",
+      category: "",
+      address: "",
+      period: "",
+      businessHour: "",
+      remark: "",
+    });
+    // 出店画像データ
+    const file = ref<File | null>(null);
+
+    return {
+      // データ
+      storeData,
+      file,
+    };
   },
 });
 </script>
