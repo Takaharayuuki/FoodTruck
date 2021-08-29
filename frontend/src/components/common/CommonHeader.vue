@@ -16,7 +16,6 @@
             <h1 class="text-4xl text-white">FoodTruck</h1>
           </router-link>
         </div>
-        <pre class="text-white">{{ loginData }}</pre>
         <div class="-mr-2 -my-2 md:hidden">
           <button
             type="button"
