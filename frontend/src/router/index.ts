@@ -36,6 +36,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "StoreRegister",
         component: () => import('../views/store/Register.vue'),
         meta: { title: '出店新規登録ページ', desc: '説明' }
+      },
+      {
+        path: "/store_index",
+        name: "StoreIndex",
+        component: () => import('../views/store/Index.vue'),
+        meta: { title: '出店一覧ページ', desc: '説明' }
       }
     ]
   },
