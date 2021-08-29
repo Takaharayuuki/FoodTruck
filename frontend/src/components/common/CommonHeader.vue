@@ -56,8 +56,8 @@
         </div>
         <nav class="hidden md:flex space-x-10"></nav>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-          <a
-            href="#"
+          <router-link
+            to="/store_register"
             class="
               text-white
               whitespace-nowrap
@@ -67,7 +67,7 @@
             "
           >
             出店登録
-          </a>
+          </router-link>
           <template v-if="!isLoggedIn">
             <router-link
               to="/login"
