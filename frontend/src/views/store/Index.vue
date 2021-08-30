@@ -25,49 +25,6 @@
 import { defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
 
-const demoData = [
-  {
-    name: "ケバブケバブ",
-    category: "軽食/ ファーストフード",
-    address: "渋谷",
-    business_hour: "AM:09:00 ~ PM:05:00",
-    period: "09/31まで",
-    thumbnail_url: "/assets/sample.jpeg",
-  },
-  {
-    name: "ケバブケバブ",
-    category: "軽食/ ファーストフード",
-    address: "渋谷",
-    business_hour: "AM:09:00 ~ PM:05:00",
-    period: "09/31まで",
-    thumbnail_url: "/assets/sample.jpeg",
-  },
-  {
-    name: "ケバブケバブ",
-    category: "軽食/ ファーストフード",
-    address: "渋谷",
-    business_hour: "AM:09:00 ~ PM:05:00",
-    period: "09/31まで",
-    thumbnail_url: "/assets/sample.jpeg",
-  },
-  {
-    name: "ケバブケバブ",
-    category: "軽食/ ファーストフード",
-    address: "渋谷",
-    business_hour: "AM:09:00 ~ PM:05:00",
-    period: "09/31まで",
-    thumbnail_url: "/assets/sample.jpeg",
-  },
-  {
-    name: "ケバブケバブ",
-    category: "軽食/ ファーストフード",
-    address: "渋谷",
-    business_hour: "AM:09:00 ~ PM:05:00",
-    period: "09/31まで",
-    thumbnail_url: "/assets/sample.jpeg",
-  },
-];
-
 export default defineComponent({
   name: "StoreIndex",
 
@@ -78,7 +35,6 @@ export default defineComponent({
       axios
         .get("api/stores", { withCredentials: true })
         .then((res) => {
-          console.log(res);
           res.data.forEach((element: { [key: string]: string }) => {
             storeData.push(element as never);
           });
@@ -90,11 +46,9 @@ export default defineComponent({
 
     onMounted(() => {
       getStoreData();
-      console.log(storeData);
     });
 
     return {
-      demoData,
       storeData,
     };
   },

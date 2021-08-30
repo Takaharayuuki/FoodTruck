@@ -24,7 +24,6 @@
                 <input
                   type="text"
                   name="price"
-                  id="price"
                   class="
                     h-12
                     border border-yellow-700
@@ -41,7 +40,6 @@
                 <input
                   type="text"
                   name="price"
-                  id="price"
                   class="
                     h-12
                     border border-l-0 border-yellow-700

@@ -297,7 +297,6 @@ export default defineComponent({
       axios
         .post("api/stores", storeData)
         .then((res) => {
-          console.log(res);
           alert("登録が完了しました。");
         })
         .catch((err) => {
