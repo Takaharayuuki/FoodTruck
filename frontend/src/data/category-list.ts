@@ -1,0 +1,18 @@
+export default [
+  { value: '軽食 / スナック', label: '軽食 / スナック' },
+  { value: 'お弁当', label: 'お弁当' },
+  { value: 'たこ焼き', label: 'たこ焼き' },
+  { value: 'クレープ', label: 'クレープ' },
+  { value: 'カフェ', label: 'カフェ' },
+  { value: 'ランチ系', label: 'ランチ系' },
+  { value: 'パン', label: 'パン' },
+  { value: '焼き鳥', label: '焼き鳥' },
+  { value: 'アイスクリーム', label: 'アイスクリーム' },
+  { value: 'ピザ', label: 'ピザ' },
+  { value: '和食', label: '和食' },
+  { value: '駄菓子', label: '駄菓子' },
+  { value: 'お惣菜', label: 'お惣菜' },
+  { value: 'エスニック料理', label: 'エスニック料理' },
+  { value: 'イタリアン', label: 'イタリアン' },
+  { value: 'ハンバーガー', label: 'ハンバーガー' },
+]
