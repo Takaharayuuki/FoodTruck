@@ -61,11 +61,12 @@
                         sm:text-sm
                       "
                     >
-                      <option>クレープ</option>
-                      <option>軽食 / ジャンクフード</option>
-                      <option>和食</option>
-                      <option>イタリアン</option>
-                      <option>ケバブ / トルコ料理</option>
+                      <option
+                        v-for="category in categoryList"
+                        :key="category.id"
+                      >
+                        {{ category.value }}
+                      </option>
                     </select>
                   </div>
 
@@ -276,6 +277,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import { categoryList } from "../../data";
 import axios from "axios";
 
 export default defineComponent({
@@ -305,6 +307,8 @@ export default defineComponent({
     }
 
     return {
+      // オプション
+      categoryList,
       // データ
       storeData,
       file,
