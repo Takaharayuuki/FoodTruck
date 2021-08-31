@@ -229,6 +229,7 @@
                               name="file-upload"
                               type="file"
                               class="sr-only"
+                              @change="onFileSelected"
                             />
                           </label>
                           <p class="pl-1">or drag and drop</p>
@@ -280,6 +281,10 @@ import { defineComponent, reactive, ref } from "vue";
 import { categoryList } from "../../data";
 import axios from "axios";
 
+interface HTMLElementEvent<T extends HTMLElement> extends Event {
+  target: T;
+}
+
 export default defineComponent({
   name: "StoreRegister",
   setup() {
@@ -306,6 +311,11 @@ export default defineComponent({
         });
     }
 
+    function onFileSelected(e: HTMLElementEvent<HTMLInputElement>) {
+      file.value = e.target.files![0];
+      console.log(file.value);
+    }
+
     return {
       // オプション
       categoryList,
@@ -314,6 +324,7 @@ export default defineComponent({
       file,
       // 関数
       save,
+      onFileSelected,
     };
   },
 });
