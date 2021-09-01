@@ -6,7 +6,7 @@
       class="flex border-t border-b border-gray-300 p-4 mt-3"
     >
       <div>
-        <img src="../../assets/sample.jpeg" alt="" />
+        <img :src="data.thumbnail_url" alt="" />
       </div>
       <div>
         <p>店舗名:{{ data.name }}</p>

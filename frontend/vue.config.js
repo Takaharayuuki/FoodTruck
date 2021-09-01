@@ -13,4 +13,13 @@ module.exports = {
       filename: `../../resources/views/spa/app.blade.php`,
     },
   },
+  devServer: {
+    proxy: {
+      "/api/uploads": {
+        target: "http://127.0.0.1/storage",
+        changeOrigin: true,
+        logLevel: "debug",
+      },
+    },
+  },
 };

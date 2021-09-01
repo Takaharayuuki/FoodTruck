@@ -37,7 +37,8 @@ class StoreController extends Controller
     {
         $form = $request->all();
         $file = $request->file('file');
-        $path = $file->store('store_image');
+        $file_name = request()->file('file')->getClientOriginalName();
+        $request->file('file')->storeAs('public/', $file_name);
         $store = new Store;
         $store->name = $form['storeName'];
         $store->category = $form['storeCategory'];
@@ -45,7 +46,7 @@ class StoreController extends Controller
         $store->period = $form['storePeriod'];
         $store->business_hours = $form['storeBusinessHours'];
         $store->remark = $form['storeRemark'];
-        $store->thumbnail_url = $path;
+        $store->thumbnail_url = '/storage/' . $file_name;
 
         $store->save();
     }
