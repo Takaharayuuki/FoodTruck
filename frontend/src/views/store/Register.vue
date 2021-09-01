@@ -21,6 +21,7 @@
                       v-model="storeData.name"
                       autocomplete="given-name"
                       class="
+                        px-2
                         h-10
                         mt-1
                         focus:ring-indigo-500 focus:border-indigo-500
@@ -83,6 +84,7 @@
                       v-model="storeData.address"
                       autocomplete="family-name"
                       class="
+                        px-2
                         mt-1
                         h-10
                         border
@@ -109,6 +111,7 @@
                       id="storePeriod"
                       v-model="storeData.period"
                       class="
+                        px-2
                         h-10
                         border
                         mt-1
@@ -135,6 +138,7 @@
                       id="storeBusinessHour"
                       v-model="storeData.business_hours"
                       class="
+                        px-2
                         h-10
                         border
                         mt-1
@@ -161,6 +165,7 @@
                       id="remark"
                       v-model="storeData.remark"
                       class="
+                        px-2
                         h-10
                         border
                         mt-1
@@ -301,8 +306,23 @@ export default defineComponent({
     const file = ref<File | null>(null);
 
     function save() {
+      const formData = new FormData();
+      formData.append("file", file.value as any);
+      formData.append("storeName", storeData.name);
+      formData.append("storeCategory", storeData.category);
+      formData.append("storeAddress", storeData.address);
+      formData.append("storePeriod", storeData.period);
+      formData.append("storeBusinessHours", storeData.business_hours);
+      formData.append("storeRemark", storeData.remark);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+
       axios
-        .post("api/stores", storeData)
+        .post("api/stores", formData, config)
         .then((res) => {
           alert("登録が完了しました。");
         })
@@ -313,7 +333,6 @@ export default defineComponent({
 
     function onFileSelected(e: HTMLElementEvent<HTMLInputElement>) {
       file.value = e.target.files![0];
-      console.log(file.value);
     }
 
     return {

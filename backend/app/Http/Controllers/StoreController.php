@@ -35,7 +35,19 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        return Store::create($request->all());
+        $form = $request->all();
+        $file = $request->file('file');
+        $path = $file->store('store_image');
+        $store = new Store;
+        $store->name = $form['storeName'];
+        $store->category = $form['storeCategory'];
+        $store->address = $form['storeAddress'];
+        $store->period = $form['storePeriod'];
+        $store->business_hours = $form['storeBusinessHours'];
+        $store->remark = $form['storeRemark'];
+        $store->thumbnail_url = $path;
+
+        $store->save();
     }
 
     /**
