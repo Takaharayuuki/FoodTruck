@@ -185,6 +185,11 @@
                       店舗画像
                     </label>
                     <div
+                      @dragenter="dragEnter"
+                      @dragleave="dragLeave"
+                      @dragover.prevent
+                      @drop.prevent="dropFile"
+                      :class="{ enter: isEnter }"
                       class="
                         mt-1
                         flex
@@ -305,6 +310,23 @@ export default defineComponent({
     // 出店画像データ
     const file = ref<File | null>(null);
 
+    const isEnter = ref(false);
+
+    function dragEnter() {
+      console.log("dragEnter");
+      isEnter.value = true;
+    }
+
+    function dragLeave() {
+      console.log("dragLeave");
+      isEnter.value = false;
+    }
+
+    function dropFile(event: Event) {
+      event.preventDefault();
+      isEnter.value = false;
+    }
+
     function save() {
       const formData = new FormData();
       formData.append("file", file.value as any);
@@ -341,10 +363,19 @@ export default defineComponent({
       // データ
       storeData,
       file,
+      isEnter,
       // 関数
       save,
       onFileSelected,
+      dragEnter,
+      dragLeave,
+      dropFile,
     };
   },
 });
 </script>
+<style scoped>
+.enter {
+  border: 2px dashed rgb(255, 160, 16);
+}
+</style>
