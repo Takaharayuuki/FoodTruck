@@ -201,7 +201,10 @@
                         rounded-md
                       "
                     >
-                      <div class="space-y-1 text-center">
+                      <div
+                        v-if="files.length === 0"
+                        class="space-y-1 text-center"
+                      >
                         <svg
                           class="mx-auto h-12 w-12 text-gray-400"
                           stroke="currentColor"
@@ -248,6 +251,12 @@
                           PNG, JPG, GIF up to 10MB
                         </p>
                       </div>
+                      <div class="flex" v-else>
+                        <div v-for="data in imageData" :key="`${data}_id`">
+                          <img :src="data.url" alt="" width="70" />
+                          <p>{{ data.name }}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -282,12 +291,13 @@
         </div>
       </div>
     </div>
-    <pre>{{ storeData }}</pre>
+    <pre>{{ files }}</pre>
+    <pre>{{ imageData }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, Events, reactive, ref } from "vue";
 import { categoryList } from "../../data";
 import axios from "axios";
 
@@ -308,7 +318,8 @@ export default defineComponent({
       remark: "",
     });
     // 出店画像データ
-    const file = ref<File | null>(null);
+    const files = ref<File[] | null>([]);
+    const imageData: any = reactive([]);
 
     const isEnter = ref(false);
 
@@ -322,14 +333,21 @@ export default defineComponent({
       isEnter.value = false;
     }
 
-    function dropFile(event: Event) {
+    function dropFile(event: DragEvent | any) {
       event.preventDefault();
+      files.value?.push(...event.dataTransfer.files);
+      imageData.push({
+        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+        name: event.dataTransfer.files[0].name,
+      });
       isEnter.value = false;
     }
 
     function save() {
       const formData = new FormData();
-      formData.append("file", file.value as any);
+      files.value?.forEach((file) => {
+        formData.append("file", file);
+      });
       formData.append("storeName", storeData.name);
       formData.append("storeCategory", storeData.category);
       formData.append("storeAddress", storeData.address);
@@ -353,8 +371,12 @@ export default defineComponent({
         });
     }
 
-    function onFileSelected(e: HTMLElementEvent<HTMLInputElement>) {
-      file.value = e.target.files![0];
+    function onFileSelected(event: any) {
+      files.value?.push(...event.dataTransfer.files);
+      imageData.push({
+        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+        name: event.dataTransfer.files[0].name,
+      });
     }
 
     return {
@@ -362,7 +384,8 @@ export default defineComponent({
       categoryList,
       // データ
       storeData,
-      file,
+      files,
+      imageData,
       isEnter,
       // 関数
       save,
