@@ -252,9 +252,16 @@
                         </p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="data in imageData" :key="`${data}_id`">
-                          <img :src="data.url" alt="" width="70" />
-                          <p>{{ data.name }}</p>
+                        <div v-for="(data, index) in imageData" :key="index">
+                          <div class="relative">
+                            <span
+                              @click="deleteFile(index)"
+                              class="deletemark cursor-pointer"
+                              >x</span
+                            >
+                            <img :src="data.url" alt="" width="70" />
+                            <p>{{ data.name }}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -343,6 +350,11 @@ export default defineComponent({
       isEnter.value = false;
     }
 
+    function deleteFile(index: number) {
+      files.value?.splice(index, 1);
+      imageData.splice(index, 1);
+    }
+
     function save() {
       const formData = new FormData();
       files.value?.forEach((file) => {
@@ -371,12 +383,19 @@ export default defineComponent({
         });
     }
 
-    function onFileSelected(event: any) {
-      files.value?.push(...event.dataTransfer.files);
-      imageData.push({
-        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-        name: event.dataTransfer.files[0].name,
-      });
+    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
+      if (event.target.files !== null) {
+        files.value?.push(event.target.files[0]);
+        imageData?.push({
+          url: URL.createObjectURL(event.target.files[0]),
+          name: event.target.files[0].name,
+        });
+      }
+      // files.value?.push(...event.dataTransfer.files);
+      // imageData.push({
+      //   url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+      //   name: event.dataTransfer.files[0].name,
+      // });
     }
 
     return {
@@ -393,6 +412,7 @@ export default defineComponent({
       dragEnter,
       dragLeave,
       dropFile,
+      deleteFile,
     };
   },
 });
@@ -400,5 +420,12 @@ export default defineComponent({
 <style scoped>
 .enter {
   border: 2px dashed rgb(255, 160, 16);
+}
+.deletemark {
+  position: absolute;
+  top: -14px;
+  right: -10px;
+  font-size: 20px;
+  z-index: 2;
 }
 </style>
