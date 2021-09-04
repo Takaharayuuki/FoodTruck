@@ -42,6 +42,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "StoreIndex",
         component: () => import('../views/store/Index.vue'),
         meta: { title: '出店一覧ページ', desc: '説明' }
+      },
+      {
+        path: "/store_detail",
+        name: "StoreDetail",
+        component: () => import('../views/store/Detail.vue'),
+        meta: { title: '出店詳細ページ', desc: '説明' }
       }
     ]
   },

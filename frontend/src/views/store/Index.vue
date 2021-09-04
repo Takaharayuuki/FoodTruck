@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div
+    <router-link
+      to="/store_detail"
       v-for="data in storeData"
       :key="data.id"
       class="flex border-t border-b border-gray-300 p-4 mt-3"
@@ -16,7 +17,7 @@
         <p>出店期間:{{ data.period }}</p>
         <p>レビュー評価</p>
       </div>
-    </div>
+    </router-link>
     <pre>{{ storeData }}</pre>
   </div>
 </template>
