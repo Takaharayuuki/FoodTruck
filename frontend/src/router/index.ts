@@ -44,8 +44,9 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '出店一覧ページ', desc: '説明' }
       },
       {
-        path: "/store_detail",
+        path: "/store_detail/:id",
         name: "StoreDetail",
+        props: true,
         component: () => import('../views/store/Detail.vue'),
         meta: { title: '出店詳細ページ', desc: '説明' }
       }
