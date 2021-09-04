@@ -36,17 +36,28 @@ class StoreController extends Controller
     public function store(Request $request)
     {
         $form = $request->all();
-        $file = $request->file('file');
-        $file_name = request()->file('file')->getClientOriginalName();
-        $request->file('file')->storeAs('public/', $file_name);
         $store = new Store;
+        // 画像ファイルの有無の確認
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = $file->getClientOriginalName();
+            $request->file('file')->storeAs('public/', $file_name);
+            $store->thumbnail_url = '/storage/' . $file_name;
+        }
         $store->name = $form['storeName'];
         $store->category = $form['storeCategory'];
-        $store->address = $form['storeAddress'];
-        $store->period = $form['storePeriod'];
-        $store->business_hours = $form['storeBusinessHours'];
+        $store->postalcode1 = $form['storePostal1'];
+        $store->postalcode2 = $form['storePostal2'];
+        $store->prefecture = $form['storePrefecture'];
+        $store->city = $form['storeCity'];
+        $store->town = $form['storeTown'];
+        $store->addressRemark = $form['storeAddressRemark'];
+        $store->period1 = $form['storePeriod1'];
+        $store->period2 = $form['storePeriod2'];
+        $store->opening_hours = $form['storeOpeningHours'];
+        $store->closing_time = $form['storeClosingTime'];
         $store->remark = $form['storeRemark'];
-        $store->thumbnail_url = '/storage/' . $file_name;
+
 
         $store->save();
     }

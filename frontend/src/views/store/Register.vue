@@ -11,7 +11,7 @@
                   <div class="col-span-12">
                     <label
                       for="storeName"
-                      class="block text-sm font-medium text-gray-700"
+                      class="block text-sm font-semibold text-gray-700"
                       >店舗名</label
                     >
                     <input
@@ -39,7 +39,7 @@
                   <div class="col-span-6 sm:col-span-3">
                     <label
                       for="category"
-                      class="block text-sm font-medium text-gray-700"
+                      class="block text-sm font-semibold text-gray-700"
                       >ジャンル</label
                     >
                     <select
@@ -72,22 +72,170 @@
                   </div>
 
                   <div class="col-span-12">
+                    <p class="block text-sm font-semibold text-gray-700 mb-2">
+                      出店場所
+                    </p>
+
+                    <div class="grid grid-cols-8 gap-6 mb-2">
+                      <div class="postal">
+                        <label
+                          for="storePostal1"
+                          class="block text-sm font-medium text-gray-700"
+                          >郵便番号</label
+                        >
+                        <input
+                          type="text"
+                          name="storePostal1"
+                          id="storePostal1"
+                          v-model="storeData.postalcode1"
+                          autocomplete="family-name"
+                          class="
+                            px-2
+                            mt-1
+                            h-10
+                            border
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                      <div class="mt-5">
+                        <input
+                          type="text"
+                          name="storePostal2"
+                          id="storePostal2"
+                          v-model="storeData.postalcode2"
+                          autocomplete="family-name"
+                          class="
+                            px-2
+                            mt-1
+                            h-10
+                            border
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6">
+                      <div>
+                        <label
+                          for="storePrefecture"
+                          class="block text-sm font-medium text-gray-700"
+                          >都道府県</label
+                        >
+                        <select
+                          name="storePrefecture"
+                          id="storePrefecture"
+                          v-model="storeData.prefecture"
+                          class="
+                            mt-1
+                            block
+                            w-full
+                            py-2
+                            px-3
+                            border border-gray-300
+                            bg-white
+                            rounded-md
+                            shadow-sm
+                            focus:outline-none
+                            focus:ring-indigo-500
+                            focus:border-indigo-500
+                            sm:text-sm
+                          "
+                        >
+                          <option
+                            v-for="prefecture in prefectureOptions"
+                            :key="prefecture.id"
+                          >
+                            {{ prefecture.value }}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <label
+                          for="storeCity"
+                          class="block text-sm font-medium text-gray-700"
+                          >市区町村</label
+                        >
+                        <input
+                          type="text"
+                          name="storeCity"
+                          id="storeCity"
+                          v-model="storeData.city"
+                          autocomplete="family-name"
+                          class="
+                            px-2
+                            mt-1
+                            h-10
+                            border
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                      <div>
+                        <label
+                          for="storeTown"
+                          class="block text-sm font-medium text-gray-700"
+                          >地名・番地</label
+                        >
+                        <input
+                          type="text"
+                          name="storeTown"
+                          id="storeTown"
+                          v-model="storeData.town"
+                          autocomplete="family-name"
+                          class="
+                            px-2
+                            mt-1
+                            h-10
+                            border
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-span-12">
                     <label
-                      for="storeAddress"
+                      for="storeAddressRemark"
                       class="block text-sm font-medium text-gray-700"
-                      >出店場所</label
+                      >備考（出店場所の近隣の建物名等）</label
                     >
                     <input
                       type="text"
-                      name="storeAddress"
-                      id="storeAddress"
-                      v-model="storeData.address"
-                      autocomplete="family-name"
+                      name="storeAddressRemark"
+                      id="storeAddressRemark"
+                      v-model="storeData.addressRemark"
                       class="
                         px-2
-                        mt-1
                         h-10
                         border
+                        mt-1
                         focus:ring-indigo-500 focus:border-indigo-500
                         block
                         w-full
@@ -100,63 +248,109 @@
                   </div>
 
                   <div class="col-span-12">
-                    <label
-                      for="storePeriod"
-                      class="block text-sm font-medium text-gray-700"
-                      >出店期間</label
-                    >
-                    <input
-                      type="text"
-                      name="storePeriod"
-                      id="storePeriod"
-                      v-model="storeData.period"
-                      class="
-                        px-2
-                        h-10
-                        border
-                        mt-1
-                        focus:ring-indigo-500 focus:border-indigo-500
-                        block
-                        w-full
-                        shadow-sm
-                        sm:text-sm
-                        border-gray-300
-                        rounded-md
-                      "
-                    />
+                    <p class="block text-sm font-semibold text-gray-700 mb-2">
+                      出店期間
+                    </p>
+                    <div class="grid grid-cols-4 gap-6">
+                      <div class="hours">
+                        <input
+                          type="date"
+                          name="storePeriod1"
+                          id="storePeriod1"
+                          v-model="storeData.period1"
+                          class="
+                            px-2
+                            h-10
+                            border
+                            mt-1
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="date"
+                          name="storePeriod2"
+                          id="storePeriod2"
+                          v-model="storeData.period2"
+                          class="
+                            px-2
+                            h-10
+                            border
+                            mt-1
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div class="col-span-12">
-                    <label
-                      for="storeBusinessHour"
-                      class="block text-sm font-medium text-gray-700"
-                      >営業時間</label
-                    >
-                    <input
-                      type="text"
-                      name="storeBusinessHour"
-                      id="storeBusinessHour"
-                      v-model="storeData.business_hours"
-                      class="
-                        px-2
-                        h-10
-                        border
-                        mt-1
-                        focus:ring-indigo-500 focus:border-indigo-500
-                        block
-                        w-full
-                        shadow-sm
-                        sm:text-sm
-                        border-gray-300
-                        rounded-md
-                      "
-                    />
+                    <p class="block text-sm font-semibold text-gray-700 mb-2">
+                      営業時間
+                    </p>
+                    <div class="grid grid-cols-4 gap-6">
+                      <div class="hours">
+                        <input
+                          type="time"
+                          name="storeOpeningHours"
+                          id="storeOpeningHours"
+                          v-model="storeData.opening_hours"
+                          class="
+                            px-2
+                            h-10
+                            border
+                            mt-1
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="time"
+                          name="storeClosingTime"
+                          id="storeClosingTime"
+                          v-model="storeData.closing_time"
+                          class="
+                            px-2
+                            h-10
+                            border
+                            mt-1
+                            focus:ring-indigo-500 focus:border-indigo-500
+                            block
+                            w-full
+                            shadow-sm
+                            sm:text-sm
+                            border-gray-300
+                            rounded-md
+                          "
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div class="col-span-12">
                     <label
                       for="remark"
-                      class="block text-sm font-medium text-gray-700"
+                      class="block text-sm font-semibold text-gray-700"
                       >備考</label
                     >
                     <input
@@ -180,8 +374,8 @@
                     />
                   </div>
 
-                  <div class="col-span-12">
-                    <label class="block text-sm font-medium text-gray-700">
+                  <div class="col-span-3">
+                    <label class="block text-sm font-semibold text-gray-700">
                       店舗画像
                     </label>
                     <div
@@ -236,7 +430,7 @@
                               focus-within:ring-indigo-500
                             "
                           >
-                            <span>Upload a file</span>
+                            <span>画像をアップロードする</span>
                             <input
                               id="file-upload"
                               name="file-upload"
@@ -245,11 +439,9 @@
                               @change="onFileSelected"
                             />
                           </label>
-                          <p class="pl-1">or drag and drop</p>
+                          <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
                         </div>
-                        <p class="text-xs text-gray-500">
-                          PNG, JPG, GIF up to 10MB
-                        </p>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
                         <div v-for="(data, index) in imageData" :key="index">
@@ -298,14 +490,12 @@
         </div>
       </div>
     </div>
-    <pre>{{ files }}</pre>
-    <pre>{{ imageData }}</pre>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, Events, reactive, ref } from "vue";
-import { categoryList } from "../../data";
+import { categoryList, prefectureOptions } from "../../data";
 import axios from "axios";
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
@@ -319,9 +509,16 @@ export default defineComponent({
     const storeData = reactive({
       name: "",
       category: "",
-      address: "",
-      period: "",
-      business_hours: "",
+      postalcode1: "",
+      postalcode2: "",
+      prefecture: "",
+      city: "",
+      town: "",
+      addressRemark: "",
+      period1: "",
+      period2: "",
+      opening_hours: "",
+      closing_time: "",
       remark: "",
     });
     // 出店画像データ
@@ -362,9 +559,16 @@ export default defineComponent({
       });
       formData.append("storeName", storeData.name);
       formData.append("storeCategory", storeData.category);
-      formData.append("storeAddress", storeData.address);
-      formData.append("storePeriod", storeData.period);
-      formData.append("storeBusinessHours", storeData.business_hours);
+      formData.append("storePostal1", storeData.postalcode1);
+      formData.append("storePostal2", storeData.postalcode2);
+      formData.append("storePrefecture", storeData.prefecture);
+      formData.append("storeCity", storeData.city);
+      formData.append("storeTown", storeData.town);
+      formData.append("storeAddressRemark", storeData.addressRemark);
+      formData.append("storePeriod1", storeData.period1);
+      formData.append("storePeriod2", storeData.period2);
+      formData.append("storeOpeningHours", storeData.opening_hours);
+      formData.append("storeClosingTime", storeData.closing_time);
       formData.append("storeRemark", storeData.remark);
 
       const config = {
@@ -401,6 +605,7 @@ export default defineComponent({
     return {
       // オプション
       categoryList,
+      prefectureOptions,
       // データ
       storeData,
       files,
@@ -427,5 +632,26 @@ export default defineComponent({
   right: -10px;
   font-size: 20px;
   z-index: 2;
+}
+
+.hours {
+  position: relative;
+}
+
+.hours::after {
+  position: absolute;
+  top: 12px;
+  right: -20px;
+  content: "〜";
+}
+
+.postal {
+  position: relative;
+}
+.postal::after {
+  position: absolute;
+  top: 33px;
+  right: -20px;
+  content: "ー";
 }
 </style>
