@@ -10,7 +10,7 @@
         <div class="flex flex-wrap -m-4">
           <!-- card コンポーネント化する -->
           <router-link
-            :to="`/store_detail/${data.id}`"
+            :to="`/${data.id}`"
             v-for="data in storeData"
             :key="data.id"
             class="p-4 md:w-1/3"

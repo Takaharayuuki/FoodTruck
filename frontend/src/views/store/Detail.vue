@@ -3,10 +3,10 @@
     <div class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
       <div class="pt-20">
         <h2 class="ext-lg sm:text-6xl text-gray-900 font-bold title-font mb-8">
-          ケバブ専門店 ハッスルハッスル
+          {{ storeData.name }}
         </h2>
         <p class="ext-lg sm:text-3xl text-gray-900 font-medium title-font mb-8">
-          屋台や移動販売などでも話題の肉料理ケバブの専門店です🥙野菜と一緒にピタパンに挟んだケバブサンドは、気軽に食べられる軽食としても人気です。
+          {{ storeData.remark }}
         </p>
         <p
           class="ext-lg sm:text-3xl text-gray-900 font-semibold title-font mb-8"
@@ -54,21 +54,21 @@
           </h4>
           <p class="text-gray-900 font-semibold title-font mb-2">住所</p>
           <p>
-            渋谷区宇田川町26-11 白馬ビル1F <br />
-            150-0042 Tokyo
+            {{ storeData.city + storeData.town }}<br />
+            {{ storeData.postalcode1 + "-" + storeData.postalcode2 }}
+            {{ storeData.prefecture }}
           </p>
           <p class="mb-6">地図を表示</p>
           <p class="text-gray-900 font-semibold title-font mb-2">営業時間</p>
-          <p>09.45–23.30</p>
+          <p>{{ storeData.opening_hours + "〜" + storeData.closing_time }}</p>
         </div>
       </div>
     </div>
-    <div @click="getData">受け取り</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
 
 export default defineComponent({
@@ -79,12 +79,15 @@ export default defineComponent({
   setup(props) {
     const storeData = reactive([]);
 
+    onMounted(() => {
+      // idの出店情報を取得
+      getData();
+    });
+
     function getData() {
       axios
         .get(`api/stores/${props.id}`, { withCredentials: true })
         .then((response) => {
-          console.log(response);
-
           Object.assign(storeData, response.data);
         })
         .catch((err) => {
