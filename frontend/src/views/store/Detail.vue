@@ -63,6 +63,7 @@
         </div>
       </div>
     </div>
+    <div @click="getData">受け取り</div>
   </div>
 </template>
 
@@ -78,7 +79,21 @@ export default defineComponent({
   setup(props) {
     const storeData = reactive([]);
 
+    function getData() {
+      axios
+        .get(`api/stores/${props.id}`, { withCredentials: true })
+        .then((response) => {
+          console.log(response);
+
+          Object.assign(storeData, response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return {
+      getData,
       storeData,
     };
   },

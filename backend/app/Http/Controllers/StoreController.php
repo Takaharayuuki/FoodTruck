@@ -70,7 +70,9 @@ class StoreController extends Controller
      */
     public function show($id)
     {
-        //
+        $store = Store::find($id);
+        dd($store);
+        return $store
     }
 
     /**
