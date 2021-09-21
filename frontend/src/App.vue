@@ -25,6 +25,7 @@ export default defineComponent({
       userName: "",
       userEmail: "",
       password: "",
+      userType: "",
     });
     provide("loginData", loginData);
 
