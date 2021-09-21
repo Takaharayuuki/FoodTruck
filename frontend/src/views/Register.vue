@@ -149,7 +149,6 @@ export default defineComponent({
       userEmail: "",
       userName: "",
       password: "",
-      userType: "customer",
     });
 
     /* ログインの有無 */
@@ -165,7 +164,6 @@ export default defineComponent({
           email: formData.userEmail,
           name: formData.userName,
           password: formData.password,
-          userType: formData.userType,
         })
         .then((response) => {
           // 新規登録が正常に完了したらログインしてTopへ
@@ -201,7 +199,6 @@ export default defineComponent({
         .then((response) => {
           loginData.userEmail = response.data.email;
           loginData.userName = response.data.name;
-          loginData.userType = response.data.userType;
         })
         .catch((error) => {
           alert(error.response);

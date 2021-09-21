@@ -32,12 +32,6 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '新規登録ページ', desc: '説明' }
       },
       {
-        path: "/admin_register",
-        name: "AdminRegister",
-        component: () => import('../views/AdminRegister.vue'),
-        meta: { title: '出店者新規登録ページ', desc: '説明' }
-      },
-      {
         path: "/store_register",
         name: "StoreRegister",
         component: () => import('../views/store/Register.vue'),

@@ -56,7 +56,6 @@
         <nav class="hidden md:flex space-x-10"></nav>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
           <router-link
-            v-if="isLoggedIn && loginData.userType === 'admin'"
             to="/store_register"
             class="
               text-white
@@ -104,28 +103,6 @@
             >
               新規登録
             </router-link>
-            <router-link
-              to="admin_register"
-              class="
-                ml-8
-                whitespace-nowrap
-                inline-flex
-                items-center
-                justify-center
-                px-4
-                py-2
-                border border-transparent
-                rounded-md
-                shadow-sm
-                text-base
-                font-medium
-                text-white
-                bg-blue-500
-                hover:bg-blue-700
-              "
-            >
-              出店者新規登録
-            </router-link>
           </template>
           <template v-else>
             <div
@@ -172,7 +149,6 @@ export default defineComponent({
         loginData.userName = "";
         loginData.userEmail = "";
         loginData.password = "";
-        loginData.userType = "";
         router.push("/login");
       });
     }
