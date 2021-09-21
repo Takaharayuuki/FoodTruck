@@ -13,7 +13,7 @@
               text-gray-900
             "
           >
-            新規登録
+            出店者新規登録
           </h2>
           <div class="text-left mb-4">
             <label
@@ -46,7 +46,7 @@
               class="block text-gray-700 text-sm font-bold mb-2"
               for="userName"
             >
-              ユーザーネーム
+              出店管理者名
             </label>
             <input
               class="
@@ -140,24 +140,20 @@
 import { defineComponent, reactive, inject } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-
 export default defineComponent({
-  name: "Register",
+  name: "AdminRegister",
   setup() {
     const router = useRouter();
     const formData = reactive({
       userEmail: "",
       userName: "",
       password: "",
-      userType: "customer",
+      userType: "admin",
     });
-
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
-
     /* ログインしたユーザの情報 */
     const loginData: any = inject("loginData");
-
     /* 新規登録 */
     function signUp() {
       axios
@@ -194,7 +190,6 @@ export default defineComponent({
           console.log(err);
         });
     }
-
     function getUser() {
       axios
         .get("api/user", { withCredentials: true })
@@ -208,7 +203,6 @@ export default defineComponent({
           isLoggedIn.value = false;
         });
     }
-
     return {
       // データ
       formData,
