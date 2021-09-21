@@ -56,6 +56,7 @@
         <nav class="hidden md:flex space-x-10"></nav>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
           <router-link
+            v-if="isLoggedIn && loginData.userType === 'admin'"
             to="/store_register"
             class="
               text-white
@@ -171,6 +172,7 @@ export default defineComponent({
         loginData.userName = "";
         loginData.userEmail = "";
         loginData.password = "";
+        loginData.userType = "";
         router.push("/login");
       });
     }

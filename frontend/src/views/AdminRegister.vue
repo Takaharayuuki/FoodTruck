@@ -196,6 +196,7 @@ export default defineComponent({
         .then((response) => {
           loginData.userEmail = response.data.email;
           loginData.userName = response.data.name;
+          loginData.userType = response.data.userType;
         })
         .catch((error) => {
           alert(error.response);

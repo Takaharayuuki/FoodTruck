@@ -18,6 +18,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'userType' => $request->userType,
         ]);
         // ポストした値が正常な場合のレスポンス
         return response()->json(['created' => true], Response::HTTP_OK);
