@@ -148,6 +148,7 @@ export default defineComponent({
       userEmail: "",
       userName: "",
       password: "",
+      userType: "admin",
     });
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
@@ -160,6 +161,7 @@ export default defineComponent({
           email: formData.userEmail,
           name: formData.userName,
           password: formData.password,
+          userType: formData.userType,
         })
         .then((response) => {
           // 新規登録が正常に完了したらログインしてTopへ
