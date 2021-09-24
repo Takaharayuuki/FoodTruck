@@ -777,7 +777,16 @@ export default defineComponent({
       axios
         .post("api/stores", formData, config)
         .then((res) => {
-          alert("登録が完了しました。");
+          // 店舗登録が成功したら商品を登録する
+          axios
+            .post("api/products", { productList: productList })
+            .then((res) => {
+              console.log(res);
+              alert("登録が全て完了しました。");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
@@ -800,14 +809,14 @@ export default defineComponent({
     }
 
     // 商品登録
-    // const productList = reactive<[{ [key: string]: string }>([
-    //   {
-    //     name: "商品名",
-    //     price: "100円",
-    //     remark: "説明",
-    //     image: "img.png",
-    //   },
-    // ]);
+    const productList = reactive<[{ [key: string]: string }]>([
+      {
+        name: "商品名",
+        price: "100円",
+        remark: "説明",
+        image: "img.png",
+      },
+    ]);
 
     return {
       // オプション
