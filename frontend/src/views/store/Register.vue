@@ -464,12 +464,13 @@
                   class="
                     grid grid-cols-12
                     gap-6
-                    shadow
+                    shadow-md
                     overflow-hidden
                     sm:rounded-md
                     px-4
                     py-5
                   "
+                  style="border: solid 1px #c5c5c5"
                 >
                   <div class="col-span-6 sm:col-span-5">
                     <label
@@ -634,22 +635,38 @@
                     </div>
                   </div>
                   <div class="col-span-12 text-right cursor-pointer">
-                    ＋商品を追加する
+                    <span
+                      class="
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-offset-2
+                        focus:ring-indigo-500
+                        shadow
+                        overflow-hidden
+                        sm:rounded-md
+                        text-white text-sm
+                        py-2
+                        px-4
+                      "
+                    >
+                      ＋商品を追加する
+                    </span>
                   </div>
                 </div>
                 <!-- ./商品登録 -->
               </div>
-              <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
                 <button
                   type="submit"
                   class="
                     inline-flex
                     justify-center
                     py-2
-                    px-4
+                    px-12
                     border border-transparent
                     shadow-sm
-                    text-sm
                     font-medium
                     rounded-md
                     text-white
