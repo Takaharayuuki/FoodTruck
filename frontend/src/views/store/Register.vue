@@ -824,7 +824,6 @@ export default defineComponent({
           url: URL.createObjectURL(event.dataTransfer.files[0] as any),
           name: event.dataTransfer.files[0].name,
         });
-
         isStoreEnter.value = false;
       }
       if (itemType === "product") {
@@ -833,7 +832,6 @@ export default defineComponent({
           url: URL.createObjectURL(event.dataTransfer.files[0] as any),
           name: event.dataTransfer.files[0].name,
         });
-
         isProductEnter.value = false;
       }
     }
