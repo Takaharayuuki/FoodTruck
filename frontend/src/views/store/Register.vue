@@ -1,14 +1,15 @@
 <template>
   <div>
-    <h1>出店新規登録ページ</h1>
     <div class="py-10 container mx-auto">
       <div class="max-w-3xl">
         <div class="mt-5 md:mt-0 md:col-span-2">
           <form v-on:submit.prevent="save">
             <div class="shadow overflow-hidden sm:rounded-md">
               <div class="px-4 py-5 bg-white sm:p-6">
-                <div class="grid grid-cols-6 gap-6">
-                  <div class="col-span-12">
+                <div class="grid grid-cols-12 gap-6">
+                  <!-- 出店登録 -->
+                  <div class="col-span-12 text-lg font-semibold">出店登録</div>
+                  <div class="col-span-6 sm:col-span-5">
                     <label
                       for="storeName"
                       class="block text-sm font-semibold text-gray-700"
@@ -19,7 +20,6 @@
                       name="storeName"
                       id="storeName"
                       v-model="storeData.name"
-                      autocomplete="given-name"
                       class="
                         px-2
                         h-10
@@ -36,7 +36,7 @@
                     />
                   </div>
 
-                  <div class="col-span-6 sm:col-span-3">
+                  <div class="col-span-6 sm:col-span-5">
                     <label
                       for="category"
                       class="block text-sm font-semibold text-gray-700"
@@ -88,7 +88,6 @@
                           name="storePostal1"
                           id="storePostal1"
                           v-model="storeData.postalcode1"
-                          autocomplete="family-name"
                           class="
                             px-2
                             mt-1
@@ -110,7 +109,6 @@
                           name="storePostal2"
                           id="storePostal2"
                           v-model="storeData.postalcode2"
-                          autocomplete="family-name"
                           class="
                             px-2
                             mt-1
@@ -174,7 +172,6 @@
                           name="storeCity"
                           id="storeCity"
                           v-model="storeData.city"
-                          autocomplete="family-name"
                           class="
                             px-2
                             mt-1
@@ -201,7 +198,6 @@
                           name="storeTown"
                           id="storeTown"
                           v-model="storeData.town"
-                          autocomplete="family-name"
                           class="
                             px-2
                             mt-1
@@ -374,16 +370,16 @@
                     />
                   </div>
 
-                  <div class="col-span-3">
+                  <div class="col-span-4">
                     <label class="block text-sm font-semibold text-gray-700">
                       店舗画像
                     </label>
                     <div
-                      @dragenter="dragEnter"
-                      @dragleave="dragLeave"
+                      @dragenter="dragEnter('store')"
+                      @dragleave="dragLeave('store')"
                       @dragover.prevent
-                      @drop.prevent="dropFile"
-                      :class="{ enter: isEnter }"
+                      @drop.prevent="dropFile($event, 'store')"
+                      :class="{ enter: isStoreEnter }"
                       class="
                         mt-1
                         flex
@@ -396,7 +392,7 @@
                       "
                     >
                       <div
-                        v-if="files.length === 0"
+                        v-if="storeFiles.length === 0"
                         class="space-y-1 text-center"
                       >
                         <svg
@@ -436,7 +432,7 @@
                               name="file-upload"
                               type="file"
                               class="sr-only"
-                              @change="onFileSelected"
+                              @change="onFileSelected($event, 'store')"
                             />
                           </label>
                           <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
@@ -444,33 +440,238 @@
                         <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="(data, index) in imageData" :key="index">
+                        <div
+                          v-for="(data, index) in storeImageData"
+                          :key="index"
+                        >
                           <div class="relative">
                             <span
-                              @click="deleteFile(index)"
+                              @click="deleteFile(index, 'store')"
                               class="deletemark cursor-pointer"
                               >x</span
                             >
                             <img :src="data.url" alt="" width="70" />
-                            <p>{{ data.name }}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <!-- ./出店登録 -->
                 </div>
+                <!-- 商品登録 -->
+                <div class="col-span-12">
+                  <div class="text-lg font-semibold my-5">商品登録</div>
+                </div>
+                <div
+                  class="
+                    grid grid-cols-12
+                    gap-6
+                    shadow-md
+                    overflow-hidden
+                    sm:rounded-md
+                    px-4
+                    py-5
+                  "
+                  style="border: solid 1px #c5c5c5"
+                >
+                  <div class="col-span-6 sm:col-span-5">
+                    <label
+                      for="productName"
+                      class="block text-sm font-semibold text-gray-700"
+                      >商品名</label
+                    >
+                    <input
+                      type="text"
+                      name="productName"
+                      id="productName"
+                      v-model="productData.name"
+                      class="
+                        px-2
+                        h-10
+                        mt-1
+                        focus:ring-indigo-500 focus:border-indigo-500
+                        block
+                        w-full
+                        shadow-sm
+                        border border-gr
+                        sm:text-sm
+                        border-gray-300
+                        rounded-md
+                      "
+                    />
+                  </div>
+                  <div class="col-span-6 sm:col-span-4">
+                    <label
+                      for="productPrice"
+                      class="block text-sm font-semibold text-gray-700"
+                      >価格</label
+                    >
+                    <input
+                      type="text"
+                      name="productPrice"
+                      id="productPrice"
+                      v-model.number="productData.price"
+                      class="
+                        text-right
+                        px-2
+                        h-10
+                        mt-1
+                        inline-block
+                        focus:ring-indigo-500 focus:border-indigo-500
+                        shadow-sm
+                        border border-gr
+                        sm:text-sm
+                        border-gray-300
+                        rounded-md
+                      "
+                    />
+                    <span style="padding-left: 5px">円</span>
+                  </div>
+                  <div class="col-span-12">
+                    <label
+                      for="productRemark"
+                      class="block text-sm font-semibold text-gray-700"
+                      >商品説明</label
+                    >
+                    <input
+                      type="text"
+                      name="productRemark"
+                      id="productRemark"
+                      v-model="productData.remark"
+                      class="
+                        px-2
+                        h-10
+                        border
+                        mt-1
+                        focus:ring-indigo-500 focus:border-indigo-500
+                        block
+                        w-full
+                        shadow-sm
+                        sm:text-sm
+                        border-gray-300
+                        rounded-md
+                      "
+                    />
+                  </div>
+                  <div class="col-span-4">
+                    <label class="block text-sm font-semibold text-gray-700">
+                      商品画像
+                    </label>
+                    <div
+                      @dragenter="dragEnter('product')"
+                      @dragleave="dragLeave('product')"
+                      @dragover.prevent
+                      @drop.prevent="dropFile($event, 'product')"
+                      :class="{ enter: isProductEnter }"
+                      class="
+                        mt-1
+                        flex
+                        justify-center
+                        px-6
+                        pt-5
+                        pb-6
+                        border-2 border-gray-300 border-dashed
+                        rounded-md
+                      "
+                    >
+                      <div
+                        v-if="productFiles.length === 0"
+                        class="space-y-1 text-center"
+                      >
+                        <svg
+                          class="mx-auto h-12 w-12 text-gray-400"
+                          stroke="currentColor"
+                          fill="none"
+                          viewBox="0 0 48 48"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <div class="flex text-sm text-gray-600">
+                          <label
+                            for="file-upload"
+                            class="
+                              relative
+                              cursor-pointer
+                              bg-white
+                              rounded-md
+                              font-medium
+                              text-indigo-600
+                              hover:text-indigo-500
+                              focus-within:outline-none
+                              focus-within:ring-2
+                              focus-within:ring-offset-2
+                              focus-within:ring-indigo-500
+                            "
+                          >
+                            <span>画像をアップロードする</span>
+                            <input
+                              id="file-upload"
+                              name="file-upload"
+                              type="file"
+                              class="sr-only"
+                              @change="onFileSelected($event, 'product')"
+                            />
+                          </label>
+                          <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
+                        </div>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
+                      </div>
+                      <div class="flex" v-else>
+                        <div
+                          v-for="(data, index) in productImageData"
+                          :key="index"
+                        >
+                          <div class="relative">
+                            <span
+                              @click="deleteFile(index, 'product')"
+                              class="deletemark cursor-pointer"
+                              >x</span
+                            >
+                            <img :src="data.url" alt="" width="70" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-12 text-right cursor-pointer">
+                    <span
+                      class="
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-offset-2
+                        focus:ring-indigo-500
+                        shadow
+                        overflow-hidden
+                        sm:rounded-md
+                        text-white text-sm
+                        py-2
+                        px-4
+                      "
+                    >
+                      ＋商品を追加する
+                    </span>
+                  </div>
+                </div>
+                <!-- ./商品登録 -->
               </div>
-              <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
                 <button
                   type="submit"
                   class="
                     inline-flex
                     justify-center
                     py-2
-                    px-4
+                    px-12
                     border border-transparent
                     shadow-sm
-                    text-sm
                     font-medium
                     rounded-md
                     text-white
@@ -505,7 +706,8 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 export default defineComponent({
   name: "StoreRegister",
   setup() {
-    // 出店登録フォームデータ
+    // 出店登録データ
+    // TODO:  modelを作成して型をつける
     const storeData = reactive({
       name: "",
       category: "",
@@ -522,39 +724,102 @@ export default defineComponent({
       remark: "",
     });
     // 出店画像データ
-    const files = ref<File[] | null>([]);
-    const imageData: any = reactive([]);
+    const storeFiles = ref<File[] | null>([]);
+    const storeImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isStoreEnter = ref(false);
 
-    const isEnter = ref(false);
+    // 商品登録データ
+    // TODO:  modelを作成して型をつける
+    const productData = reactive({
+      name: "",
+      price: null,
+      remark: "",
+      thumbnail_url: "",
+    });
+    // 商品画像データ
+    const productFiles = ref<File[] | null>([]);
+    const productImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isProductEnter = ref(false);
+    // 商品リストデータ
+    const productList = reactive([]);
 
-    function dragEnter() {
-      console.log("dragEnter");
-      isEnter.value = true;
+    // 画像アップロード関連
+    function onFileSelected(
+      event: HTMLElementEvent<HTMLInputElement>,
+      itemType: string
+    ) {
+      if (itemType === "store") {
+        if (event.target.files !== null) {
+          storeFiles.value?.push(event.target.files[0]);
+          storeImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+        }
+      }
+      if (itemType === "product") {
+        if (event.target.files !== null) {
+          productFiles.value?.push(event.target.files[0]);
+          productImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+        }
+      }
     }
 
-    function dragLeave() {
-      console.log("dragLeave");
-      isEnter.value = false;
+    function dragEnter(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = true)
+        : (isProductEnter.value = true);
     }
 
-    function dropFile(event: DragEvent | any) {
+    function dragLeave(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = false)
+        : (isProductEnter.value = false);
+    }
+
+    function dropFile(event: DragEvent | any, itemType: string) {
       event.preventDefault();
-      files.value?.push(...event.dataTransfer.files);
-      imageData.push({
-        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-        name: event.dataTransfer.files[0].name,
-      });
-      isEnter.value = false;
+      if (itemType === "store") {
+        storeFiles.value?.push(...event.dataTransfer.files);
+        storeImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isStoreEnter.value = false;
+      }
+      if (itemType === "product") {
+        productFiles.value?.push(...event.dataTransfer.files);
+        productImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isProductEnter.value = false;
+      }
     }
 
-    function deleteFile(index: number) {
-      files.value?.splice(index, 1);
-      imageData.splice(index, 1);
+    function deleteFile(index: number, itemType: string) {
+      if (itemType === "store") {
+        storeFiles.value?.splice(index, 1);
+        storeImageData.splice(index, 1);
+      } else if (itemType === "product") {
+        productFiles.value?.splice(index, 1);
+        productImageData.splice(index, 1);
+      }
     }
 
+    // 出店情報・商品情報の保存
     function save() {
+      // formDataの作成
       const formData = new FormData();
-      files.value?.forEach((file) => {
+      // 出店画像のappend
+      storeFiles.value?.forEach((file) => {
         formData.append("file", file);
       });
       formData.append("storeName", storeData.name);
@@ -570,36 +835,45 @@ export default defineComponent({
       formData.append("storeOpeningHours", storeData.opening_hours);
       formData.append("storeClosingTime", storeData.closing_time);
       formData.append("storeRemark", storeData.remark);
-
+      // axiosの設定
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
       };
-
       axios
         .post("api/stores", formData, config)
         .then((res) => {
-          alert("登録が完了しました。");
+          // 店舗登録が成功したら商品を登録する
+          if (productList.length) {
+            const productFormData = new FormData();
+            // 商品画像のappend
+            productFiles.value?.forEach((file) => {
+              productFormData.append("file", file);
+            });
+
+            const jsonArray = productList.map((el) => JSON.stringify(el));
+
+            jsonArray.forEach((value) => {
+              console.log(value);
+              productFormData.append("product[]", value as any);
+            });
+
+            axios
+              .post("api/products", productFormData, config)
+              .then((res) => {
+                console.log(res);
+                alert("出店・商品情報の登録が完了しました。");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            alert("出店情報の登録が完了しました。");
+          }
         })
         .catch((err) => {
           console.log(err);
         });
-    }
-
-    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
-      if (event.target.files !== null) {
-        files.value?.push(event.target.files[0]);
-        imageData?.push({
-          url: URL.createObjectURL(event.target.files[0]),
-          name: event.target.files[0].name,
-        });
-      }
-      // files.value?.push(...event.dataTransfer.files);
-      // imageData.push({
-      //   url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-      //   name: event.dataTransfer.files[0].name,
-      // });
     }
 
     return {
@@ -608,9 +882,13 @@ export default defineComponent({
       prefectureOptions,
       // データ
       storeData,
-      files,
-      imageData,
-      isEnter,
+      productData,
+      storeFiles,
+      productFiles,
+      storeImageData,
+      productImageData,
+      isStoreEnter,
+      isProductEnter,
       // 関数
       save,
       onFileSelected,

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Request;
 
-class StoreController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return Store::all();
+        //
     }
 
     /**
@@ -35,30 +36,27 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        $form = $request->all();
-        $store = new Store;
-        // 画像ファイルの有無の確認
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $file_name = $file->getClientOriginalName();
-            $request->file('file')->storeAs('public/', $file_name);
-            $store->thumbnail_url = '/storage/' . $file_name;
-        }
-        $store->name = $form['storeName'];
-        $store->category = $form['storeCategory'];
-        $store->postalcode1 = $form['storePostal1'];
-        $store->postalcode2 = $form['storePostal2'];
-        $store->prefecture = $form['storePrefecture'];
-        $store->city = $form['storeCity'];
-        $store->town = $form['storeTown'];
-        $store->addressRemark = $form['storeAddressRemark'];
-        $store->period1 = $form['storePeriod1'];
-        $store->period2 = $form['storePeriod2'];
-        $store->opening_hours = $form['storeOpeningHours'];
-        $store->closing_time = $form['storeClosingTime'];
-        $store->remark = $form['storeRemark'];
 
-        $store->save();
+        $form = $request->all();
+        $productList = $form['product'];
+
+        foreach ($productList as $item) {
+            $normalizeItem = json_decode($item);
+            $product = new Product();
+            $store_id = Store::latest()->get()->first()->id;
+            $product->store_id = $store_id;
+            $product->name = $normalizeItem->name;
+            $product->price = $normalizeItem->price;
+            // 画像ファイルの有無の確認
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $file_name = $file->getClientOriginalName();
+                $request->file('file')->storeAs('public/', $file_name);
+                $product->thumbnail_url = '/storage/' . $file_name;
+            }
+            $product->remark = $normalizeItem->remark;
+            $product->save();
+        }
     }
 
     /**
@@ -69,8 +67,7 @@ class StoreController extends Controller
      */
     public function show($id)
     {
-        $store = Store::find($id);
-        return $store;
+        //
     }
 
     /**
