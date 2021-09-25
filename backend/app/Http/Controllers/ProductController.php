@@ -38,7 +38,9 @@ class ProductController extends Controller
     {
 
         $form = $request->all();
+
         $productList = $form['product']; // product[]の形で送られてくる
+
 
         foreach ($productList as $item) {
             $normalizeItem = json_decode($item);

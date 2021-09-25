@@ -779,8 +779,6 @@ export default defineComponent({
       event: HTMLElementEvent<HTMLInputElement>,
       itemType: string
     ) {
-      console.log(itemType);
-
       if (itemType === "store") {
         if (event.target.files !== null) {
           storeFiles.value?.push(event.target.files[0]);
@@ -797,9 +795,11 @@ export default defineComponent({
             url: URL.createObjectURL(event.target.files[0]),
             name: event.target.files[0].name,
           });
+
           productData.thumbnail_url = URL.createObjectURL(
             event.target.files[0]
           );
+
         }
       }
     }
