@@ -15,8 +15,8 @@ class Store extends Model
     {
         return $this->hasMany(\App\Models\Review::class, 'review_id', 'id');
     }
-    public function products()
-    {
-        return $this->hasMany(\App\Models\Product::class, 'product_id', 'id');
-    }
+    // public function products()
+    // {
+    //     return $this->hasMany(\App\Models\Product::class, 'product_id', 'id');
+    // }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -34,7 +36,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $form = $request->all();
+        $productList = $form['productList'];
+        foreach ($productList as $item) {
+            $product = new Product();
+            $store_id = Store::latest()->get()->first()->id;
+            $product->store_id = $store_id;
+            $product->name = $item['name'];
+            $product->price = $item['price'];
+            $product->thumbnail_url = $item['thumbnail_url'];
+            $product->remark = $item['remark'];
+            $product->save();
+        }
     }
 
     /**

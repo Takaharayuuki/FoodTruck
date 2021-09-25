@@ -392,7 +392,7 @@
                       "
                     >
                       <div
-                        v-if="files.length === 0"
+                        v-if="storeFiles.length === 0"
                         class="space-y-1 text-center"
                       >
                         <svg
@@ -480,9 +480,9 @@
                     >
                     <input
                       type="text"
-                      name="storeName"
-                      id="storeName"
-                      v-model="storeData.name"
+                      name="productName"
+                      id="productName"
+                      v-model="productData.name"
                       class="
                         px-2
                         h-10
@@ -506,16 +506,16 @@
                     >
                     <input
                       type="text"
-                      name="storeName"
-                      id="storeName"
-                      v-model="storeData.name"
+                      name="productPrice"
+                      id="productPrice"
+                      v-model.number="productData.price"
                       class="
+                        text-right
                         px-2
                         h-10
                         mt-1
+                        inline-block
                         focus:ring-indigo-500 focus:border-indigo-500
-                        block
-                        w-full
                         shadow-sm
                         border border-gr
                         sm:text-sm
@@ -523,6 +523,7 @@
                         rounded-md
                       "
                     />
+                    <span style="padding-left: 5px">円</span>
                   </div>
                   <div class="col-span-12">
                     <label
@@ -532,9 +533,9 @@
                     >
                     <input
                       type="text"
-                      name="remark"
-                      id="remark"
-                      v-model="storeData.remark"
+                      name="productRemark"
+                      id="productRemark"
+                      v-model="productData.remark"
                       class="
                         px-2
                         h-10
@@ -572,7 +573,7 @@
                       "
                     >
                       <div
-                        v-if="files.length === 0"
+                        v-if="storeFiles.length === 0"
                         class="space-y-1 text-center"
                       >
                         <svg
@@ -701,7 +702,8 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 export default defineComponent({
   name: "StoreRegister",
   setup() {
-    // 出店登録フォームデータ
+    // 出店登録データ
+    // TODO:  modelを作成して型をつける
     const storeData = reactive({
       name: "",
       category: "",
@@ -718,10 +720,34 @@ export default defineComponent({
       remark: "",
     });
     // 出店画像データ
-    const files = ref<File[] | null>([]);
+    const storeFiles = ref<File[] | null>([]);
     const imageData: any = reactive([]);
 
+    // 商品登録データ
+    // TODO:  modelを作成して型をつける
+    const productData = reactive({
+      name: "",
+      price: 0,
+      remark: "",
+      thumbnail_url: "",
+    });
+    // 商品画像データ
+    const productFiles = ref<File[] | null>([]);
+    // 商品リストデータ
+    const productList = reactive<[{ [key: string]: string | number }]>([{}]);
+
+    // 画像アップロード関連
     const isEnter = ref(false);
+
+    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
+      if (event.target.files !== null) {
+        storeFiles.value?.push(event.target.files[0]);
+        imageData?.push({
+          url: URL.createObjectURL(event.target.files[0]),
+          name: event.target.files[0].name,
+        });
+      }
+    }
 
     function dragEnter() {
       console.log("dragEnter");
@@ -735,7 +761,7 @@ export default defineComponent({
 
     function dropFile(event: DragEvent | any) {
       event.preventDefault();
-      files.value?.push(...event.dataTransfer.files);
+      storeFiles.value?.push(...event.dataTransfer.files);
       imageData.push({
         url: URL.createObjectURL(event.dataTransfer.files[0] as any),
         name: event.dataTransfer.files[0].name,
@@ -744,13 +770,16 @@ export default defineComponent({
     }
 
     function deleteFile(index: number) {
-      files.value?.splice(index, 1);
+      storeFiles.value?.splice(index, 1);
       imageData.splice(index, 1);
     }
 
+    // 出店情報・商品情報の保存
     function save() {
+      // formDataの作成
       const formData = new FormData();
-      files.value?.forEach((file) => {
+      // 出店画像のappend
+      storeFiles.value?.forEach((file) => {
         formData.append("file", file);
       });
       formData.append("storeName", storeData.name);
@@ -766,14 +795,12 @@ export default defineComponent({
       formData.append("storeOpeningHours", storeData.opening_hours);
       formData.append("storeClosingTime", storeData.closing_time);
       formData.append("storeRemark", storeData.remark);
-      // formData.append("productList", productList);
-
+      // axiosの設定
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
       };
-
       axios
         .post("api/stores", formData, config)
         .then((res) => {
@@ -793,38 +820,14 @@ export default defineComponent({
         });
     }
 
-    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
-      if (event.target.files !== null) {
-        files.value?.push(event.target.files[0]);
-        imageData?.push({
-          url: URL.createObjectURL(event.target.files[0]),
-          name: event.target.files[0].name,
-        });
-      }
-      // files.value?.push(...event.dataTransfer.files);
-      // imageData.push({
-      //   url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-      //   name: event.dataTransfer.files[0].name,
-      // });
-    }
-
-    // 商品登録
-    const productList = reactive<[{ [key: string]: string }]>([
-      {
-        name: "商品名",
-        price: "100円",
-        remark: "説明",
-        image: "img.png",
-      },
-    ]);
-
     return {
       // オプション
       categoryList,
       prefectureOptions,
       // データ
       storeData,
-      files,
+      productData,
+      storeFiles,
       imageData,
       isEnter,
       // 関数
