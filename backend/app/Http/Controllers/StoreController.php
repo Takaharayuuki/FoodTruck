@@ -58,8 +58,6 @@ class StoreController extends Controller
         $store->closing_time = $form['storeClosingTime'];
         $store->remark = $form['storeRemark'];
 
-        dd($store);
-
         $store->save();
     }
 

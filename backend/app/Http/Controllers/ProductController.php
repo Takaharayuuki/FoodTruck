@@ -38,15 +38,23 @@ class ProductController extends Controller
     {
 
         $form = $request->all();
-        $productList = $form['productList'];
+        $productList = $form['product']; // product[]の形で送られてくる
+
         foreach ($productList as $item) {
+            $normalizeItem = json_decode($item);
             $product = new Product();
             $store_id = Store::latest()->get()->first()->id;
             $product->store_id = $store_id;
-            $product->name = $item['name'];
-            $product->price = $item['price'];
-            $product->thumbnail_url = $item['thumbnail_url'];
-            $product->remark = $item['remark'];
+            $product->name = $normalizeItem->name;
+            $product->price = $normalizeItem->price;
+            // 画像ファイルの有無の確認
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $file_name = $file->getClientOriginalName();
+                $request->file('file')->storeAs('public/', $file_name);
+                $product->thumbnail_url = '/storage/' . $file_name;
+            }
+            $product->remark = $normalizeItem->remark;
             $product->save();
         }
     }

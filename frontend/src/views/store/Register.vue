@@ -375,11 +375,11 @@
                       店舗画像
                     </label>
                     <div
-                      @dragenter="dragEnter"
-                      @dragleave="dragLeave"
+                      @dragenter="dragEnter('store')"
+                      @dragleave="dragLeave('store')"
                       @dragover.prevent
-                      @drop.prevent="dropFile"
-                      :class="{ enter: isEnter }"
+                      @drop.prevent="dropFile($event, 'store')"
+                      :class="{ enter: isStoreEnter }"
                       class="
                         mt-1
                         flex
@@ -411,7 +411,7 @@
                         </svg>
                         <div class="flex text-sm text-gray-600">
                           <label
-                            for="file-upload"
+                            for="storeFile-upload"
                             class="
                               relative
                               cursor-pointer
@@ -428,11 +428,11 @@
                           >
                             <span>画像をアップロードする</span>
                             <input
-                              id="file-upload"
-                              name="file-upload"
+                              id="storeFile-upload"
+                              name="storeFile-upload"
                               type="file"
                               class="sr-only"
-                              @change="onFileSelected"
+                              @change="onFileSelected($event, 'store')"
                             />
                           </label>
                           <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
@@ -440,15 +440,17 @@
                         <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="(data, index) in imageData" :key="index">
+                        <div
+                          v-for="(data, index) in storeImageData"
+                          :key="index"
+                        >
                           <div class="relative">
                             <span
-                              @click="deleteFile(index)"
+                              @click="deleteFile(index, 'store')"
                               class="deletemark cursor-pointer"
                               >x</span
                             >
                             <img :src="data.url" alt="" width="70" />
-                            <p>{{ data.name }}</p>
                           </div>
                         </div>
                       </div>
@@ -458,8 +460,13 @@
                 </div>
                 <!-- 商品登録 -->
                 <div class="col-span-12">
-                  <div class="text-lg font-semibold my-5">商品登録</div>
+                  <div class="text-lg font-semibold mt-5 mb-3">商品登録</div>
                 </div>
+                <p class="text-sm mb-1">
+                  商品情報を入力し、「商品を登録する」ボタンを押下してください。<br />
+                  複数商品の登録も可能です。
+                </p>
+                <!-- TODO: コンポーネント化する -->
                 <div
                   class="
                     grid grid-cols-12
@@ -556,11 +563,11 @@
                       商品画像
                     </label>
                     <div
-                      @dragenter="dragEnter"
-                      @dragleave="dragLeave"
+                      @dragenter="dragEnter('product')"
+                      @dragleave="dragLeave('product')"
                       @dragover.prevent
-                      @drop.prevent="dropFile"
-                      :class="{ enter: isEnter }"
+                      @drop.prevent="dropFile($event, 'product')"
+                      :class="{ enter: isProductEnter }"
                       class="
                         mt-1
                         flex
@@ -573,7 +580,7 @@
                       "
                     >
                       <div
-                        v-if="storeFiles.length === 0"
+                        v-if="productImageData.length === 0"
                         class="space-y-1 text-center"
                       >
                         <svg
@@ -592,7 +599,7 @@
                         </svg>
                         <div class="flex text-sm text-gray-600">
                           <label
-                            for="file-upload"
+                            for="productFile-upload"
                             class="
                               relative
                               cursor-pointer
@@ -609,11 +616,11 @@
                           >
                             <span>画像をアップロードする</span>
                             <input
-                              id="file-upload"
-                              name="file-upload"
+                              id="productFile-upload"
+                              name="productFile-upload"
                               type="file"
                               class="sr-only"
-                              @change="onFileSelected"
+                              @change="onFileSelected($event, 'product')"
                             />
                           </label>
                           <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
@@ -621,15 +628,17 @@
                         <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="(data, index) in imageData" :key="index">
+                        <div
+                          v-for="(data, index) in productImageData"
+                          :key="index"
+                        >
                           <div class="relative">
                             <span
-                              @click="deleteFile(index)"
+                              @click="deleteFile(index, 'product')"
                               class="deletemark cursor-pointer"
                               >x</span
                             >
                             <img :src="data.url" alt="" width="70" />
-                            <p>{{ data.name }}</p>
                           </div>
                         </div>
                       </div>
@@ -637,6 +646,7 @@
                   </div>
                   <div class="col-span-12 text-right cursor-pointer">
                     <span
+                      @click="addProduct"
                       class="
                         bg-indigo-600
                         hover:bg-indigo-700
@@ -650,13 +660,35 @@
                         text-white text-sm
                         py-2
                         px-4
+                        mr-4
                       "
                     >
-                      ＋商品を追加する
+                      ＋商品を登録する
                     </span>
                   </div>
                 </div>
                 <!-- ./商品登録 -->
+                <span class="inline-block font-semibold text-gray-700 mt-1"
+                  >仮登録済み商品</span
+                >
+                <div class="flex">
+                  <div
+                    class="mr-4"
+                    v-for="(item, index) in productList"
+                    :key="item.id"
+                  >
+                    <div class="relative">
+                      <p>{{ item.name + "\n" + item.price + "円" }}</p>
+                      <span
+                        @click="deleteProductItem(index)"
+                        class="deletemark cursor-pointer"
+                        >x</span
+                      >
+                      <img :src="item.thumbnail_url" alt="" width="70" />
+                    </div>
+                  </div>
+                </div>
+                <!-- ./仮登録済み商品 -->
               </div>
               <div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
                 <button
@@ -687,6 +719,7 @@
         </div>
       </div>
     </div>
+    <pre>{{ productList }}</pre>
   </div>
 </template>
 
@@ -721,60 +754,127 @@ export default defineComponent({
     });
     // 出店画像データ
     const storeFiles = ref<File[] | null>([]);
-    const imageData: any = reactive([]);
+    const storeImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isStoreEnter = ref(false);
 
     // 商品登録データ
     // TODO:  modelを作成して型をつける
     const productData = reactive({
       name: "",
-      price: 0,
+      price: null,
       remark: "",
       thumbnail_url: "",
     });
     // 商品画像データ
     const productFiles = ref<File[] | null>([]);
+    const productImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isProductEnter = ref(false);
     // 商品リストデータ
-    const productList = reactive<[{ [key: string]: string | number }]>([{}]);
+    const productList = reactive([]);
 
     // 画像アップロード関連
-    const isEnter = ref(false);
+    function onFileSelected(
+      event: HTMLElementEvent<HTMLInputElement>,
+      itemType: string
+    ) {
+      console.log(itemType);
 
-    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
-      if (event.target.files !== null) {
-        storeFiles.value?.push(event.target.files[0]);
-        imageData?.push({
-          url: URL.createObjectURL(event.target.files[0]),
-          name: event.target.files[0].name,
-        });
+      if (itemType === "store") {
+        if (event.target.files !== null) {
+          storeFiles.value?.push(event.target.files[0]);
+          storeImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+        }
+      }
+      if (itemType === "product") {
+        if (event.target.files !== null) {
+          productFiles.value?.push(event.target.files[0]);
+          productImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+          productData.thumbnail_url = URL.createObjectURL(
+            event.target.files[0]
+          );
+        }
       }
     }
 
-    function dragEnter() {
-      console.log("dragEnter");
-      isEnter.value = true;
+    function dragEnter(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = true)
+        : (isProductEnter.value = true);
     }
 
-    function dragLeave() {
-      console.log("dragLeave");
-      isEnter.value = false;
+    function dragLeave(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = false)
+        : (isProductEnter.value = false);
     }
 
-    function dropFile(event: DragEvent | any) {
+    function dropFile(event: DragEvent | any, itemType: string) {
       event.preventDefault();
-      storeFiles.value?.push(...event.dataTransfer.files);
-      imageData.push({
-        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-        name: event.dataTransfer.files[0].name,
-      });
-      isEnter.value = false;
+      if (itemType === "store") {
+        storeFiles.value?.push(...event.dataTransfer.files);
+        storeImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isStoreEnter.value = false;
+      }
+      if (itemType === "product") {
+        productFiles.value?.push(...event.dataTransfer.files);
+        productImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isProductEnter.value = false;
+      }
     }
 
-    function deleteFile(index: number) {
-      storeFiles.value?.splice(index, 1);
-      imageData.splice(index, 1);
+    function deleteFile(index: number, itemType: string) {
+      if (itemType === "store") {
+        storeFiles.value?.splice(index, 1);
+        storeImageData.splice(index, 1);
+      } else if (itemType === "product") {
+        productFiles.value?.splice(index, 1);
+        productImageData.splice(index, 1);
+      }
     }
 
-    // 出店情報・商品情報の保存
+    function addProduct() {
+      if (productData.name === "" || productData.price === null) {
+        return alert("商品名、価格は必須項目です。");
+      }
+      const item = {
+        name: "",
+        price: null,
+        remark: "",
+        thumbnail_url: "",
+      };
+      item.name = productData.name;
+      item.price = productData.price;
+      item.remark = productData.remark;
+      item.thumbnail_url = productData.thumbnail_url;
+      productList.push(item as never);
+      productData.name = "";
+      productData.price = null;
+      productData.remark = "";
+      productData.thumbnail_url = "";
+      productImageData.length = 0;
+    }
+
+    function deleteProductItem(index: number) {
+      productList.splice(index, 1);
+    }
+
+    // 出店情報の保存
     function save() {
       // formDataの作成
       const formData = new FormData();
@@ -804,16 +904,41 @@ export default defineComponent({
       axios
         .post("api/stores", formData, config)
         .then((res) => {
-          // 店舗登録が成功したら商品を登録する
-          axios
-            .post("api/products", { productList: productList })
-            .then((res) => {
-              console.log(res);
-              alert("登録が全て完了しました。");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          if (productList.length) {
+            // 店舗登録が成功したら商品を登録する
+            return saveProduct();
+          }
+          return alert("出店情報の登録が完了しました。");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    // 商品情報の保存
+    function saveProduct() {
+      const productFormData = new FormData();
+      // 商品画像のappend
+      productFiles.value?.forEach((file) => {
+        productFormData.append("file", file);
+      });
+      // そのまま送ると[Object object]になるのでJSON文字列に変換
+      const jsonArray = productList.map((el) => JSON.stringify(el));
+      jsonArray.forEach((value) => {
+        //複数送りたいときは配列にする "product[]"
+        productFormData.append("product[]", value as any);
+      });
+      // axiosの設定
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      axios
+        .post("api/products", productFormData, config)
+        .then((res) => {
+          console.log(res);
+          alert("出店・商品情報の登録が完了しました。");
         })
         .catch((err) => {
           console.log(err);
@@ -828,15 +953,22 @@ export default defineComponent({
       storeData,
       productData,
       storeFiles,
-      imageData,
-      isEnter,
+      productFiles,
+      storeImageData,
+      productImageData,
+      isStoreEnter,
+      isProductEnter,
+      productList,
       // 関数
       save,
+      saveProduct,
       onFileSelected,
       dragEnter,
       dragLeave,
       dropFile,
       deleteFile,
+      addProduct,
+      deleteProductItem,
     };
   },
 });
