@@ -21,15 +21,19 @@
           >
             メニュー表
           </h4>
-          <div class="border-t border-b py-4 flex">
+          <div
+            v-for="item in productList"
+            :key="item.id"
+            class="border-t border-b py-4 flex"
+          >
             <div class="w-4/6 px-6">
               <p class="text-gray-900 font-semibold text-xl mb-2">
-                激辛ケバブサンド
+                {{ item.name }}
               </p>
               <p class="text-sm text-gray-400 mb-2">
-                肉厚なウェンディーズオリジナルのビーフパティにアメリカの代表的なチーズ「ペッパージャックチーズ」と「チェダーチーズソース」、2種類のチーズを組み合わせ旨味をぎゅっと閉じ込めた濃厚な味わいのプリクックドベーコンを挟みました。
+                {{ item.remark }}
               </p>
-              <p class="text-green-500">￥840</p>
+              <p class="text-green-500">￥{{ item.price }}</p>
             </div>
             <div class="w-2/6">
               <img
@@ -43,7 +47,7 @@
                   sm:mb-0
                   mb-4
                 "
-                src="https://dummyimage.com/201x201"
+                :src="item.thumbnail_url"
               />
             </div>
           </div>
@@ -78,13 +82,15 @@ export default defineComponent({
   },
   setup(props) {
     const storeData = reactive([]);
+    const productList = reactive([]);
 
     onMounted(() => {
       // idの出店情報を取得
-      getData();
+      fetchStoreData();
+      fetchProductData();
     });
 
-    function getData() {
+    function fetchStoreData() {
       axios
         .get(`api/stores/${props.id}`, { withCredentials: true })
         .then((response) => {
@@ -95,9 +101,26 @@ export default defineComponent({
         });
     }
 
+    function fetchProductData() {
+      axios
+        .get(`api/products/${props.id}`, { withCredentials: true })
+        .then((response) => {
+          console.log(response);
+          Object.assign(productList, response.data);
+          console.log(productList);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return {
-      getData,
+      // データ
       storeData,
+      productList,
+      // 関数
+      fetchStoreData,
+      fetchProductData,
     };
   },
 });
