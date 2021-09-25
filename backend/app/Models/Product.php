@@ -11,8 +11,8 @@ class Product extends Model
 
     protected $fillable = ['name', 'price', 'thumbnail_url', 'remark', 'store_id'];
 
-    // public function store()
-    // {
-    //     return $this->belongsTo(\App\Models\Store::class, 'store_id', 'id');
-    // }
+    public function store()
+    {
+        return $this->belongsTo(\App\Models\Store::class, 'store_id', 'id');
+    }
 }

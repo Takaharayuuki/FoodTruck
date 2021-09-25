@@ -375,11 +375,11 @@
                       店舗画像
                     </label>
                     <div
-                      @dragenter="dragEnter"
-                      @dragleave="dragLeave"
+                      @dragenter="dragEnter('store')"
+                      @dragleave="dragLeave('store')"
                       @dragover.prevent
-                      @drop.prevent="dropFile"
-                      :class="{ enter: isEnter }"
+                      @drop.prevent="dropFile($event, 'store')"
+                      :class="{ enter: isStoreEnter }"
                       class="
                         mt-1
                         flex
@@ -432,7 +432,7 @@
                               name="file-upload"
                               type="file"
                               class="sr-only"
-                              @change="onFileSelected"
+                              @change="onFileSelected($event, 'store')"
                             />
                           </label>
                           <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
@@ -440,15 +440,17 @@
                         <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="(data, index) in imageData" :key="index">
+                        <div
+                          v-for="(data, index) in storeImageData"
+                          :key="index"
+                        >
                           <div class="relative">
                             <span
-                              @click="deleteFile(index)"
+                              @click="deleteFile(index, 'store')"
                               class="deletemark cursor-pointer"
                               >x</span
                             >
                             <img :src="data.url" alt="" width="70" />
-                            <p>{{ data.name }}</p>
                           </div>
                         </div>
                       </div>
@@ -556,11 +558,11 @@
                       商品画像
                     </label>
                     <div
-                      @dragenter="dragEnter"
-                      @dragleave="dragLeave"
+                      @dragenter="dragEnter('product')"
+                      @dragleave="dragLeave('product')"
                       @dragover.prevent
-                      @drop.prevent="dropFile"
-                      :class="{ enter: isEnter }"
+                      @drop.prevent="dropFile($event, 'product')"
+                      :class="{ enter: isProductEnter }"
                       class="
                         mt-1
                         flex
@@ -573,7 +575,7 @@
                       "
                     >
                       <div
-                        v-if="storeFiles.length === 0"
+                        v-if="productFiles.length === 0"
                         class="space-y-1 text-center"
                       >
                         <svg
@@ -613,7 +615,7 @@
                               name="file-upload"
                               type="file"
                               class="sr-only"
-                              @change="onFileSelected"
+                              @change="onFileSelected($event, 'product')"
                             />
                           </label>
                           <!-- <p class="pl-1">ドラッグ&ドロップ</p> -->
@@ -621,15 +623,17 @@
                         <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
                       </div>
                       <div class="flex" v-else>
-                        <div v-for="(data, index) in imageData" :key="index">
+                        <div
+                          v-for="(data, index) in productImageData"
+                          :key="index"
+                        >
                           <div class="relative">
                             <span
-                              @click="deleteFile(index)"
+                              @click="deleteFile(index, 'product')"
                               class="deletemark cursor-pointer"
                               >x</span
                             >
                             <img :src="data.url" alt="" width="70" />
-                            <p>{{ data.name }}</p>
                           </div>
                         </div>
                       </div>
@@ -721,57 +725,93 @@ export default defineComponent({
     });
     // 出店画像データ
     const storeFiles = ref<File[] | null>([]);
-    const imageData: any = reactive([]);
+    const storeImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isStoreEnter = ref(false);
 
     // 商品登録データ
     // TODO:  modelを作成して型をつける
     const productData = reactive({
       name: "",
-      price: 0,
+      price: null,
       remark: "",
       thumbnail_url: "",
     });
     // 商品画像データ
     const productFiles = ref<File[] | null>([]);
+    const productImageData: any = reactive([]);
+    // ドラッグ&ドロップ フラグ
+    const isProductEnter = ref(false);
     // 商品リストデータ
-    const productList = reactive<[{ [key: string]: string | number }]>([{}]);
+    const productList = reactive([]);
 
     // 画像アップロード関連
-    const isEnter = ref(false);
-
-    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
-      if (event.target.files !== null) {
-        storeFiles.value?.push(event.target.files[0]);
-        imageData?.push({
-          url: URL.createObjectURL(event.target.files[0]),
-          name: event.target.files[0].name,
-        });
+    function onFileSelected(
+      event: HTMLElementEvent<HTMLInputElement>,
+      itemType: string
+    ) {
+      if (itemType === "store") {
+        if (event.target.files !== null) {
+          storeFiles.value?.push(event.target.files[0]);
+          storeImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+        }
+      }
+      if (itemType === "product") {
+        if (event.target.files !== null) {
+          productFiles.value?.push(event.target.files[0]);
+          productImageData?.push({
+            url: URL.createObjectURL(event.target.files[0]),
+            name: event.target.files[0].name,
+          });
+        }
       }
     }
 
-    function dragEnter() {
-      console.log("dragEnter");
-      isEnter.value = true;
+    function dragEnter(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = true)
+        : (isProductEnter.value = true);
     }
 
-    function dragLeave() {
-      console.log("dragLeave");
-      isEnter.value = false;
+    function dragLeave(itemType: string) {
+      itemType === "store"
+        ? (isStoreEnter.value = false)
+        : (isProductEnter.value = false);
     }
 
-    function dropFile(event: DragEvent | any) {
+    function dropFile(event: DragEvent | any, itemType: string) {
       event.preventDefault();
-      storeFiles.value?.push(...event.dataTransfer.files);
-      imageData.push({
-        url: URL.createObjectURL(event.dataTransfer.files[0] as any),
-        name: event.dataTransfer.files[0].name,
-      });
-      isEnter.value = false;
+      if (itemType === "store") {
+        storeFiles.value?.push(...event.dataTransfer.files);
+        storeImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isStoreEnter.value = false;
+      }
+      if (itemType === "product") {
+        productFiles.value?.push(...event.dataTransfer.files);
+        productImageData.push({
+          url: URL.createObjectURL(event.dataTransfer.files[0] as any),
+          name: event.dataTransfer.files[0].name,
+        });
+
+        isProductEnter.value = false;
+      }
     }
 
-    function deleteFile(index: number) {
-      storeFiles.value?.splice(index, 1);
-      imageData.splice(index, 1);
+    function deleteFile(index: number, itemType: string) {
+      if (itemType === "store") {
+        storeFiles.value?.splice(index, 1);
+        storeImageData.splice(index, 1);
+      } else if (itemType === "product") {
+        productFiles.value?.splice(index, 1);
+        productImageData.splice(index, 1);
+      }
     }
 
     // 出店情報・商品情報の保存
@@ -805,15 +845,31 @@ export default defineComponent({
         .post("api/stores", formData, config)
         .then((res) => {
           // 店舗登録が成功したら商品を登録する
-          axios
-            .post("api/products", { productList: productList })
-            .then((res) => {
-              console.log(res);
-              alert("登録が全て完了しました。");
-            })
-            .catch((err) => {
-              console.log(err);
+          if (productList.length) {
+            const productFormData = new FormData();
+            // 商品画像のappend
+            productFiles.value?.forEach((file) => {
+              productFormData.append("file", file);
             });
+
+            const jsonArray = productList.map((el) => JSON.stringify(el));
+
+            jsonArray.forEach((value) => {
+              console.log(value);
+              productFormData.append("product[]", value as any);
+            });
+
+            axios
+              .post("api/products", productFormData, config)
+              .then((res) => {
+                console.log(res);
+                alert("出店・商品情報の登録が完了しました。");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            alert("出店情報の登録が完了しました。");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -828,8 +884,11 @@ export default defineComponent({
       storeData,
       productData,
       storeFiles,
-      imageData,
-      isEnter,
+      productFiles,
+      storeImageData,
+      productImageData,
+      isStoreEnter,
+      isProductEnter,
       // 関数
       save,
       onFileSelected,
