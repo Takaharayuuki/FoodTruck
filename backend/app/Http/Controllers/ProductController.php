@@ -42,7 +42,7 @@ class ProductController extends Controller
         $productList = $form['product']; // product[]の形で送られてくる
 
 
-        foreach ($productList as $item) {
+        foreach ($productList as $index => $item) {
             $normalizeItem = json_decode($item);
             $product = new Product();
             $store_id = Store::latest()->get()->first()->id;
@@ -51,9 +51,9 @@ class ProductController extends Controller
             $product->price = $normalizeItem->price;
             // 画像ファイルの有無の確認
             if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                $file_name = $file->getClientOriginalName();
-                $request->file('file')->storeAs('public/', $file_name);
+                $fileList = $request->file('file');
+                $file_name = $fileList[$index]->getClientOriginalName();
+                $fileList[$index]->storeAs('public/', $file_name);
                 $product->thumbnail_url = '/storage/' . $file_name;
             }
             $product->remark = $normalizeItem->remark;
@@ -69,7 +69,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $products = Product::where('store_id', $id)->get();
+        return $products;
     }
 
     /**

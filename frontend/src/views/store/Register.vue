@@ -719,7 +719,6 @@
         </div>
       </div>
     </div>
-    <pre>{{ productList }}</pre>
   </div>
 </template>
 
@@ -727,6 +726,7 @@
 import { defineComponent, Events, reactive, ref } from "vue";
 import { categoryList, prefectureOptions } from "../../data";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
@@ -735,6 +735,7 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 export default defineComponent({
   name: "StoreRegister",
   setup() {
+    const router = useRouter();
     // 出店登録データ
     // TODO:  modelを作成して型をつける
     const storeData = reactive({
@@ -799,7 +800,6 @@ export default defineComponent({
           productData.thumbnail_url = URL.createObjectURL(
             event.target.files[0]
           );
-
         }
       }
     }
@@ -906,7 +906,8 @@ export default defineComponent({
             // 店舗登録が成功したら商品を登録する
             return saveProduct();
           }
-          return alert("出店情報の登録が完了しました。");
+          alert("出店情報の登録が完了しました。");
+          router.push("/");
         })
         .catch((err) => {
           console.log(err);
@@ -918,7 +919,7 @@ export default defineComponent({
       const productFormData = new FormData();
       // 商品画像のappend
       productFiles.value?.forEach((file) => {
-        productFormData.append("file", file);
+        productFormData.append("file[]", file);
       });
       // そのまま送ると[Object object]になるのでJSON文字列に変換
       const jsonArray = productList.map((el) => JSON.stringify(el));
@@ -937,6 +938,7 @@ export default defineComponent({
         .then((res) => {
           console.log(res);
           alert("出店・商品情報の登録が完了しました。");
+          router.push("/");
         })
         .catch((err) => {
           console.log(err);
