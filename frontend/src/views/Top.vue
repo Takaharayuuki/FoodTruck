@@ -1,56 +1,150 @@
 <template>
   <div>
-  <div class="pt-80 w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 text-white">
-    <h2 class="title-font sm:text-5xl  mb-4 font-medium">近くの移動販売車、出店、キッチンカーを探す</h2>
-  </div>
-  <!-- 検索バー TODO: コンポーネント化する -->
-  <div class="pt-1 w-full flex items-center justify-center">
-    <div class="flex items-center justify-center py-12 px-6 sm:px-6 lg:px-8 max-w-7xl w-full">
-      <div class="w-full mx-auto">
-        <div class="w-full bg-white shadow-md border rounded px-8 pt-6 pb-8 mb-4">
-          <div class="grid grid-cols-12">
-            <div class="col-span-10 flex mt-1 relative rounded-md shadow-sm">
-              <input type="text" name="price" class="h-12 border border-yellow-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm rounded-sm" placeholder="キーワード [例:ハンバーガー、店名、軽食]" />
-              <input type="text" name="price" class="h-12 border border-l-0 border-yellow-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm rounded-sm" placeholder="エリア・駅 [例:渋谷,池袋]" />
-            </div>
-            <div class="col-span-2">
-              <button type="button" @click="onSearch" class="w-full h-full text-center px-2 py-2 border border-transparent rounded-sm shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">近くのキッチンカーを探す</button>
+    <div class="pt-20 w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 text-white">
+      <h2 class="title-font sm:text-5xl mb-4 font-medium">
+        近くの移動販売車、出店、キッチンカーを探す
+      </h2>
+    </div>
+    <!-- 検索バー TODO: コンポーネント化する -->
+    <div class="pt-1 w-full flex items-center justify-center">
+      <div
+        class="
+          flex
+          items-center
+          justify-center
+          pt-12
+          px-6
+          sm:px-6
+          lg:px-8
+          max-w-7xl
+          w-full
+        "
+      >
+        <div class="w-full mx-auto">
+          <div
+            class="w-full bg-white shadow-md border rounded px-8 pt-6 pb-8 mb-4"
+          >
+            <div class="grid grid-cols-12">
+              <div class="col-span-10 flex mt-1 relative rounded-md shadow-sm">
+                <input
+                  type="text"
+                  name="price"
+                  class="
+                    h-12
+                    border border-yellow-700
+                    focus:ring-indigo-500 focus:border-indigo-500
+                    block
+                    w-full
+                    pl-7
+                    pr-12
+                    sm:text-sm
+                    rounded-sm
+                  "
+                  placeholder="キーワード [例:ハンバーガー、店名、軽食]"
+                />
+                <input
+                  type="text"
+                  name="price"
+                  class="
+                    h-12
+                    border border-l-0 border-yellow-700
+                    focus:ring-indigo-500 focus:border-indigo-500
+                    block
+                    w-full
+                    pl-7
+                    pr-12
+                    sm:text-sm
+                    rounded-sm
+                  "
+                  placeholder="エリア・駅 [例:渋谷,池袋]"
+                />
+              </div>
+              <div class="col-span-2">
+                <button
+                  type="button"
+                  @click="onSearch"
+                  class="
+                    w-full
+                    h-full
+                    text-center
+                    px-2
+                    py-2
+                    border border-transparent
+                    rounded-sm
+                    shadow-sm
+                    text-sm
+                    font-medium
+                    text-white
+                    bg-yellow-500
+                    hover:bg-yellow-600
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-offset-2
+                    focus:ring-yellow-500
+                  "
+                >
+                  近くのキッチンカーを探す
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- メインカテゴリ -->
-  <main class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-    <h2 class="text-2xl font-semibold">エリアから検索</h2>
+    <!-- メインカテゴリ -->
+    <main class="w-full mx-auto">
+      <!-- <h2 class="text-2xl font-semibold">エリアから検索</h2>
     <p></p>
     <h2 class="text-2xl font-semibold">ジャンルから検索</h2>
-    <p></p>
-  </main>
-</div>
+    <p></p> -->
+      <div ref="mapDiv" style="width: 100%; height: 80vh"></div>
+      Lattiude: {{ currPos.lat.toFixed(2) }},Longitude:{{
+        currPos.lng.toFixed(2)
+      }}
+    </main>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+/*eslint-disable no-undef */
+import { defineComponent, computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useGeolocation } from "../useGeolocation";
+import { Loader } from "@googlemaps/js-api-loader";
 
 export default defineComponent({
   name: "Top",
   setup() {
     const router = useRouter();
-
-    const searchWord = reactive('');
+    const { coords } = useGeolocation();
+    const currPos = computed(() => ({
+      lat: coords.value.latitude,
+      lng: coords.value.longitude,
+    }));
 
     function onSearch() {
       router.push("/store_index");
     }
-    console.log();
+
+    const loader = new Loader({
+      apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
+    });
+    const mapDiv: any = ref(null);
+    onMounted(async () => {
+      await loader.load();
+      new google.maps.Map(mapDiv.value, {
+        center: currPos.value,
+        zoom: 7,
+      });
+    });
+
     return {
       // データ
-      searchWord,
+      // searchWord,
       // 関数
       onSearch,
+      currPos,
+      mapDiv,
     };
   },
 });
