@@ -40,11 +40,15 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
+    const searchWord = reactive('');
+
     function onSearch() {
       router.push("/store_index");
     }
     console.log();
     return {
+      // データ
+      searchWord,
       // 関数
       onSearch,
     };
