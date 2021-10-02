@@ -16,7 +16,22 @@ class StoreController extends Controller
     {
         return Store::all();
     }
+    /**
+     * 検索結果を返すAPI
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $seachWord = $request->input('searchWord');
+        $seachArea = $request->input('searchArea');
 
+        $results = Store::where('prefecture', $seachArea)->orWhere('city', $seachArea)->get();
+
+
+        return $results;
+    }
     /**
      * Show the form for creating a new resource.
      *

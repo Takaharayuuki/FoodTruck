@@ -112,11 +112,16 @@ export default defineComponent({
 
     function getStoreData() {
       axios
-        .get("api/stores", { withCredentials: true })
+        .post("api/stores/search", {
+          searchWord: route.params.searchWord,
+          searchArea: route.params.searchArea,
+        })
         .then((res) => {
-          res.data.forEach((element: { [key: string]: string }) => {
-            storeData.push(element as never);
-          });
+          console.log(res);
+
+          // res.data.forEach((element: { [key: string]: string }) => {
+          //   storeData.push(element as never);
+          // });
         })
         .catch((err) => {
           console.log(err);
