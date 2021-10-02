@@ -9,7 +9,7 @@ class Store extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'business_hours', 'category', 'remark', 'period', 'thumbnail_url'];
+    protected $fillable = ['name', 'address', 'business_hours', 'category', 'remark', 'period', 'thumbnail_url', 'prefecture', 'city'];
 
     public function reviews()
     {

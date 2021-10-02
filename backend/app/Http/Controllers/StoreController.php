@@ -16,7 +16,28 @@ class StoreController extends Controller
     {
         return Store::all();
     }
+    /**
+     * 検索結果を返すAPI
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $storeQuery = Store::query();
+        $searchWord = $request->input('searchWord');
+        $searchArea = $request->input('searchArea');
+        if ($searchWord) {
+            $storeQuery->where('name', 'like', "%$searchWord%")->orWhere('remark', 'like', "%$searchWord%")->orWhere('category', 'like', "%$searchWord%")->orWhere('addressRemark', 'like', "%$searchWord%");
+        }
+        if ($searchArea) {
+            $storeQuery->where('prefecture', 'like', "%$searchArea%")->orWhere('city', 'like', "%$searchArea%");
+        }
 
+        $results =  $storeQuery->get();
+
+        return $results;
+    }
     /**
      * Show the form for creating a new resource.
      *

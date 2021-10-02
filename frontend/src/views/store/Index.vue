@@ -1,10 +1,14 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <h4
-      class="px-5 pt-24 ext-lg text-4xl text-gray-900 font-bold title-font mb-8"
-    >
-      検索結果
-    </h4>
+    <div class="flex items-baseline px-5 pt-24 mb-8">
+      <h4 class="text-4xl text-gray-900 font-bold title-font">検索結果</h4>
+      <p class="ml-4">
+        全<span class="mx-1 text-gray-900 text-lg font-bold">{{
+          storeData.length
+        }}</span
+        >件
+      </p>
+    </div>
     <section class="text-gray-600 body-font">
       <div class="container max-w-7xl px-5 pb-24 mx-auto">
         <div class="flex flex-wrap -m-4">
@@ -98,8 +102,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, reactive, onMounted, computed } from "vue";
 import axios from "axios";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "StoreIndex",
@@ -107,9 +112,12 @@ export default defineComponent({
   setup() {
     const storeData = reactive([]);
 
-    function getStoreData() {
+    function fetchStoreData() {
       axios
-        .get("api/stores", { withCredentials: true })
+        .post("api/stores/search", {
+          searchWord: localStorage.getItem("searchWord"),
+          searchArea: localStorage.getItem("searchArea"),
+        })
         .then((res) => {
           res.data.forEach((element: { [key: string]: string }) => {
             storeData.push(element as never);
@@ -121,7 +129,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      getStoreData();
+      fetchStoreData();
     });
 
     return {

@@ -32,5 +32,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // 出店関連
 Route::resource('stores', StoreController::class);
+Route::post('stores/search', [App\Http\Controllers\StoreController::class, 'search'])->name('stores.search');
 // 商品関連
 Route::resource('products', ProductController::class);
