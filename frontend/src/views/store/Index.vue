@@ -100,12 +100,15 @@
 <script lang="ts">
 import { defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "StoreIndex",
 
   setup() {
+    const route = useRoute();
     const storeData = reactive([]);
+    console.log(route.params);
 
     function getStoreData() {
       axios
