@@ -24,11 +24,17 @@ class StoreController extends Controller
      */
     public function search(Request $request)
     {
-        $seachWord = $request->input('searchWord');
-        $seachArea = $request->input('searchArea');
+        $storeQuery = Store::query();
+        $searchWord = $request->input('searchWord');
+        $searchArea = $request->input('searchArea');
+        if ($searchWord) {
+            $storeQuery->where('name', 'like', "%$searchWord%")->orWhere('remark', 'like', "%$searchWord%")->orWhere('category', 'like', "%$searchWord%")->orWhere('addressRemark', 'like', "%$searchWord%");
+        }
+        if ($searchArea) {
+            $storeQuery->where('prefecture', 'like', "%$searchArea%")->orWhere('city', 'like', "%$searchArea%");
+        }
 
-        $results = Store::where('prefecture', $seachArea)->orWhere('city', $seachArea)->get();
-
+        $results =  $storeQuery->get();
 
         return $results;
     }

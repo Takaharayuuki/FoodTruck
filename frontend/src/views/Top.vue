@@ -36,7 +36,7 @@
                     focus:ring-yellow-600 focus:border-b-yellow-600
                     block
                     w-full
-                    pl-2
+                    pl-3
                     pr-12
                     sm:text-sm
                     rounded-sm
@@ -53,7 +53,7 @@
                     focus:ring-yellow-600 focus:border-b-yellow-600
                     block
                     w-full
-                    pl-2
+                    pl-3
                     pr-12
                     sm:text-sm
                     rounded-sm
@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -117,9 +117,22 @@ export default defineComponent({
     function onSearch() {
       router.push({
         name: "StoreIndex",
-        params: { searchArea: searchArea.value, searchWord: searchWord.value },
       });
     }
+
+    watch(searchArea, () => {
+      localStorage.setItem("searchArea", searchArea.value);
+    });
+
+    watch(searchWord, () => {
+      localStorage.setItem("searchWord", searchWord.value);
+    });
+
+    onMounted(() => {
+      localStorage.removeItem("searchArea"),
+        localStorage.removeItem("searchWord");
+    });
+
     return {
       //データ
       searchArea,
