@@ -68,6 +68,19 @@
           >
             出店登録
           </router-link>
+          <router-link
+            v-if="isLoggedIn && loginData.userType === 'customer'"
+            to="/mypage"
+            class="
+              text-white
+              whitespace-nowrap
+              text-base
+              font-medium
+              hover:text-gray-900
+            "
+          >
+            マイページ
+          </router-link>
           <template v-if="!isLoggedIn">
             <router-link
               to="/login"
