@@ -55,6 +55,13 @@ const routes: Array<RouteRecordRaw> = [
         props: true,
         component: () => import('../views/store/Detail.vue'),
         meta: { title: '出店詳細ページ', desc: '説明' }
+      },
+      {
+        path: "/mypage",
+        name: "Mypage",
+        props: true,
+        component: () => import('../views/Mypage.vue'),
+        meta: { title: 'ユーザマイページ', desc: '説明' }
       }
     ]
   },
