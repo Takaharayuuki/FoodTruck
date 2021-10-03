@@ -27,7 +27,7 @@
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
       </div>
-      <p class="font-bold text-xl mt-2">テスト太郎</p>
+      <p class="font-bold text-xl mt-2">{{ loginData.userName }}</p>
     </div>
     <!-- ./ユーザ情報  -->
     <div class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto">
@@ -120,13 +120,23 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, inject } from "vue";
 
 export default defineComponent({
   name: "Mypage",
   setup() {
-    return {};
+    /* ログインの有無 */
+    const isLoggedIn: any = inject("isLoggedIn");
+    // ログインしたユーザの情報
+    const loginData: any = inject("loginData");
+
+    return {
+      // データ
+      isLoggedIn,
+      loginData,
+      // 関数
+    };
   },
 });
 </script>
