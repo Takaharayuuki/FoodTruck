@@ -30,9 +30,7 @@
               <p class="text-gray-900 font-semibold text-xl mb-2">
                 {{ item.name }}
               </p>
-              <p class="text-sm text-gray-400 mb-2">
-                {{ item.remark }}
-              </p>
+              <p class="text-sm text-gray-400 mb-2">{{ item.remark }}</p>
               <p class="text-green-500">￥{{ item.price }}</p>
             </div>
             <div class="w-2/6">
@@ -66,6 +64,39 @@
           <p class="text-gray-900 font-semibold title-font mb-2">営業時間</p>
           <p>{{ storeData.opening_hours + "〜" + storeData.closing_time }}</p>
         </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 pt-20">
+        <div class="col-span-2">
+          <h4
+            class="
+              w-full
+              text-lg
+              sm:text-3xl
+              text-gray-900
+              font-bold
+              title-font
+              mb-4
+            "
+          >
+            クチコミ
+          </h4>
+        </div>
+        <!-- クチコミ -->
+        <div class="col-span-2 border-t border-b py-5 px-4">
+          <div class="flex gap-4">
+            <div style="width: 20%">
+              <p>ユーザ名</p>
+              <p>評価：★★★☆☆</p>
+            </div>
+            <div style="width: 70%">
+              <p class="text-lg font-bold pb-3">ランチでは十分なボリューム</p>
+              <p>
+                本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミー
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- ./クチコミ -->
       </div>
     </div>
   </div>
