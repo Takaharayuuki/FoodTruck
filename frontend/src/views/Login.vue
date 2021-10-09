@@ -159,6 +159,7 @@ export default defineComponent({
       axios
         .get("api/user", { withCredentials: true })
         .then((response) => {
+          loginData.userId = response.data.id;
           loginData.userEmail = response.data.email;
           loginData.userName = response.data.name;
           loginData.userType = response.data.userType;

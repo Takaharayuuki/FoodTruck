@@ -22,6 +22,7 @@ export default defineComponent({
 
     // ログインしたユーザの情報
     const loginData = reactive<{ [key: string]: string }>({
+      userId: "",
       userName: "",
       userEmail: "",
       password: "",

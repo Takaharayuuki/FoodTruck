@@ -82,7 +82,7 @@
             クチコミ
           </h4>
         </div>
-        <div class="col-span-2">
+        <div class="col-span-2" v-if="isLoggedIn">
           <div class="flex items-end" style="width: 100%">
             <div class="width:30%;">
               <label for="reviewTitle">タイトル</label>
@@ -99,6 +99,7 @@
                   leading-tight
                   focus:outline-none focus:shadow-outline
                 "
+                v-model="reviewFormData.title"
                 id="reviewTitle"
                 type="text"
               />
@@ -107,7 +108,7 @@
           </div>
           <div class="col-span-2">
             <div style="width: 100%">
-              <label for="reviewBody">レビュー本文</label>
+              <label for="reviewComment">レビュー本文</label>
               <textarea
                 class="
                   shadow
@@ -121,10 +122,35 @@
                   leading-tight
                   focus:outline-none focus:shadow-outline
                 "
-                id="reviewBody"
+                v-model="reviewFormData.comment"
+                id="reviewComment"
                 type="text"
                 rows="3"
               ></textarea>
+            </div>
+            <div class="col-span-2">
+              <button
+                @click="sendReview"
+                class="
+                  inline-flex
+                  justify-center
+                  py-2
+                  px-12
+                  border border-transparent
+                  shadow-sm
+                  font-medium
+                  rounded-md
+                  text-white
+                  bg-indigo-600
+                  hover:bg-indigo-700
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-offset-2
+                  focus:ring-indigo-500
+                "
+              >
+                投稿する
+              </button>
             </div>
           </div>
         </div>
@@ -151,7 +177,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, reactive, onMounted, inject } from "vue";
 import axios from "axios";
 
 export default defineComponent({
@@ -160,8 +186,23 @@ export default defineComponent({
     id: { type: Number, require: true },
   },
   setup(props) {
+    /** 店舗情報 */
     const storeData = reactive([]);
+    /** 商品データ */
     const productList = reactive([]);
+    /* ログインの有無 */
+    const isLoggedIn: any = inject("isLoggedIn");
+    /* ログインしたユーザの情報 */
+    const loginData: any = inject("loginData");
+    /** クチコミ入力データ */
+    const reviewFormData = reactive({
+      userId: loginData.userId,
+      storeId: props.id,
+      title: "",
+      comment: "",
+      rate: "3",
+    });
+    console.log(loginData);
 
     onMounted(() => {
       // idの出店情報を取得
@@ -169,6 +210,7 @@ export default defineComponent({
       fetchProductData();
     });
 
+    /* 店舗情報の取得 */
     function fetchStoreData() {
       axios
         .get(`api/stores/${props.id}`, { withCredentials: true })
@@ -180,13 +222,26 @@ export default defineComponent({
         });
     }
 
+    /* 商品情報の取得 */
     function fetchProductData() {
       axios
         .get(`api/products/${props.id}`, { withCredentials: true })
         .then((response) => {
-          console.log(response);
           Object.assign(productList, response.data);
-          console.log(productList);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    /* クチコミの投稿送信 */
+    function sendReview() {
+      axios
+        .post("api/reviews/store", reviewFormData)
+        .then((res) => {
+          reviewFormData.title = "";
+          reviewFormData.comment = "";
+          reviewFormData.rate = "";
         })
         .catch((err) => {
           console.log(err);
@@ -195,11 +250,14 @@ export default defineComponent({
 
     return {
       // データ
+      isLoggedIn,
       storeData,
       productList,
+      reviewFormData,
       // 関数
       fetchStoreData,
       fetchProductData,
+      sendReview,
     };
   },
 });
