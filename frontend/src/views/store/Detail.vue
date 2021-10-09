@@ -65,6 +65,7 @@
           <p>{{ storeData.opening_hours + "〜" + storeData.closing_time }}</p>
         </div>
       </div>
+      <!-- 入力フォーム -->
       <div class="grid grid-cols-3 gap-4 pt-20">
         <div class="col-span-2">
           <h4
@@ -81,7 +82,54 @@
             クチコミ
           </h4>
         </div>
-        <!-- クチコミ -->
+        <div class="col-span-2">
+          <div class="flex items-end" style="width: 100%">
+            <div class="width:30%;">
+              <label for="reviewTitle">タイトル</label>
+              <input
+                class="
+                  shadow
+                  appearance-none
+                  border
+                  rounded
+                  w-full
+                  py-2
+                  px-3
+                  text-gray-700
+                  leading-tight
+                  focus:outline-none focus:shadow-outline
+                "
+                id="reviewTitle"
+                type="text"
+              />
+            </div>
+            <div class="ml-10 text-lg" style="width: 70%">評価：★★★☆☆</div>
+          </div>
+          <div class="col-span-2">
+            <div style="width: 100%">
+              <label for="reviewBody">レビュー本文</label>
+              <textarea
+                class="
+                  shadow
+                  appearance-none
+                  border
+                  rounded
+                  w-full
+                  py-2
+                  px-3
+                  text-gray-700
+                  leading-tight
+                  focus:outline-none focus:shadow-outline
+                "
+                id="reviewBody"
+                type="text"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- ./入力フォーム -->
+        <!-- クチコミアイテム -->
         <div class="col-span-2 border-t border-b py-5 px-4">
           <div class="flex gap-4">
             <div style="width: 20%">
@@ -96,7 +144,7 @@
             </div>
           </div>
         </div>
-        <!-- ./クチコミ -->
+        <!-- ./クチコミアイテム -->
       </div>
     </div>
   </div>
