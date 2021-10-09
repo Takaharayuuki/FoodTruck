@@ -8,11 +8,25 @@
         <p class="ext-lg sm:text-3xl text-gray-900 font-medium title-font mb-8">
           {{ storeData.remark }}
         </p>
-        <p
-          class="ext-lg sm:text-3xl text-gray-900 font-semibold title-font mb-8"
+        <div
+          class="
+            flex
+            ext-lg
+            sm:text-3xl
+            text-gray-900
+            font-semibold
+            title-font
+            mb-8
+          "
         >
-          評価：☆☆☆☆☆
-        </p>
+          <p>評価：</p>
+          <star-rating
+            :star-size="30"
+            :rating="reviewFormData.rate"
+            read-only
+            :show-rating="false"
+          ></star-rating>
+        </div>
       </div>
       <div class="grid grid-cols-3 gap-4 pt-20">
         <div class="col-span-2">
@@ -159,8 +173,15 @@
         <div class="col-span-2 border-t border-b py-5 px-4">
           <div class="flex gap-4">
             <div style="width: 20%">
-              <p>ユーザ名</p>
-              <p>評価：★★★☆☆</p>
+              <p>ユーザ名：太郎</p>
+              <p>
+                評価：<star-rating
+                  :star-size="25"
+                  :rating="reviewFormData.rate"
+                  read-only
+                  :show-rating="false"
+                ></star-rating>
+              </p>
             </div>
             <div style="width: 70%">
               <p class="text-lg font-bold pb-3">ランチでは十分なボリューム</p>
@@ -179,6 +200,7 @@
 <script lang="ts">
 import { defineComponent, reactive, onMounted, inject } from "vue";
 import axios from "axios";
+import StarRating from "vue-star-rating";
 
 export default defineComponent({
   name: "StoreDetail",
@@ -200,7 +222,7 @@ export default defineComponent({
       storeId: props.id,
       title: "",
       comment: "",
-      rate: "3",
+      rate: 3,
     });
     console.log(loginData);
 
@@ -241,7 +263,7 @@ export default defineComponent({
         .then((res) => {
           reviewFormData.title = "";
           reviewFormData.comment = "";
-          reviewFormData.rate = "";
+          reviewFormData.rate = 0;
         })
         .catch((err) => {
           console.log(err);
@@ -259,6 +281,9 @@ export default defineComponent({
       fetchProductData,
       sendReview,
     };
+  },
+  components: {
+    StarRating,
   },
 });
 </script>
