@@ -34,7 +34,9 @@ class StoreController extends Controller
             $storeQuery->where('prefecture', 'like', "%$searchArea%")->orWhere('city', 'like', "%$searchArea%");
         }
 
+
         $results =  $storeQuery->get();
+        dd($results);
 
         return $results;
     }

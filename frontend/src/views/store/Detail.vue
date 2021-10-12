@@ -19,7 +19,7 @@
             mb-8
           "
         >
-          <p>評価：</p>
+          <p style="margin-top: 13px">評価：</p>
           <star-rating
             :star-size="30"
             :rating="reviewFormData.rate"
