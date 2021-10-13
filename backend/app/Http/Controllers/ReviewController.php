@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     public function store(Request $request)
     {
+
         $review = Review::create([
             'user_id' => $request->userId,
             'store_id' => $request->storeId,
@@ -16,6 +18,10 @@ class ReviewController extends Controller
             'comment' => $request->comment,
             'rate' => $request->rate,
         ]);
+
+        $store = Store::find($review['store_id']);
+
+
         $review->save();
     }
 }

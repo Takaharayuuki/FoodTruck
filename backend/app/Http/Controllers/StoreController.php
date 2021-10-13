@@ -35,10 +35,9 @@ class StoreController extends Controller
         }
 
 
-        $results =  $storeQuery->get();
-        dd($results);
+        $search_results =  $storeQuery->get();
 
-        return $results;
+        return $search_results;
     }
     /**
      * Show the form for creating a new resource.
