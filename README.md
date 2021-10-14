@@ -5,5 +5,12 @@
 ![FoodTruck (3)](https://user-images.githubusercontent.com/54837280/131238191-90bc682f-379a-414d-9b37-0ed2fb759c0b.png)
 
 ## 参考　使用プラグイン等
+vue-star-rating
 https://github.com/craigh411/vue-star-rating  
 https://vuejsexamples.com/tag/rating/
+vue-swal
+https://github.com/avil13/vue-sweetalert2
+https://avil13.github.io/vue-sweetalert2/
+https://www.kabanoki.net/4034/
+loading
+https://kouya17.com/posts/26/
