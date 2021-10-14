@@ -22,7 +22,7 @@
           <p style="margin-top: 13px">評価：</p>
           <star-rating
             :star-size="30"
-            :rating="reviewFormData.rate"
+            :rating="storeData.rate"
             read-only
             :show-rating="false"
           ></star-rating>

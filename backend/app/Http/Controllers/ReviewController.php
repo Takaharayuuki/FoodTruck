@@ -20,22 +20,22 @@ class ReviewController extends Controller
         ]);
 
 
-        $store_review = Review::where('store_id', $request->storeId);
+        $store_review = Review::where('store_id', $request->storeId)->get();
         // 該当の店のレビュー総数
         $store_review_count = $store_review->count();
 
-        $rateArray = [];
+        $total_star = 0;
 
         foreach ($store_review as $review) {
-            $rateArray[] = $review->rate;
+            $total_star += (int)$review->rate;
         }
 
-        dd($rateArray);
-        $average_rate = '0';
+        (int)$average_rate = (int)$total_star / (int)$store_review_count;
+        $average_rate = round((int)$average_rate);
 
         $store = Store::find($review['store_id']);
-        $store->update(['rate' => $average_rate]);
-
+        $store->rate = (string)$average_rate;
+        $store->save();
         $review->save();
     }
 }
