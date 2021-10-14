@@ -75,7 +75,7 @@
                   </a>
                   <star-rating
                     :star-size="20"
-                    :rating="reviewFormData.rate"
+                    :rating="data.rate"
                     read-only
                     :show-rating="false"
                   ></star-rating>

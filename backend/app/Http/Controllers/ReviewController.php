@@ -19,8 +19,22 @@ class ReviewController extends Controller
             'rate' => $request->rate,
         ]);
 
-        $store = Store::find($review['store_id']);
 
+        $store_review = Review::where('store_id', $request->storeId);
+        // 該当の店のレビュー総数
+        $store_review_count = $store_review->count();
+
+        $rateArray = [];
+
+        foreach ($store_review as $review) {
+            $rateArray[] = $review->rate;
+        }
+
+        dd($rateArray);
+        $average_rate = '0';
+
+        $store = Store::find($review['store_id']);
+        $store->update(['rate' => $average_rate]);
 
         $review->save();
     }
