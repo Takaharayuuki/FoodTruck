@@ -39,6 +39,7 @@ class ReviewController extends Controller
         $review = Review::create([
             'user_id' => $request->userId,
             'store_id' => $request->storeId,
+            'user_name' => $request->userName,
             'title' => $request->title,
             'comment' => $request->comment,
             'rate' => $request->rate,

@@ -122,6 +122,7 @@
               <star-rating
                 :star-size="25"
                 :rating="reviewFormData.rate"
+                @update:rating="setRating"
                 :show-rating="false"
               ></star-rating>
             </div>
@@ -180,7 +181,7 @@
           <div class="col-span-2 border-t border-b py-5 px-4">
             <div class="flex gap-4">
               <div style="width: 20%">
-                <p>ユーザ名：未実装</p>
+                <p>ユーザ名：{{ review.user_name }}</p>
                 <p>
                   評価：<star-rating
                     :star-size="25"
@@ -229,6 +230,7 @@ export default defineComponent({
     /** クチコミ入力データ */
     const reviewFormData = reactive({
       userId: loginData.userId,
+      userName: loginData.userName,
       storeId: props.id,
       title: "",
       comment: "",
@@ -294,6 +296,11 @@ export default defineComponent({
         });
     }
 
+    function setRating(rating: number) {
+      reviewFormData.rate = rating;
+      console.log(reviewFormData.rate);
+    }
+
     return {
       // データ
       isLoggedIn,
@@ -306,6 +313,7 @@ export default defineComponent({
       fetchProductData,
       fetchReviewData,
       sendReview,
+      setRating,
     };
   },
   components: {
