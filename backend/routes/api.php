@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use APP\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 
 // 会員登録
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
@@ -23,4 +24,6 @@ Route::post('stores/search', [App\Http\Controllers\StoreController::class, 'sear
 // 商品関連
 Route::resource('products', ProductController::class);
 // クチコミ関連
-Route::post('reviews/store', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+Route::resource('reviews', ReviewController::class);
+// Route::post('reviews/store', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+// Route::get('reviews/show', [App\Http\Controllers\ReviewController::class, 'show'])->name('reviews.show');

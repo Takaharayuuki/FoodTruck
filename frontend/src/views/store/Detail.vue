@@ -212,6 +212,8 @@ export default defineComponent({
     const storeData = reactive([]);
     /** 商品データ */
     const productList = reactive([]);
+    /** 商品データ */
+    const reviewList = reactive([]);
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
     /* ログインしたユーザの情報 */
@@ -230,6 +232,7 @@ export default defineComponent({
       // idの出店情報を取得
       fetchStoreData();
       fetchProductData();
+      fetchReviewData();
     });
 
     /* 店舗情報の取得 */
@@ -250,6 +253,18 @@ export default defineComponent({
         .get(`api/products/${props.id}`, { withCredentials: true })
         .then((response) => {
           Object.assign(productList, response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    /* クチコミ情報の取得 */
+    function fetchReviewData() {
+      axios
+        .get(`api/reviews/${props.id}`, { withCredentials: true })
+        .then((response) => {
+          Object.assign(reviewList, response.data);
         })
         .catch((err) => {
           console.log(err);
@@ -279,6 +294,7 @@ export default defineComponent({
       // 関数
       fetchStoreData,
       fetchProductData,
+      fetchReviewData,
       sendReview,
     };
   },
