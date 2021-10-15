@@ -118,7 +118,13 @@
                 type="text"
               />
             </div>
-            <div class="ml-10 text-lg" style="width: 70%">評価：★★★☆☆</div>
+            <div class="ml-10 text-lg" style="width: 70%">
+              <star-rating
+                :star-size="25"
+                :rating="reviewFormData.rate"
+                :show-rating="false"
+              ></star-rating>
+            </div>
           </div>
           <div class="col-span-2">
             <div style="width: 100%">
@@ -170,24 +176,26 @@
         </div>
         <!-- ./入力フォーム -->
         <!-- クチコミアイテム -->
-        <div class="col-span-2 border-t border-b py-5 px-4">
-          <div class="flex gap-4">
-            <div style="width: 20%">
-              <p>ユーザ名：太郎</p>
-              <p>
-                評価：<star-rating
-                  :star-size="25"
-                  :rating="reviewFormData.rate"
-                  read-only
-                  :show-rating="false"
-                ></star-rating>
-              </p>
-            </div>
-            <div style="width: 70%">
-              <p class="text-lg font-bold pb-3">ランチでは十分なボリューム</p>
-              <p>
-                本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミ本文ダミー
-              </p>
+        <div v-for="review in reviewList" :key="review.id">
+          <div class="col-span-2 border-t border-b py-5 px-4">
+            <div class="flex gap-4">
+              <div style="width: 20%">
+                <p>ユーザ名：未実装</p>
+                <p>
+                  評価：<star-rating
+                    :star-size="25"
+                    :rating="review.rate"
+                    read-only
+                    :show-rating="false"
+                  ></star-rating>
+                </p>
+              </div>
+              <div style="width: 70%">
+                <p class="text-lg font-bold pb-3">{{ review.title }}</p>
+                <p>
+                  {{ review.comment }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -274,11 +282,12 @@ export default defineComponent({
     /* クチコミの投稿送信 */
     function sendReview() {
       axios
-        .post("api/reviews/store", reviewFormData)
+        .post("api/reviews", reviewFormData)
         .then((res) => {
           reviewFormData.title = "";
           reviewFormData.comment = "";
           reviewFormData.rate = 0;
+          fetchReviewData();
         })
         .catch((err) => {
           console.log(err);
@@ -290,6 +299,7 @@ export default defineComponent({
       isLoggedIn,
       storeData,
       productList,
+      reviewList,
       reviewFormData,
       // 関数
       fetchStoreData,
