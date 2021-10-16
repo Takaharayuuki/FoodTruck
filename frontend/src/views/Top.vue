@@ -1,18 +1,27 @@
 <template>
   <div>
-    <div class="pt-80 w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 text-white">
-      <h2 class="title-font sm:text-5xl mb-4 font-medium">
-        近くの移動販売車、出店、キッチンカーを探す
+    <div
+      style="padding-top: 16rem"
+      class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8"
+    >
+      <h2
+        class="title-font sm:text-5xl mb-4 font-medium"
+        style="color: #333333; line-height: 1.3"
+      >
+        近くの移動販売車、出店<br />
+        キッチンカーを探す
       </h2>
     </div>
     <!-- 検索バー TODO: コンポーネント化する -->
-    <div class="pt-1 w-full flex items-center justify-center">
+    <div class="w-full flex items-center justify-center relative">
+      <div class="top-icon"></div>
       <div
         class="
           flex
           items-center
           justify-center
-          py-12
+          p-48
+          pb-12
           px-6
           sm:px-6
           lg:px-8
@@ -94,12 +103,7 @@
       </div>
     </div>
     <!-- メインカテゴリ -->
-    <main class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-semibold">エリアから検索</h2>
-      <p></p>
-      <h2 class="text-2xl font-semibold">ジャンルから検索</h2>
-      <p></p>
-    </main>
+    <main class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8"></main>
   </div>
 </template>
 
@@ -143,3 +147,15 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.top-icon {
+  position: absolute;
+  right: 16%;
+  top: -434px;
+  z-index: -5;
+  background-image: url("../assets/top_icon_01.png");
+  width: 659px;
+  height: 611px;
+  background-size: cover;
+}
+</style>

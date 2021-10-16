@@ -1,5 +1,5 @@
 <template>
-  <header :class="route.path === '/' ? '' : 'bg-yellow-500'" class="relative">
+  <header class="bg-yellow-500 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div
         class="
