@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div class="vld-parent">
+    <loading
+      :active="isLoading"
+      :can-cancel="true"
+      :is-full-page="true"
+      color="#007BFF"
+    ></loading>
     <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="w-full max-w-lg mx-auto">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -106,9 +112,6 @@
         </form>
       </div>
     </div>
-    <pre>{{ isLoggedIn }}</pre>
-    <pre>{{ loginData.userName }}</pre>
-    <pre>{{ loginData.userEmail }}</pre>
   </div>
 </template>
 
@@ -116,6 +119,8 @@
 import { defineComponent, reactive, ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default defineComponent({
   name: "Login",
@@ -179,6 +184,9 @@ export default defineComponent({
       login,
       getUser,
     };
+  },
+  components: {
+    Loading,
   },
 });
 </script>
