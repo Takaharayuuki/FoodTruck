@@ -1,6 +1,15 @@
 <template>
-  <div>
-    <div class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+  <div class="vld-parent">
+    <loading
+      :active="isLoading"
+      :can-cancel="true"
+      :is-full-page="true"
+      color="#007BFF"
+    ></loading>
+    <div
+      class="w-full mx-auto max-w-7xl px-6 sm:px-6 lg:px-8"
+      v-if="!isLoading"
+    >
       <div class="pt-20">
         <h2 class="ext-lg sm:text-6xl text-gray-900 font-bold title-font mb-8">
           {{ storeData.name }}
@@ -80,7 +89,7 @@
         </div>
       </div>
       <!-- 入力フォーム -->
-      <div class="grid grid-cols-3 gap-4 pt-20">
+      <div class="grid grid-cols-3 py-20">
         <div class="col-span-2">
           <h4
             class="
@@ -96,7 +105,8 @@
             クチコミ
           </h4>
         </div>
-        <div class="col-span-2" v-if="isLoggedIn">
+        <div class="col-span-1"></div>
+        <div class="col-span-2 mb-10" v-if="isLoggedIn">
           <div class="flex items-end" style="width: 100%">
             <div class="width:30%;">
               <label for="reviewTitle">タイトル</label>
@@ -149,14 +159,14 @@
                 rows="3"
               ></textarea>
             </div>
-            <div class="col-span-2">
+            <div class="col-span-2 text-center pt-2">
               <button
                 @click="sendReview"
                 class="
                   inline-flex
                   justify-center
                   py-2
-                  px-12
+                  px-20
                   border border-transparent
                   shadow-sm
                   font-medium
@@ -170,36 +180,39 @@
                   focus:ring-indigo-500
                 "
               >
-                投稿する
+                クチコミを投稿する
               </button>
             </div>
           </div>
         </div>
         <!-- ./入力フォーム -->
+      </div>
+      <div
+        class="grid grid-cols-3"
+        v-for="review in reviewList"
+        :key="review.id"
+      >
         <!-- クチコミアイテム -->
-        <div v-for="review in reviewList" :key="review.id">
-          <div class="col-span-2 border-t border-b py-5 px-4">
-            <div class="flex gap-4">
-              <div style="width: 20%">
-                <p>ユーザ名：{{ review.user_name }}</p>
-                <p>
-                  評価：<star-rating
-                    :star-size="25"
-                    :rating="review.rate"
-                    read-only
-                    :show-rating="false"
-                  ></star-rating>
-                </p>
-              </div>
-              <div style="width: 70%">
-                <p class="text-lg font-bold pb-3">{{ review.title }}</p>
-                <p>
-                  {{ review.comment }}
-                </p>
-              </div>
+        <div class="col-span-2 border-t py-5 px-4">
+          <div class="flex gap-4">
+            <div style="width: 30%">
+              <p>{{ review.user_name }}</p>
+              <p>
+                評価：<star-rating
+                  :star-size="25"
+                  :rating="review.rate"
+                  read-only
+                  :show-rating="false"
+                ></star-rating>
+              </p>
+            </div>
+            <div style="width: 70%">
+              <p class="text-lg font-bold pb-3">{{ review.title }}</p>
+              <p>{{ review.comment }}</p>
             </div>
           </div>
         </div>
+        <div class="col-span-1"></div>
         <!-- ./クチコミアイテム -->
       </div>
     </div>
@@ -207,9 +220,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, inject } from "vue";
+import { defineComponent, reactive, onMounted, inject, ref } from "vue";
 import axios from "axios";
 import StarRating from "vue-star-rating";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default defineComponent({
   name: "StoreDetail",
@@ -236,7 +251,7 @@ export default defineComponent({
       comment: "",
       rate: 3,
     });
-    console.log(loginData);
+    let isLoading = ref(false);
 
     onMounted(() => {
       // idの出店情報を取得
@@ -247,10 +262,12 @@ export default defineComponent({
 
     /* 店舗情報の取得 */
     function fetchStoreData() {
+      isLoading.value = true;
       axios
         .get(`api/stores/${props.id}`, { withCredentials: true })
         .then((response) => {
           Object.assign(storeData, response.data);
+          isLoading.value = false;
         })
         .catch((err) => {
           console.log(err);
@@ -259,10 +276,12 @@ export default defineComponent({
 
     /* 商品情報の取得 */
     function fetchProductData() {
+      isLoading.value = true;
       axios
         .get(`api/products/${props.id}`, { withCredentials: true })
         .then((response) => {
           Object.assign(productList, response.data);
+          isLoading.value = false;
         })
         .catch((err) => {
           console.log(err);
@@ -271,10 +290,12 @@ export default defineComponent({
 
     /* クチコミ情報の取得 */
     function fetchReviewData() {
+      isLoading.value = true;
       axios
         .get(`api/reviews/${props.id}`, { withCredentials: true })
         .then((response) => {
           Object.assign(reviewList, response.data);
+          isLoading.value = false;
         })
         .catch((err) => {
           console.log(err);
@@ -304,6 +325,7 @@ export default defineComponent({
     return {
       // データ
       isLoggedIn,
+      isLoading,
       storeData,
       productList,
       reviewList,
@@ -318,6 +340,7 @@ export default defineComponent({
   },
   components: {
     StarRating,
+    Loading,
   },
 });
 </script>

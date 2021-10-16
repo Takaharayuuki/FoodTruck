@@ -1,5 +1,11 @@
 <template>
-  <div class="max-w-7xl mx-auto">
+  <div class="vld-parent max-w-7xl mx-auto">
+    <loading
+      :active="isLoading"
+      :can-cancel="true"
+      :is-full-page="true"
+      color="#007BFF"
+    ></loading>
     <div class="flex items-baseline px-5 pt-24 mb-8">
       <h4 class="text-4xl text-gray-900 font-bold title-font">検索結果</h4>
       <p class="ml-4">
@@ -91,18 +97,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, computed } from "vue";
+import { defineComponent, reactive, onMounted, ref } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 import StarRating from "vue-star-rating";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default defineComponent({
   name: "StoreIndex",
 
   setup() {
     const storeData = reactive([]);
+    let isLoading = ref(false);
 
     function fetchStoreData() {
+      isLoading.value = true;
       axios
         .post("api/stores/search", {
           searchWord: localStorage.getItem("searchWord"),
@@ -112,6 +122,7 @@ export default defineComponent({
           res.data.forEach((element: { [key: string]: string }) => {
             storeData.push(element as never);
           });
+          isLoading.value = false;
         })
         .catch((err) => {
           console.log(err);
@@ -124,10 +135,12 @@ export default defineComponent({
 
     return {
       storeData,
+      isLoading,
     };
   },
   components: {
     StarRating,
+    Loading,
   },
 });
 </script>
