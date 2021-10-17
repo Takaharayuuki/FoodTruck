@@ -32,9 +32,14 @@
                 overflow-hidden
               "
             >
-              <img
+              <!-- <img
                 class="lg:h-40 md:h-22 w-full object-cover object-center"
                 :src="data.thumbnail_url"
+                alt="blog"
+              /> -->
+              <img
+                class="lg:h-40 md:h-22 w-full object-cover object-center"
+                :src="`data:image/png;base64,${data.thumbnail_url}`"
                 alt="blog"
               />
               <div class="p-6">
