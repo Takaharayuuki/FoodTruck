@@ -121,7 +121,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref, onMounted, reactive } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "Mypage",
@@ -130,6 +131,27 @@ export default defineComponent({
     const isLoggedIn: any = inject("isLoggedIn");
     // ログインしたユーザの情報
     const loginData: any = inject("loginData");
+
+    const reviewList = reactive([{}]);
+
+    let isLoading = ref(false);
+
+    function fetchReviewData() {
+      isLoading.value = true;
+      axios
+        .get("api/reviews", loginData.id)
+        .then((res) => {
+          Object.assign(reviewList, res);
+          isLoading.value = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    onMounted(() => {
+      fetchReviewData();
+    });
 
     return {
       // データ
