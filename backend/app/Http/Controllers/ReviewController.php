@@ -72,9 +72,13 @@ class ReviewController extends Controller
      */
     public function show(Request $request, $id)
     {
-        // dd($request);
-        $reviews = Review::where('store_id', $id)->get();
-        return $reviews;
+        if ($request->path == 'mypage') {
+            $reviews = Review::where('user_id', $id)->get();
+            return $reviews;
+        } else {
+            $reviews = Review::where('store_id', $id)->get();
+            return $reviews;
+        }
     }
     /**
      * Show the form for editing the specified resource.
