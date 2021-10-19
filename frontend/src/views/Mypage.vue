@@ -35,13 +35,29 @@
       :key="review.id"
       class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto"
     >
-      <div>
-        <h4 class="font-bold">{{ review.title }}</h4>
-        <p>2021/10/02</p>
+      <div v-if="reviewList.length">
+        <div class="flex">
+          <div>
+            <h4 class="font-bold">{{ review.title }}</h4>
+            <p>{{ review.created_at }}</p>
+          </div>
+          <div>
+            <div>
+              <p>
+                評価
+                <star-rating
+                  :star-size="20"
+                  :rating="review.rate"
+                  read-only
+                  :show-rating="false"
+                ></star-rating>
+              </p>
+            </div>
+          </div>
+        </div>
         <p class="text-sm mt-3">
           {{ review.comment }}
         </p>
-        <p class="mt-1">評価 ★★★☆☆</p>
       </div>
       <div class="mt-2">
         <div
@@ -127,6 +143,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref, onMounted, reactive } from "vue";
 import axios from "axios";
+import StarRating from "vue-star-rating";
 
 export default defineComponent({
   name: "Mypage",
@@ -169,6 +186,9 @@ export default defineComponent({
       loginData,
       // 関数
     };
+  },
+  components: {
+    StarRating,
   },
 });
 </script>
