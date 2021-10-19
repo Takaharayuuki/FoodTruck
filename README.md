@@ -17,3 +17,5 @@ loading
 https://kouya17.com/posts/26/  
 Day.js  
 https://github.com/iamkun/dayjs
+Vee-Validate  
+https://vee-validate.logaretm.com/v3
