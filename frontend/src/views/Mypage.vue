@@ -36,28 +36,26 @@
       class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto"
     >
       <div v-if="reviewList.length">
-        <div class="flex">
+        <div>
+          <h4 class="font-bold">{{ review.title }}</h4>
+          <p>{{ review.reviewDt }}</p>
+        </div>
+        <div>
+          <p class="text-sm mt-3">
+            {{ review.comment }}
+          </p>
           <div>
-            <h4 class="font-bold">{{ review.title }}</h4>
-            <p>{{ review.created_at }}</p>
-          </div>
-          <div>
-            <div>
-              <p>
-                評価
-                <star-rating
-                  :star-size="20"
-                  :rating="review.rate"
-                  read-only
-                  :show-rating="false"
-                ></star-rating>
-              </p>
-            </div>
+            <p>
+              評価
+              <star-rating
+                :star-size="20"
+                :rating="review.rate"
+                read-only
+                :show-rating="false"
+              ></star-rating>
+            </p>
           </div>
         </div>
-        <p class="text-sm mt-3">
-          {{ review.comment }}
-        </p>
       </div>
       <div class="mt-2">
         <div

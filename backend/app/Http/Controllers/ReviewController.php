@@ -45,6 +45,7 @@ class ReviewController extends Controller
             'title' => $request->title,
             'comment' => $request->comment,
             'rate' => $request->rate,
+            'reviewDt' => $request->reviewDt
         ]);
 
         $store_review = Review::where('store_id', $request->storeId)->get();
@@ -73,10 +74,10 @@ class ReviewController extends Controller
     public function show(Request $request, $id)
     {
         if ($request->path == 'mypage') {
-            $reviews = Review::where('user_id', $id)->get();
+            $reviews = Review::where('user_id', $id)->orderBy('created_at', 'desc')->get();
             return $reviews;
         } else {
-            $reviews = Review::where('store_id', $id)->get();
+            $reviews = Review::where('store_id', $id)->orderBy('created_at', 'desc')->get();
             return $reviews;
         }
     }
