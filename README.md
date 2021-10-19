@@ -15,5 +15,5 @@ https://avil13.github.io/vue-sweetalert2/
 https://www.kabanoki.net/4034/  
 loading  
 https://kouya17.com/posts/26/  
-Day.js
+Day.js  
 https://github.com/iamkun/dayjs
