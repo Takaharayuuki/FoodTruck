@@ -30,12 +30,16 @@
       <p class="font-bold text-xl mt-2">{{ loginData.userName }}</p>
     </div>
     <!-- ./ユーザ情報  -->
-    <div class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto">
+    <div
+      v-for="review in reviewList"
+      :key="review.id"
+      class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto"
+    >
       <div>
-        <h4 class="font-bold">レビュータイトル</h4>
+        <h4 class="font-bold">{{ review.title }}</h4>
         <p>2021/10/02</p>
         <p class="text-sm mt-3">
-          レビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメント
+          {{ review.comment }}
         </p>
         <p class="mt-1">評価 ★★★☆☆</p>
       </div>
@@ -132,16 +136,21 @@ export default defineComponent({
     // ログインしたユーザの情報
     const loginData: any = inject("loginData");
 
-    const reviewList = reactive([{}]);
+    const reviewList = reactive([]);
 
     let isLoading = ref(false);
 
     function fetchReviewData() {
       isLoading.value = true;
       axios
-        .get("api/reviews", loginData.id)
+        .get(`api/reviews/${loginData.userId}/`, {
+          params: {
+            path: "mypage",
+          },
+          withCredentials: true,
+        })
         .then((res) => {
-          Object.assign(reviewList, res);
+          Object.assign(reviewList, res.data);
           isLoading.value = false;
         })
         .catch((err) => {
@@ -155,6 +164,7 @@ export default defineComponent({
 
     return {
       // データ
+      reviewList,
       isLoggedIn,
       loginData,
       // 関数
