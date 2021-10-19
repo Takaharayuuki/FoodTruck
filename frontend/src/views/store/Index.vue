@@ -32,16 +32,20 @@
                 overflow-hidden
               "
             >
-              <!-- <img
+            <!-- 通常用 -->
+              <img
                 class="lg:h-40 md:h-22 w-full object-cover object-center"
                 :src="data.thumbnail_url"
                 alt="blog"
-              /> -->
-              <img
+              />
+              <!-- 通常用 -->
+              <!-- heroku不具合用 -->
+              <!-- <img
                 class="lg:h-40 md:h-22 w-full object-cover object-center"
                 :src="`data:image/png;base64,${data.thumbnail_url}`"
                 alt="blog"
-              />
+              /> -->
+              <!-- heroku不具合用 -->
               <div class="p-6">
                 <h2
                   class="

@@ -197,6 +197,7 @@
           <div class="flex gap-4">
             <div style="width: 30%">
               <p>{{ review.user_name }}</p>
+              <p>{{ review.reviewDt }}</p>
               <p>
                 評価：<star-rating
                   :star-size="25"
@@ -225,6 +226,7 @@ import axios from "axios";
 import StarRating from "vue-star-rating";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import dayjs, { Dayjs } from "dayjs";
 
 export default defineComponent({
   name: "StoreDetail",
@@ -250,6 +252,7 @@ export default defineComponent({
       title: "",
       comment: "",
       rate: 3,
+      reviewDt: "" as any,
     });
     let isLoading = ref(false);
 
@@ -304,6 +307,7 @@ export default defineComponent({
 
     /* クチコミの投稿送信 */
     function sendReview() {
+      reviewFormData.reviewDt = dayjs().format("YYYY-MM-DD");
       axios
         .post("api/reviews", reviewFormData)
         .then((res) => {

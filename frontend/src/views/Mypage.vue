@@ -30,14 +30,32 @@
       <p class="font-bold text-xl mt-2">{{ loginData.userName }}</p>
     </div>
     <!-- ./ユーザ情報  -->
-    <div class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto">
-      <div>
-        <h4 class="font-bold">レビュータイトル</h4>
-        <p>2021/10/02</p>
-        <p class="text-sm mt-3">
-          レビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメントレビューコメント
-        </p>
-        <p class="mt-1">評価 ★★★☆☆</p>
+    <div
+      v-for="review in reviewList"
+      :key="review.id"
+      class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto"
+    >
+      <div v-if="reviewList.length">
+        <div>
+          <h4 class="font-bold">{{ review.title }}</h4>
+          <p>{{ review.reviewDt }}</p>
+        </div>
+        <div>
+          <p class="text-sm mt-3">
+            {{ review.comment }}
+          </p>
+          <div>
+            <p>
+              評価
+              <star-rating
+                :star-size="20"
+                :rating="review.rate"
+                read-only
+                :show-rating="false"
+              ></star-rating>
+            </p>
+          </div>
+        </div>
       </div>
       <div class="mt-2">
         <div
@@ -121,7 +139,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref, onMounted, reactive } from "vue";
+import axios from "axios";
+import StarRating from "vue-star-rating";
 
 export default defineComponent({
   name: "Mypage",
@@ -131,12 +151,42 @@ export default defineComponent({
     // ログインしたユーザの情報
     const loginData: any = inject("loginData");
 
+    const reviewList = reactive([]);
+
+    let isLoading = ref(false);
+
+    function fetchReviewData() {
+      isLoading.value = true;
+      axios
+        .get(`api/reviews/${loginData.userId}/`, {
+          params: {
+            path: "mypage",
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          Object.assign(reviewList, res.data);
+          isLoading.value = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    onMounted(() => {
+      fetchReviewData();
+    });
+
     return {
       // データ
+      reviewList,
       isLoggedIn,
       loginData,
       // 関数
     };
+  },
+  components: {
+    StarRating,
   },
 });
 </script>
