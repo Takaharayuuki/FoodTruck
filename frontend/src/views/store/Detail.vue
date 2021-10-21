@@ -260,6 +260,7 @@ export default defineComponent({
       comment: "",
       rate: 3,
       reviewDt: "" as any,
+      thumbnail_url: "",
     });
     let isLoading = ref(false);
 
