@@ -59,56 +59,7 @@
       </div>
       <div class="mt-2">
         <div
-          class="
-            mr-2
-            w-20
-            h-20
-            inline-flex
-            items-center
-            justify-center
-            bg-gray-200
-            text-gray-400
-          "
-        >
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-10 h-10"
-            viewBox="0 0 24 24"
-          >
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <div
-          class="
-            mr-2
-            w-20
-            h-20
-            inline-flex
-            items-center
-            justify-center
-            bg-gray-200
-            text-gray-400
-          "
-        >
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-10 h-10"
-            viewBox="0 0 24 24"
-          >
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <div
+          v-if="review.thumbnail_url"
           class="
             w-20
             h-20
@@ -119,18 +70,7 @@
             text-gray-400
           "
         >
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-10 h-10"
-            viewBox="0 0 24 24"
-          >
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+          <img class="w-20 h-20" :src="review.thumbnail_url" alt="" />
         </div>
       </div>
     </div>

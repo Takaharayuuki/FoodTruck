@@ -69,6 +69,7 @@
               type="text"
               name="admin_name"
               placeholder="田中 太郎"
+              @focus="resetError"
             />
             <span class="text-red-600" v-if="errors.name !== ''">{{
               errors.name
@@ -98,6 +99,7 @@
               v-model="formData.password"
               type="password"
               placeholder="******"
+              @focus="resetError"
             />
             <span class="text-red-600" v-if="errors.password !== ''">{{
               errors.password
@@ -173,7 +175,7 @@ export default defineComponent({
       axios
         .post("api/register", {
           email: formData.userEmail,
-          admin_name: formData.userName,
+          name: formData.userName,
           password: formData.password,
           userType: formData.userType,
         })
@@ -227,12 +229,20 @@ export default defineComponent({
           isLoggedIn.value = false;
         });
     }
+
+    function resetError() {
+      errors.name = "";
+      errors.email = "";
+      errors.password = "";
+    }
+
     return {
       // データ
       formData,
       errors,
       // 関数
       signUp,
+      resetError,
     };
   },
 });

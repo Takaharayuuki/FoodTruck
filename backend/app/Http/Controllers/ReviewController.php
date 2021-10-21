@@ -43,32 +43,46 @@ class ReviewController extends Controller
             'comment' => 'required | max:426',
         ]);
 
-        $review = Review::create([
-            'user_id' => $request->userId,
-            'store_id' => $request->storeId,
-            'user_name' => $request->userName,
-            'title' => $request->title,
-            'comment' => $request->comment,
-            'rate' => $request->rate,
-            'reviewDt' => $request->reviewDt
-        ]);
 
-        $store_review = Review::where('store_id', $request->storeId)->get();
-        // 該当の店のレビュー総数
+
+        $form = $request->all();
+        $review = new Review();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = $file->getClientOriginalName();
+            $request->file('file')->storeAs('public/', $file_name);
+            $review->thumbnail_url = '/storage/' . $file_name;
+        }
+        $review->user_id = $form['userId'];
+        $review->store_id = $form['storeId'];
+        $review->user_name = $form['userName'];
+        $review->reviewDt = $form['reviewDt'];
+        $review->rate = $form['rate'];
+        $review->comment = $form['comment'];
+        $review->title = $form['title'];
+
+        $review->save();
+
+        $store_review = Review::where('store_id', $form['storeId'])->get();
+        // 該当の店のレビューの数
         $store_review_count = $store_review->count();
         // スターの総数
         $total_star = 0;
         foreach ($store_review as $review) {
             $total_star += (int)$review->rate;
         }
+        if ($store_review_count == 0 || "0") {
+            $store = Store::find($review['store_id']);
+            $store->rate = $form['rate'];
+            $store->save();
+        } else {
+            (int)$average_rate = (int)$total_star / (int)$store_review_count;
+            $average_rate = round((int)$average_rate);
 
-        (int)$average_rate = (int)$total_star / (int)$store_review_count;
-        $average_rate = round((int)$average_rate);
-
-        $store = Store::find($review['store_id']);
-        $store->rate = (string)$average_rate;
-        $store->save();
-        $review->save();
+            $store = Store::find($review['store_id']);
+            $store->rate = (string)$average_rate;
+            $store->save();
+        }
     }
     /**
      * Display the specified resource.
