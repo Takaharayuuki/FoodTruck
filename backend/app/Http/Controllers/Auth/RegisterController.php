@@ -21,13 +21,21 @@ class RegisterController extends Controller
             'password' => 'required|min:8'
         ]);
 
+        $form = $request->all();
+
         if ($credentials) {
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'userType' => $request->userType,
-            ]);
+            $user = new User();
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $file_name = $file->getClientOriginalName();
+                $request->file('file')->storeAs('public/', $file_name);
+                $user->thumbnail_url = '/storage/' . $file_name;
+            }
+            $user->name = $form['name'];
+            $user->email = $form['email'];
+            $user->password = Hash::make($form['password']);
+            $user->userType = $form['userType'];
+            $user->save();
             // ポストした値が正常な場合のレスポンス
             return response()->json(['created' => true], Response::HTTP_OK);
         }
