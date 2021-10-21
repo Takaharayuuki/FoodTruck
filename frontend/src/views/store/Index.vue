@@ -32,7 +32,7 @@
                 overflow-hidden
               "
             >
-            <!-- 通常用 -->
+              <!-- 通常用 -->
               <img
                 class="lg:h-40 md:h-22 w-full object-cover object-center"
                 :src="data.thumbnail_url"
@@ -74,6 +74,7 @@
                       md:mb-1
                       lg:mb-0
                     "
+                    style="margin-bottom: -8px; margin-right: 16px"
                     >詳しくみる
                     <svg
                       class="w-4 h-4 ml-2"

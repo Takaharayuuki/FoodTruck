@@ -34,6 +34,9 @@
                         rounded-md
                       "
                     />
+                    <span class="text-red-600" v-if="errors.name !== ''">{{
+                      errors.name
+                    }}</span>
                   </div>
 
                   <div class="col-span-6 sm:col-span-5">
@@ -69,6 +72,9 @@
                         {{ category.value }}
                       </option>
                     </select>
+                    <span class="text-red-600" v-if="errors.category !== ''">{{
+                      errors.category
+                    }}</span>
                   </div>
 
                   <div class="col-span-12">
@@ -102,6 +108,12 @@
                             rounded-md
                           "
                         />
+                        <span
+                          style="width: 165px; display: inline-block"
+                          class="text-red-600"
+                          v-if="errors.postalcode1 !== ''"
+                          >{{ errors.postalcode1 }}</span
+                        >
                       </div>
                       <div class="mt-5">
                         <input
@@ -160,6 +172,11 @@
                             {{ prefecture.value }}
                           </option>
                         </select>
+                        <span
+                          class="text-red-600"
+                          v-if="errors.prefecture !== ''"
+                          >{{ errors.prefecture }}</span
+                        >
                       </div>
                       <div>
                         <label
@@ -186,6 +203,9 @@
                             rounded-md
                           "
                         />
+                        <span class="text-red-600" v-if="errors.city !== ''">{{
+                          errors.city
+                        }}</span>
                       </div>
                       <div>
                         <label
@@ -212,6 +232,9 @@
                             rounded-md
                           "
                         />
+                        <span class="text-red-600" v-if="errors.town !== ''">{{
+                          errors.town
+                        }}</span>
                       </div>
                     </div>
                   </div>
@@ -268,6 +291,11 @@
                             rounded-md
                           "
                         />
+                        <span
+                          class="text-red-600"
+                          v-if="errors.period1 !== ''"
+                          >{{ errors.period1 }}</span
+                        >
                       </div>
                       <div>
                         <input
@@ -318,6 +346,11 @@
                             rounded-md
                           "
                         />
+                        <span
+                          class="text-red-600"
+                          v-if="errors.opening_hours !== ''"
+                          >{{ errors.opening_hours }}</span
+                        >
                       </div>
                       <div>
                         <input
@@ -339,6 +372,11 @@
                             rounded-md
                           "
                         />
+                        <span
+                          class="text-red-600"
+                          v-if="errors.closing_time !== ''"
+                          >{{ errors.closing_time }}</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -466,6 +504,9 @@
                   商品情報を入力し、「商品を登録する」ボタンを押下してください。<br />
                   複数商品の登録も可能です。
                 </p>
+                <span class="text-red-600" v-if="errors.product !== ''">{{
+                  errors.product
+                }}</span>
                 <!-- TODO: コンポーネント化する -->
                 <div
                   class="
@@ -753,6 +794,24 @@ export default defineComponent({
       closing_time: "",
       remark: "",
     });
+
+    // エラーデータ
+    const errors = reactive({
+      name: "",
+      category: "",
+      postalcode1: "",
+      postalcode2: "",
+      prefecture: "",
+      city: "",
+      town: "",
+      addressRemark: "",
+      period1: "",
+      period2: "",
+      opening_hours: "",
+      closing_time: "",
+      remark: "",
+      product: "",
+    });
     // 出店画像データ
     const storeFiles = ref<File[] | null>([]);
     const storeImageData: any = reactive([]);
@@ -909,8 +968,38 @@ export default defineComponent({
           alert("出店情報の登録が完了しました。");
           router.push("/");
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.data.errors.category) {
+            errors.category = error.response.data.errors.category[0];
+          }
+          if (error.response.data.errors.name) {
+            errors.name = error.response.data.errors.name[0];
+          }
+          if (error.response.data.errors.postalcode1) {
+            errors.postalcode1 = error.response.data.errors.postalcode1[0];
+          }
+          if (error.response.data.errors.prefecture) {
+            errors.prefecture = error.response.data.errors.prefecture[0];
+          }
+          if (error.response.data.errors.city) {
+            errors.city = error.response.data.errors.city[0];
+          }
+          if (error.response.data.errors.town) {
+            errors.town = error.response.data.errors.town[0];
+          }
+          if (error.response.data.errors.period1) {
+            errors.period1 = error.response.data.errors.period1[0];
+          }
+          if (error.response.data.errors.opening_hours) {
+            errors.opening_hours = error.response.data.errors.opening_hours[0];
+          }
+          if (error.response.data.errors.closing_time) {
+            errors.closing_time = error.response.data.errors.closing_time[0];
+          }
+          window.scroll({
+            top: 0,
+            behavior: "smooth",
+          });
         });
     }
 
@@ -940,8 +1029,13 @@ export default defineComponent({
           alert("出店・商品情報の登録が完了しました。");
           router.push("/");
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.data.errors.product) {
+            errors.product = error.response.data.errors.name[0];
+          }
+          if (error.response.data.errors.product) {
+            errors.product = error.response.data.errors.price[0];
+          }
         });
     }
 
@@ -951,6 +1045,7 @@ export default defineComponent({
       prefectureOptions,
       // データ
       storeData,
+      errors,
       productData,
       storeFiles,
       productFiles,

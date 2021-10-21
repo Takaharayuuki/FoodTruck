@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Http\Requests\StoreStoreRequest;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -54,8 +55,9 @@ class StoreController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      */
-    public function store(Request $request)
+    public function store(StoreStoreRequest $request)
     {
         $form = $request->all();
         $store = new Store;

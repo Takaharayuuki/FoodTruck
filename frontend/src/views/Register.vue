@@ -39,6 +39,7 @@
               v-model="formData.userEmail"
               type="email"
               placeholder="foodtruck@example.com"
+              @focus="resetError"
             />
             <span class="text-red-600" v-if="errors.email !== ''">{{
               errors.email
@@ -68,6 +69,7 @@
               v-model="formData.userName"
               type="text"
               placeholder="田中 太郎"
+              @focus="resetError"
             />
             <span class="text-red-600" v-if="errors.name !== ''">{{
               errors.name
@@ -97,6 +99,7 @@
               v-model="formData.password"
               type="password"
               placeholder="******"
+              @focus="resetError"
             />
             <span class="text-red-600" v-if="errors.password !== ''">{{
               errors.password
@@ -231,12 +234,19 @@ export default defineComponent({
         });
     }
 
+    function resetError() {
+      errors.name = "";
+      errors.email = "";
+      errors.password = "";
+    }
+
     return {
       // データ
       formData,
       errors,
       // 関数
       signUp,
+      resetError,
     };
   },
 });
