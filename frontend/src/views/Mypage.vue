@@ -14,7 +14,15 @@
           text-gray-400
         "
       >
+        <img
+          v-if="loginData.thumbnail_url"
+          class="w-20 h-20 rounded-full"
+          :src="loginData.thumbnail_url"
+          alt=""
+          style="object-fit: cover"
+        />
         <svg
+          v-else
           fill="none"
           stroke="currentColor"
           stroke-linecap="round"

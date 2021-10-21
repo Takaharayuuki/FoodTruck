@@ -75,7 +75,7 @@
               errors.name
             }}</span>
           </div>
-          <div class="text-left mb-6">
+          <div class="text-left mb-4">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="password"
@@ -104,6 +104,15 @@
             <span class="text-red-600" v-if="errors.password !== ''">{{
               errors.password
             }}</span>
+          </div>
+          <div class="text-left mb-6">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="userEmail"
+            >
+              サムネイル画像
+            </label>
+            <input type="file" @change="onFileSelected($event)" />
           </div>
           <div class="flex items-center justify-between">
             <button
@@ -148,9 +157,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, inject } from "vue";
+import { defineComponent, reactive, inject, ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+
+interface HTMLElementEvent<T extends HTMLElement> extends Event {
+  target: T;
+}
 
 export default defineComponent({
   name: "Register",
@@ -162,6 +175,7 @@ export default defineComponent({
       password: "",
       userType: "customer",
     });
+    const thumbnailFile = ref();
 
     const errors = reactive({
       name: "",
@@ -177,13 +191,20 @@ export default defineComponent({
 
     /* 新規登録 */
     function signUp() {
+      const form = new FormData();
+      // axiosの設定
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      form.append("file", thumbnailFile.value);
+      form.append("email", formData.userEmail);
+      form.append("name", formData.userName);
+      form.append("password", formData.password);
+      form.append("userType", formData.userType);
       axios
-        .post("api/register", {
-          email: formData.userEmail,
-          name: formData.userName,
-          password: formData.password,
-          userType: formData.userType,
-        })
+        .post("api/register", form, config)
         .then((response) => {
           // 新規登録が正常に完了したらログインしてTopへ
           axios
@@ -234,6 +255,13 @@ export default defineComponent({
         });
     }
 
+    // 画像アップロード関連
+    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
+      if (event.target.files !== null) {
+        thumbnailFile.value = event.target.files[0];
+      }
+    }
+
     function resetError() {
       errors.name = "";
       errors.email = "";
@@ -247,6 +275,7 @@ export default defineComponent({
       // 関数
       signUp,
       resetError,
+      onFileSelected,
     };
   },
 });

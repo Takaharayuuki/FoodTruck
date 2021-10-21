@@ -198,6 +198,7 @@ export default defineComponent({
           loginData.userEmail = response.data.email;
           loginData.userName = response.data.name;
           loginData.userType = response.data.userType;
+          loginData.thumbnail_url = response.data.thumbnail_url;
         })
         .catch((error) => {
           alert(error.response);
