@@ -132,12 +132,13 @@
                 errors.title
               }}</span>
             </div>
-            <div class="ml-10 text-lg" style="width: 70%">
+            <div class="flex justify-between ml-5 text-lg" style="width: 70%">
               <star-rating
                 :star-size="25"
                 :rating="reviewFormData.rate"
                 @update:rating="setRating"
               ></star-rating>
+              <input type="file" @change="onFileSelected($event)" />
             </div>
           </div>
           <div class="col-span-2">
@@ -217,6 +218,20 @@
             <div style="width: 70%">
               <p class="text-lg font-bold pb-3">{{ review.title }}</p>
               <p>{{ review.comment }}</p>
+              <div
+                v-if="review.thumbnail_url"
+                class="
+                  w-20
+                  h-20
+                  inline-flex
+                  items-center
+                  justify-center
+                  bg-gray-200
+                  text-gray-400
+                "
+              >
+                <img class="w-20 h-20" :src="review.thumbnail_url" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -235,6 +250,10 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import dayjs, { Dayjs } from "dayjs";
 
+interface HTMLElementEvent<T extends HTMLElement> extends Event {
+  target: T;
+}
+
 export default defineComponent({
   name: "StoreDetail",
   props: {
@@ -247,6 +266,7 @@ export default defineComponent({
     const productList = reactive([]);
     /** 商品データ */
     const reviewList = reactive([]);
+    const reviewsFile = ref();
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
     /* ログインしたユーザの情報 */
@@ -321,13 +341,30 @@ export default defineComponent({
     /* クチコミの投稿送信 */
     function sendReview() {
       reviewFormData.reviewDt = dayjs().format("YYYY-MM-DD");
+      const formData = new FormData();
+      // axiosの設定
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      formData.append("file", reviewsFile.value);
+      formData.append("title", reviewFormData.title);
+      formData.append("comment", reviewFormData.comment);
+      formData.append("rate", "" + reviewFormData.rate);
+      formData.append("userId", reviewFormData.userId);
+      formData.append("userName", reviewFormData.userName);
+      formData.append("storeId", "" + reviewFormData.storeId);
+      formData.append("reviewDt", reviewFormData.reviewDt);
       axios
-        .post("api/reviews", reviewFormData)
+        .post("api/reviews", formData, config)
         .then((res) => {
           reviewFormData.title = "";
           reviewFormData.comment = "";
           reviewFormData.rate = 0;
+          reviewFormData.thumbnail_url = "";
           fetchReviewData();
+          fetchStoreData();
         })
         .catch((error) => {
           if (error.response.data.errors.title) {
@@ -349,6 +386,21 @@ export default defineComponent({
       errors.comment = "";
     }
 
+    // 画像アップロード関連
+    function onFileSelected(event: HTMLElementEvent<HTMLInputElement>) {
+      if (event.target.files !== null) {
+        reviewsFile.value = event.target.files[0];
+        // storeImageData?.push({
+        //   url: URL.createObjectURL(event.target.files[0]),
+        //   name: event.target.files[0].name,
+        // });
+
+        // reviewFormData.thumbnail_url = URL.createObjectURL(
+        //   event.target.files[0]
+        // );
+      }
+    }
+
     return {
       // データ
       isLoggedIn,
@@ -365,6 +417,7 @@ export default defineComponent({
       sendReview,
       setRating,
       resetError,
+      onFileSelected,
     };
   },
   components: {
