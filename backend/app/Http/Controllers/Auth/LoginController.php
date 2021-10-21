@@ -13,14 +13,14 @@ class LoginController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required|min:8'
         ]);
 
         if (Auth::attempt($credentials)) {
             return response()->json(['message' => 'Login successful'], 200);
         }
 
-        return response()->json(['message' => 'User not found'], 422);
+        return response()->json(['message' => '該当のユーザは存在しません。'], 422);
     }
 
     public function logout()
