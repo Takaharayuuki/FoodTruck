@@ -126,14 +126,17 @@
                 v-model="reviewFormData.title"
                 id="reviewTitle"
                 type="text"
+                @focus="resetError"
               />
+              <span class="text-red-600" v-if="errors.title !== ''">{{
+                errors.title
+              }}</span>
             </div>
             <div class="ml-10 text-lg" style="width: 70%">
               <star-rating
                 :star-size="25"
                 :rating="reviewFormData.rate"
                 @update:rating="setRating"
-                :show-rating="false"
               ></star-rating>
             </div>
           </div>
@@ -157,7 +160,11 @@
                 id="reviewComment"
                 type="text"
                 rows="3"
+                @focus="resetError"
               ></textarea>
+              <span class="text-red-600" v-if="errors.comment !== ''">{{
+                errors.comment
+              }}</span>
             </div>
             <div class="col-span-2 text-center pt-2">
               <button
@@ -256,6 +263,11 @@ export default defineComponent({
     });
     let isLoading = ref(false);
 
+    const errors = reactive({
+      title: "",
+      comment: "",
+    });
+
     onMounted(() => {
       // idの出店情報を取得
       fetchStoreData();
@@ -316,14 +328,24 @@ export default defineComponent({
           reviewFormData.rate = 0;
           fetchReviewData();
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.data.errors.title) {
+            errors.title = error.response.data.errors.title[0];
+          }
+          if (error.response.data.errors.comment) {
+            errors.comment = error.response.data.errors.comment[0];
+          }
         });
     }
 
     function setRating(rating: number) {
       reviewFormData.rate = rating;
       console.log(reviewFormData.rate);
+    }
+
+    function resetError() {
+      errors.title = "";
+      errors.comment = "";
     }
 
     return {
@@ -334,12 +356,14 @@ export default defineComponent({
       productList,
       reviewList,
       reviewFormData,
+      errors,
       // 関数
       fetchStoreData,
       fetchProductData,
       fetchReviewData,
       sendReview,
       setRating,
+      resetError,
     };
   },
   components: {

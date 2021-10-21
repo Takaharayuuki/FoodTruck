@@ -22,6 +22,9 @@
             ログイン
           </h2>
           <div class="text-left mb-4">
+            <span class="text-red-600" v-if="errors.message !== ''">{{
+              errors.message
+            }}</span>
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="userEmail"
@@ -44,8 +47,13 @@
               id="userEmail"
               v-model="form.userEmail"
               type="text"
+              name="email"
               placeholder="foodtruck@example.com"
+              @focus="resetError"
             />
+            <span class="text-red-600" v-if="errors.email !== ''">{{
+              errors.email
+            }}</span>
           </div>
           <div class="text-left mb-6">
             <label
@@ -63,7 +71,6 @@
                 py-2
                 px-3
                 text-gray-700
-                mb-3
                 leading-tight
                 focus:outline-none focus:shadow-outline
               "
@@ -71,7 +78,12 @@
               v-model="form.password"
               type="password"
               placeholder="******"
+              name="password"
+              @focus="resetError"
             />
+            <span class="text-red-600" v-if="errors.password !== ''">{{
+              errors.password
+            }}</span>
           </div>
           <div class="flex items-center justify-between">
             <button
@@ -131,6 +143,12 @@ export default defineComponent({
       userEmail: "",
       password: "",
     });
+
+    const errors = reactive({
+      message: "",
+      email: "",
+      password: "",
+    });
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
     // ログインしたユーザの情報
@@ -152,6 +170,18 @@ export default defineComponent({
               router.push("/");
             })
             .catch((error) => {
+              if (
+                error.response.data.message === "該当のユーザは存在しません。"
+              ) {
+                return (errors.message = error.response.data.message);
+              }
+
+              if (error.response.data.errors.email) {
+                errors.email = error.response.data.errors.email[0];
+              }
+              if (error.response.data.errors.password) {
+                errors.password = error.response.data.errors.password[0];
+              }
               isLoggedIn.value = false;
             });
         })
@@ -175,14 +205,22 @@ export default defineComponent({
         });
     }
 
+    function resetError() {
+      errors.message = "";
+      errors.email = "";
+      errors.password = "";
+    }
+
     return {
       // データ
       form,
       isLoggedIn,
       loginData,
+      errors,
       // 関数
       login,
       getUser,
+      resetError,
     };
   },
   components: {

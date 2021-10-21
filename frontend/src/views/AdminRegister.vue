@@ -40,13 +40,16 @@
               type="email"
               placeholder="foodtruck@example.com"
             />
+            <span class="text-red-600" v-if="errors.email !== ''">{{
+              errors.email
+            }}</span>
           </div>
           <div class="text-left mb-4">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="userName"
             >
-              出店管理者名
+              名前
             </label>
             <input
               class="
@@ -64,8 +67,12 @@
               id="userName"
               v-model="formData.userName"
               type="text"
+              name="admin_name"
               placeholder="田中 太郎"
             />
+            <span class="text-red-600" v-if="errors.name !== ''">{{
+              errors.name
+            }}</span>
           </div>
           <div class="text-left mb-6">
             <label
@@ -92,6 +99,9 @@
               type="password"
               placeholder="******"
             />
+            <span class="text-red-600" v-if="errors.password !== ''">{{
+              errors.password
+            }}</span>
           </div>
           <div class="flex items-center justify-between">
             <button
@@ -130,7 +140,6 @@
             </router-link>
           </div>
         </form>
-        <pre>{{ formData }}</pre>
       </div>
     </div>
   </div>
@@ -150,6 +159,11 @@ export default defineComponent({
       password: "",
       userType: "admin",
     });
+    const errors = reactive({
+      name: "",
+      email: "",
+      password: "",
+    });
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
     /* ログインしたユーザの情報 */
@@ -159,7 +173,7 @@ export default defineComponent({
       axios
         .post("api/register", {
           email: formData.userEmail,
-          name: formData.userName,
+          admin_name: formData.userName,
           password: formData.password,
           userType: formData.userType,
         })
@@ -186,8 +200,18 @@ export default defineComponent({
               console.log(`csrfの方:  ${error}  `);
             });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error.response.data);
+
+          if (error.response.data.errors.email) {
+            errors.email = error.response.data.errors.email[0];
+          }
+          if (error.response.data.errors.name) {
+            errors.name = error.response.data.errors.name[0];
+          }
+          if (error.response.data.errors.password) {
+            errors.password = error.response.data.errors.password[0];
+          }
         });
     }
     function getUser() {
@@ -206,6 +230,7 @@ export default defineComponent({
     return {
       // データ
       formData,
+      errors,
       // 関数
       signUp,
     };

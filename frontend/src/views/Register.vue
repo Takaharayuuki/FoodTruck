@@ -39,14 +39,18 @@
               v-model="formData.userEmail"
               type="email"
               placeholder="foodtruck@example.com"
+              @focus="resetError"
             />
+            <span class="text-red-600" v-if="errors.email !== ''">{{
+              errors.email
+            }}</span>
           </div>
           <div class="text-left mb-4">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="userName"
             >
-              ユーザーネーム
+              名前
             </label>
             <input
               class="
@@ -65,7 +69,11 @@
               v-model="formData.userName"
               type="text"
               placeholder="田中 太郎"
+              @focus="resetError"
             />
+            <span class="text-red-600" v-if="errors.name !== ''">{{
+              errors.name
+            }}</span>
           </div>
           <div class="text-left mb-6">
             <label
@@ -91,7 +99,11 @@
               v-model="formData.password"
               type="password"
               placeholder="******"
+              @focus="resetError"
             />
+            <span class="text-red-600" v-if="errors.password !== ''">{{
+              errors.password
+            }}</span>
           </div>
           <div class="flex items-center justify-between">
             <button
@@ -130,7 +142,6 @@
             </router-link>
           </div>
         </form>
-        <pre>{{ formData }}</pre>
       </div>
     </div>
   </div>
@@ -150,6 +161,12 @@ export default defineComponent({
       userName: "",
       password: "",
       userType: "customer",
+    });
+
+    const errors = reactive({
+      name: "",
+      email: "",
+      password: "",
     });
 
     /* ログインの有無 */
@@ -190,8 +207,16 @@ export default defineComponent({
               console.log(`csrfの方:  ${error}  `);
             });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.data.errors.email) {
+            errors.email = error.response.data.errors.email[0];
+          }
+          if (error.response.data.errors.name) {
+            errors.name = error.response.data.errors.name[0];
+          }
+          if (error.response.data.errors.password) {
+            errors.password = error.response.data.errors.password[0];
+          }
         });
     }
 
@@ -209,11 +234,19 @@ export default defineComponent({
         });
     }
 
+    function resetError() {
+      errors.name = "";
+      errors.email = "";
+      errors.password = "";
+    }
+
     return {
       // データ
       formData,
+      errors,
       // 関数
       signUp,
+      resetError,
     };
   },
 });

@@ -38,6 +38,11 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required | max:30',
+            'comment' => 'required | max:426',
+        ]);
+
         $review = Review::create([
             'user_id' => $request->userId,
             'store_id' => $request->storeId,
