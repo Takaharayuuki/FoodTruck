@@ -18,4 +18,6 @@ https://kouya17.com/posts/26/
 Day.js  
 https://github.com/iamkun/dayjs  
 Vee-Validate  vue3対応  
-https://vee-validate.logaretm.com/v4/
+https://vee-validate.logaretm.com/v4/  
+modal popup  
+https://github.com/Jenesius/vue-modal  
