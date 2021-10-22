@@ -44,34 +44,40 @@
           >
             メニュー表
           </h4>
-          <div
-            v-for="item in productList"
-            :key="item.id"
-            class="border-t border-b py-4 flex"
-          >
-            <div class="w-4/6 px-6">
-              <p class="text-gray-900 font-semibold text-xl mb-2">
-                {{ item.name }}
-              </p>
-              <p class="text-sm text-gray-400 mb-2">{{ item.remark }}</p>
-              <p class="text-green-500">￥{{ item.price }}</p>
+          <template v-if="productList.length">
+            <div
+              v-for="item in productList"
+              :key="item.id"
+              class="border-t border-b py-4 flex"
+            >
+              <div class="w-4/6 px-6">
+                <p class="text-gray-900 font-semibold text-xl mb-2">
+                  {{ item.name }}
+                </p>
+                <p class="text-sm text-gray-400 mb-2">{{ item.remark }}</p>
+                <p class="text-green-500">￥{{ item.price }}</p>
+              </div>
+              <div class="w-2/6">
+                <img
+                  alt="team"
+                  class="
+                    flex-shrink-0
+                    rounded-lg
+                    w-48
+                    h-48
+                    object-cover object-center
+                    sm:mb-0
+                    mb-4
+                  "
+                  :src="item.thumbnail_url"
+                />
+              </div>
             </div>
-            <div class="w-2/6">
-              <img
-                alt="team"
-                class="
-                  flex-shrink-0
-                  rounded-lg
-                  w-48
-                  h-48
-                  object-cover object-center
-                  sm:mb-0
-                  mb-4
-                "
-                :src="item.thumbnail_url"
-              />
-            </div>
-          </div>
+          </template>
+          <template v-else>
+            <p style="font-size: 60px">🍴</p>
+            <p style="font-size: 21px">まだ商品が登録されていません。</p>
+          </template>
         </div>
         <div class="col-span-1">
           <h4 class="ext-lg sm:text-xl text-gray-900 font-bold title-font mb-8">
@@ -230,7 +236,11 @@
                   text-gray-400
                 "
               >
-                <img class="w-20 h-20" :src="review.thumbnail_url" alt="" />
+                <img
+                  style="object-fit: cover"
+                  class="w-20 h-20"
+                  :src="review.thumbnail_url"
+                />
               </div>
             </div>
           </div>
@@ -248,7 +258,7 @@ import axios from "axios";
 import StarRating from "vue-star-rating";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
