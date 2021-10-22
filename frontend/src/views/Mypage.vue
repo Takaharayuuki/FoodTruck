@@ -38,10 +38,13 @@
       <p class="font-bold text-xl mt-2">{{ loginData.userName }}</p>
     </div>
     <!-- ./ユーザ情報  -->
+    <h4 class="text-lg text-gray-900 font-bold title-font mt-3">
+      投稿したクチコミ
+    </h4>
     <div
       v-for="review in reviewList"
       :key="review.id"
-      class="container shadow-md rounded border-2 py-4 px-8 mt-5 mx-auto"
+      class="container shadow-md rounded border-2 py-4 px-8 mt-4 mx-auto"
     >
       <div v-if="reviewList.length">
         <div>
@@ -78,7 +81,12 @@
             text-gray-400
           "
         >
-          <img class="w-20 h-20" :src="review.thumbnail_url" alt="" />
+          <img
+            style="object-fit: cover"
+            class="w-20 h-20"
+            :src="review.thumbnail_url"
+            alt=""
+          />
         </div>
       </div>
     </div>

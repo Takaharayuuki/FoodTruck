@@ -44,34 +44,40 @@
           >
             メニュー表
           </h4>
-          <div
-            v-for="item in productList"
-            :key="item.id"
-            class="border-t border-b py-4 flex"
-          >
-            <div class="w-4/6 px-6">
-              <p class="text-gray-900 font-semibold text-xl mb-2">
-                {{ item.name }}
-              </p>
-              <p class="text-sm text-gray-400 mb-2">{{ item.remark }}</p>
-              <p class="text-green-500">￥{{ item.price }}</p>
+          <template v-if="productList.length">
+            <div
+              v-for="item in productList"
+              :key="item.id"
+              class="border-t border-b py-4 flex"
+            >
+              <div class="w-4/6 px-6">
+                <p class="text-gray-900 font-semibold text-xl mb-2">
+                  {{ item.name }}
+                </p>
+                <p class="text-sm text-gray-400 mb-2">{{ item.remark }}</p>
+                <p class="text-green-500">￥{{ item.price }}</p>
+              </div>
+              <div class="w-2/6">
+                <img
+                  alt="team"
+                  class="
+                    flex-shrink-0
+                    rounded-lg
+                    w-48
+                    h-48
+                    object-cover object-center
+                    sm:mb-0
+                    mb-4
+                  "
+                  :src="item.thumbnail_url"
+                />
+              </div>
             </div>
-            <div class="w-2/6">
-              <img
-                alt="team"
-                class="
-                  flex-shrink-0
-                  rounded-lg
-                  w-48
-                  h-48
-                  object-cover object-center
-                  sm:mb-0
-                  mb-4
-                "
-                :src="item.thumbnail_url"
-              />
-            </div>
-          </div>
+          </template>
+          <template v-else>
+            <p style="font-size: 60px">🍴</p>
+            <p style="font-size: 21px">まだ商品が登録されていません。</p>
+          </template>
         </div>
         <div class="col-span-1">
           <h4 class="ext-lg sm:text-xl text-gray-900 font-bold title-font mb-8">
@@ -195,49 +201,61 @@
         </div>
         <!-- ./入力フォーム -->
       </div>
-      <div
-        class="grid grid-cols-3"
-        v-for="review in reviewList"
-        :key="review.id"
-      >
-        <!-- クチコミアイテム -->
-        <div class="col-span-2 border-t py-5 px-4">
-          <div class="flex gap-4">
-            <div style="width: 30%">
-              <p>{{ review.user_name }}</p>
-              <p>{{ review.reviewDt }}</p>
-              <p>
-                評価：<star-rating
-                  :star-size="25"
-                  :rating="review.rate"
-                  read-only
-                  :show-rating="false"
-                ></star-rating>
-              </p>
-            </div>
-            <div style="width: 70%">
-              <p class="text-lg font-bold pb-3">{{ review.title }}</p>
-              <p>{{ review.comment }}</p>
-              <div
-                v-if="review.thumbnail_url"
-                class="
-                  w-20
-                  h-20
-                  inline-flex
-                  items-center
-                  justify-center
-                  bg-gray-200
-                  text-gray-400
-                "
-              >
-                <img class="w-20 h-20" :src="review.thumbnail_url" alt="" />
+      <template v-if="reviewList.length">
+        <div
+          class="grid grid-cols-3"
+          v-for="review in reviewList"
+          :key="review.id"
+        >
+          <!-- クチコミアイテム -->
+          <div class="col-span-2 border-t py-5 px-4">
+            <div class="flex gap-4">
+              <div style="width: 30%">
+                <p>{{ review.user_name }}</p>
+                <p>{{ review.reviewDt }}</p>
+                <p>
+                  評価：<star-rating
+                    :star-size="25"
+                    :rating="review.rate"
+                    read-only
+                    :show-rating="false"
+                  ></star-rating>
+                </p>
+              </div>
+              <div style="width: 70%">
+                <p class="text-lg font-bold pb-3">{{ review.title }}</p>
+                <p>{{ review.comment }}</p>
+                <div
+                  v-if="review.thumbnail_url"
+                  class="
+                    w-20
+                    h-20
+                    inline-flex
+                    items-center
+                    justify-center
+                    bg-gray-200
+                    text-gray-400
+                  "
+                >
+                  <img
+                    style="object-fit: cover"
+                    class="w-20 h-20"
+                    :src="review.thumbnail_url"
+                  />
+                </div>
               </div>
             </div>
           </div>
+          <div class="col-span-1"></div>
+          <!-- ./クチコミアイテム -->
         </div>
-        <div class="col-span-1"></div>
-        <!-- ./クチコミアイテム -->
-      </div>
+      </template>
+      <template v-else>
+        <div class="pb-20">
+          <p style="font-size: 60px">😃</p>
+          <p style="font-size: 21px">クチコミ第一号を投稿しよう。</p>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -248,7 +266,7 @@ import axios from "axios";
 import StarRating from "vue-star-rating";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
