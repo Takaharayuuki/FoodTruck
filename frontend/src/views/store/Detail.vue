@@ -201,53 +201,61 @@
         </div>
         <!-- ./入力フォーム -->
       </div>
-      <div
-        class="grid grid-cols-3"
-        v-for="review in reviewList"
-        :key="review.id"
-      >
-        <!-- クチコミアイテム -->
-        <div class="col-span-2 border-t py-5 px-4">
-          <div class="flex gap-4">
-            <div style="width: 30%">
-              <p>{{ review.user_name }}</p>
-              <p>{{ review.reviewDt }}</p>
-              <p>
-                評価：<star-rating
-                  :star-size="25"
-                  :rating="review.rate"
-                  read-only
-                  :show-rating="false"
-                ></star-rating>
-              </p>
-            </div>
-            <div style="width: 70%">
-              <p class="text-lg font-bold pb-3">{{ review.title }}</p>
-              <p>{{ review.comment }}</p>
-              <div
-                v-if="review.thumbnail_url"
-                class="
-                  w-20
-                  h-20
-                  inline-flex
-                  items-center
-                  justify-center
-                  bg-gray-200
-                  text-gray-400
-                "
-              >
-                <img
-                  style="object-fit: cover"
-                  class="w-20 h-20"
-                  :src="review.thumbnail_url"
-                />
+      <template v-if="reviewList.length">
+        <div
+          class="grid grid-cols-3"
+          v-for="review in reviewList"
+          :key="review.id"
+        >
+          <!-- クチコミアイテム -->
+          <div class="col-span-2 border-t py-5 px-4">
+            <div class="flex gap-4">
+              <div style="width: 30%">
+                <p>{{ review.user_name }}</p>
+                <p>{{ review.reviewDt }}</p>
+                <p>
+                  評価：<star-rating
+                    :star-size="25"
+                    :rating="review.rate"
+                    read-only
+                    :show-rating="false"
+                  ></star-rating>
+                </p>
+              </div>
+              <div style="width: 70%">
+                <p class="text-lg font-bold pb-3">{{ review.title }}</p>
+                <p>{{ review.comment }}</p>
+                <div
+                  v-if="review.thumbnail_url"
+                  class="
+                    w-20
+                    h-20
+                    inline-flex
+                    items-center
+                    justify-center
+                    bg-gray-200
+                    text-gray-400
+                  "
+                >
+                  <img
+                    style="object-fit: cover"
+                    class="w-20 h-20"
+                    :src="review.thumbnail_url"
+                  />
+                </div>
               </div>
             </div>
           </div>
+          <div class="col-span-1"></div>
+          <!-- ./クチコミアイテム -->
         </div>
-        <div class="col-span-1"></div>
-        <!-- ./クチコミアイテム -->
-      </div>
+      </template>
+      <template v-else>
+        <div class="pb-20">
+          <p style="font-size: 60px">😃</p>
+          <p style="font-size: 21px">クチコミ第一号を投稿しよう。</p>
+        </div>
+      </template>
     </div>
   </div>
 </template>
