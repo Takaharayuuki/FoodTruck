@@ -1,3 +1,4 @@
 import { useFilters } from './useFilters'
+import { useSwal } from './useSwal'
 
-export  { useFilters }
+export  { useFilters, useSwal }

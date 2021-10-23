@@ -120,6 +120,7 @@ import StarRating from 'vue-star-rating';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import dayjs from 'dayjs';
+import { useSwal } from '../../composable';
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
@@ -131,6 +132,7 @@ export default defineComponent({
     id: { type: Number, require: true },
   },
   setup(props) {
+    const Swal: any = useSwal();
     /** 店舗情報 */
     const storeData = reactive([]);
     /** 商品データ */
@@ -230,6 +232,11 @@ export default defineComponent({
       axios
         .post('api/reviews', formData, config)
         .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'クチコミ投稿完了',
+            text: 'クチコミの投稿ありがとうございます。',
+          });
           reviewFormData.title = '';
           reviewFormData.comment = '';
           reviewFormData.rate = 0;
