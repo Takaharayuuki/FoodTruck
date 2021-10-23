@@ -11,13 +11,17 @@
           md:justify-start md:space-x-10
         "
       >
+        <!-- ヘッダーロゴ -->
         <div class="flex justify-start lg:w-0 lg:flex-1">
           <router-link to="/">
             <h1 class="text-4xl text-white">FoodTruck</h1>
           </router-link>
         </div>
+        <!-- ./ヘッダーロゴ -->
+        <!-- ヘッダーメニュー -->
         <div class="-mr-2 -my-2 md:hidden">
           <button
+            @click="openMenu"
             type="button"
             class="
               bg-white
@@ -53,6 +57,46 @@
             </svg>
           </button>
         </div>
+        <!-- ./ヘッダーメニュー -->
+        <!--ハンバーガーメニューの中身-->
+        <transition name="hamburger-menu">
+          <div class="hamburger-menu" v-if="isOpen" @click="openMenu">
+            <ul class="ham-menu-list">
+              <li
+                class="ham-menu-item"
+                v-if="isLoggedIn && loginData.userType === 'admin'"
+              >
+                <router-link to="/store_register">出店登録</router-link>
+              </li>
+              <li
+                class="ham-menu-item"
+                v-if="isLoggedIn && loginData.userType === 'customer'"
+              >
+                <router-link to="/mypage">マイページ</router-link>
+              </li>
+              <li
+                class="ham-menu-item cursor-pointer"
+                v-if="isLoggedIn"
+                @click="logout"
+              >
+                ログアウト
+              </li>
+              <template v-if="!isLoggedIn">
+                <li class="ham-menu-item">
+                  <router-link to="/login">ログイン</router-link>
+                </li>
+                <li class="ham-menu-item">
+                  <router-link to="/register">新規登録</router-link>
+                </li>
+                <li class="ham-menu-item">
+                  <router-link to="/admin_register">出店者新規登録</router-link>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </transition>
+        <!--ハンバーガーメニューの中身-->
+        <!-- ナビメニュー -->
         <nav class="hidden md:flex space-x-10"></nav>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
           <router-link
@@ -142,7 +186,7 @@
           </template>
           <template v-else>
             <div
-              to="/login"
+              to="/"
               class="
                 text-white
                 ml-8
@@ -158,13 +202,14 @@
             </div>
           </template>
         </div>
+        <!-- ./ナビメニュー -->
       </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 
@@ -173,6 +218,8 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+
+    const isOpen = ref(false);
 
     /* ログインの有無 */
     const isLoggedIn: any = inject("isLoggedIn");
@@ -186,8 +233,12 @@ export default defineComponent({
         loginData.userEmail = "";
         loginData.password = "";
         loginData.userType = "";
-        router.push("/login");
+        router.push("/");
       });
+    }
+
+    function openMenu() {
+      isOpen.value = !isOpen.value;
     }
 
     return {
@@ -195,9 +246,48 @@ export default defineComponent({
       route,
       isLoggedIn,
       loginData,
+      isOpen,
       // 関数
       logout,
+      openMenu,
     };
   },
 });
 </script>
+<style scoped>
+/* ハンバーガーメニューの中身のcss */
+.hamburger-menu-enter-active,
+.hamburger-menu-leave-active {
+  opacity: 0.4;
+}
+.hamburger-menu-enter,
+.hamburger-menu-leave-to {
+  opacity: 0;
+}
+.hamburger-menu-leave,
+.hamburger-menu-enter-to {
+  opacity: 1;
+}
+.hamburger-menu {
+  background-color: hsl(0deg 0% 24% / 72%);
+  z-index: 30;
+  padding: 0rem 0rem 2rem 6rem;
+  position: fixed;
+  width: 100%;
+  height: 80rem;
+  top: 0;
+  right: 0;
+}
+.ham-menu-list {
+  padding: 0;
+  padding-top: 14px;
+  height: 100%;
+  background-color: #fff;
+}
+.ham-menu-item {
+  padding: 35px 0;
+  list-style: none;
+  line-height: 1;
+  margin-left: 25px;
+}
+</style>
