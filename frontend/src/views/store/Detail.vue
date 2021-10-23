@@ -19,7 +19,7 @@
           <h4 class="text-2xl sm:text-3xl text-gray-900 font-bold title-font mb-8">メニュー表</h4>
           <template v-if="productList.length">
             <div v-for="item in productList" :key="item.id" class="border-t border-b py-4 flex">
-              <div class="w-4/6 px-6">
+              <div class="w-4/6 pr-5 md:px-6">
                 <p class="text-gray-900 font-semibold text-xl mb-2">
                   {{ item.name }}
                 </p>
@@ -27,7 +27,7 @@
                 <p class="text-green-500">￥{{ item.price }}</p>
               </div>
               <div class="w-2/6">
-                <img alt="team" class="flex-shrink-0 rounded-lg w-48 h-48 object-cover object-center sm:mb-0 mb-4" :src="item.thumbnail_url" />
+                <img alt="team" class="flex-shrink-0 rounded-lg w-48 h-48 object-cover object-center" :src="item.thumbnail_url" />
               </div>
             </div>
           </template>

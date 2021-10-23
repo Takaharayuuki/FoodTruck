@@ -77,4 +77,7 @@ export default defineComponent({
     max-width: 53%;
   }
 }
+input[type='text'] {
+  font-size: 16px;
+}
 </style>
