@@ -13,10 +13,10 @@
         <div class="w-full mx-auto">
           <div class="w-full bg-white shadow-md border rounded px-4 pt-4 pb-4 mb-4">
             <div class="grid grid-cols-12">
-              <div class="md:col-span-4 col-span-12 flex relative rounded-md shadow-sm">
+              <div class="mb-3 md:mb-0 md:col-span-4 col-span-12 flex relative rounded-md shadow-sm">
                 <input v-model="searchWord" type="text" name="keyword" class="h-12 border border-yellow-700 focus:ring-yellow-600 focus:border-b-yellow-600 block w-full pl-3 text-sm rounded-sm" placeholder="キーワード [例:ハンバーガー]" />
               </div>
-              <div class="md:col-span-4 col-span-12 flex relative rounded-md shadow-sm">
+              <div class="mb-3 md:mb-0 md:col-span-4 col-span-12 flex relative rounded-md shadow-sm">
                 <input v-model="searchArea" type="text" name="area" class="h-12 border md:border-l-0 border-yellow-700 focus:ring-yellow-600 focus:border-b-yellow-600 block w-full pl-3 text-sm rounded-sm" placeholder="エリア・駅 [例:池袋,渋谷]" />
               </div>
               <div class="md:col-span-4 col-span-12">
