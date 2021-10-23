@@ -12,7 +12,7 @@ https://vuejsexamples.com/tag/rating/
 vue-swal  
 https://github.com/avil13/vue-sweetalert2  
 https://avil13.github.io/vue-sweetalert2/  
-https://www.kabanoki.net/4034/  
+https://sweetalert2.github.io/  
 loading  
 https://kouya17.com/posts/26/  
 Day.js  
