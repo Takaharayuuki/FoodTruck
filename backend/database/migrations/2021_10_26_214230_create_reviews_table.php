@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateReviewsTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,17 +16,18 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id()->comment('レビューID');
-            $table->unsignedBigInteger('user_id')->default(0)->comment('ユーザーID');
-            $table->unsignedBigInteger('store_id')->default(0)->comment('店舗ID');
+            $table->bigInteger('user_id')->unsigned()->default(0)->index('reviews_user_id_foreign')->comment('ユーザーID');
+            $table->bigInteger('store_id')->unsigned()->default(0)->comment('店舗ID');
             $table->text('comment')->comment('コメント');
             $table->integer('rate')->default(0)->comment('レビュー評価');
             $table->timestamps();
-
-            $table->foreign('store_id')->references('id')->on('stores');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unique(['store_id', 'user_id']);
+            $table->string('title')->default('')->comment('レビュータイトル');
+            $table->string('thumbnail_url')->default('')->comment('画像');
+            $table->string('user_name');
+            $table->string('reviewDt');
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -34,6 +36,6 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::drop('reviews');
     }
 }

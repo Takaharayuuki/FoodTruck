@@ -16,6 +16,9 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200)->assertViewIs('spa.app');
+        $response
+            ->assertStatus(200)
+            ->assertViewIs('spa.app')
+            ->assertSee('近くの移動販売車、出店キッチンカーを探す');
     }
 }
