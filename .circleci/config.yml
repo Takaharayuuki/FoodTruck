@@ -45,16 +45,16 @@ jobs:
           command: composer install -n --prefer-dist
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "backend/composer.json" }}
           paths:
             - ./vendor
       - restore_cache:
           keys:
-            - node-v1-{{ checksum "package.json" }}
+            - node-v1-{{ checksum "frontend/package.json" }}
             - node-v1-
-      - run: yarn install
+      - run: npm install
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}
+          key: node-v1-{{ checksum "frontend/package.json" }}
           paths:
             - node_modules
 
