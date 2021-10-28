@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -17,12 +18,15 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->dateTime('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('remember_token', 100)->nullable();
             $table->timestamps();
+            $table->string('userType')->default('');
+            $table->string('thumbnail_url')->nullable()->default('');
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -31,6 +35,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::drop('users');
     }
 }

@@ -24,19 +24,19 @@ class StoreStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'category' => 'required',
-            'postalcode1' => 'required | digits:3',
-            'postalcode2' => 'required | digits:4',
-            'prefecture' => 'required',
-            'city' => 'required',
-            'town' => 'required',
-            'addressRemark' => 'max: 1000',
-            'period1' => 'required',
-            'period2' => 'required',
-            'opening_hours' => 'required',
-            'closing_time' => 'required',
-            'remark' => 'max: 1000',
+            'storeName' => 'required',
+            'storeCategory' => 'required',
+            'storePostal1' => 'required | digits:3',
+            'storePostal2' => 'required | digits:4',
+            'storePrefecture' => 'required',
+            'storeCity' => 'required',
+            'storeTown' => 'required',
+            'storeAddressRemark' => 'max: 1000',
+            'storePeriod1' => 'required',
+            'storePeriod2' => 'required',
+            'storeOpeningHours' => 'required',
+            'storeClosingTime' => 'required',
+            'storeRemark' => 'max: 1000',
         ];
     }
 
@@ -53,19 +53,19 @@ class StoreStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '店舗名',
-            'category' => 'ジャンル',
-            'postalcode1' => '郵便番号',
-            'postalcode2' => '郵便番号',
-            'prefecture' => '都道府県',
-            'city' => '市区町村',
-            'town' => '地名・番地',
-            'period1' => '出店期間',
-            'period2' => '出店期間',
-            'opening_hours' => '開店時間',
-            'closing_time' => '閉店時間',
-            'remark' => '備考',
-            'addressRemark' => '備考',
+            'storeName' => '店舗名',
+            'storeCategory' => 'ジャンル',
+            'storePostal1' => '郵便番号',
+            'storePostal2' => '郵便番号',
+            'storePrefecture' => '都道府県',
+            'storeCity' => '市区町村',
+            'storeTown' => '地名・番地',
+            'storePeriod1' => '出店期間',
+            'storePeriod2' => '出店期間',
+            'storeOpeningHours' => '開店時間',
+            'storeClosingTime' => '閉店時間',
+            'storeRemark' => '備考',
+            'storeAddressRemark' => '備考',
         ];
     }
 }
