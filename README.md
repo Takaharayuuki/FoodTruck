@@ -20,7 +20,7 @@ https://github.com/iamkun/dayjs
 Vee-Validate  vue3対応  
 https://vee-validate.logaretm.com/v4/  
 modal popup  
-~~https://github.com/Jenesius/vue-modal~~
+~~https://github.com/Jenesius/vue-modal~~  
 Laravel SPA Dusk UIテスト  
 https://readouble.com/laravel/8.x/ja/dusk.html  
 https://www.webprofessional.jp/laravel-dusk-intuitive-and-easy-browser-testing-for-all/  
