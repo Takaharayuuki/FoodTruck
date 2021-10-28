@@ -22,7 +22,11 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->text(5),
+            'comment' => $this->faker->text(20),
+            'rate' => $this->faker->randomDigitNot(6, 7, 8, 9),
+            'reviewDt' => '2021-10-28',
+            'user_name' => $this->faker->kanaName('male'),
         ];
     }
 }
