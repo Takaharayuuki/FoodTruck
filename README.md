@@ -24,3 +24,4 @@ modal popup
 Laravel SPA Dusk UIテスト  
 https://readouble.com/laravel/8.x/ja/dusk.html  
 https://www.webprofessional.jp/laravel-dusk-intuitive-and-easy-browser-testing-for-all/  
+https://qiita.com/ryo3110/items/9a67267871d291d0e2a7  
