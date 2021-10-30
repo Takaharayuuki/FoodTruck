@@ -17,7 +17,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertSee('Laravel');
+                ->assertSee('近くの移動販売車')->assertSee('FoodTruck');
         });
     }
 }
