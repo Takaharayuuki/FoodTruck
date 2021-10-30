@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
+use App\Models\User;
 
 class LoginTest extends DuskTestCase
 {
@@ -13,11 +14,21 @@ class LoginTest extends DuskTestCase
      *
      * @return void
      */
-    public function testExample()
+    public function test_login_successfully()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                ->assertSee('近くの移動販売車')->assertSee('FoodTruck');
+
+            $user = User::factory()->create([
+                'email' => 'customer@example.com',
+                'name' => 'testtest',
+                'password' => 'password',
+                'userType' => 'customer'
+            ]);
+
+            $browser->visit('/login')
+                ->waitFor('.vld-parent')
+                ->type('email', $user->email)
+                ->type('password', $user->password);
         });
     }
 }
