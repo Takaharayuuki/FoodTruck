@@ -18,17 +18,9 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
 
-            $user = User::factory()->create([
-                'email' => 'customer@example.com',
-                'name' => 'testtest',
-                'password' => 'password',
-                'userType' => 'customer'
-            ]);
-
-            $browser->visit('/login')
-                ->waitFor('.vld-parent')
-                ->type('email', $user->email)
-                ->type('password', $user->password);
+            $browser->visit('/login')->assertSee('ログイン')->screenshot('login')->type('email', 'customer@example.com')->type('password', 'password')->screenshot('login2')
+                ->clickAtXPath('//*[@id="app"]/div/div[2]/div/form/div[3]/button')
+                ->screenshot('login3');
         });
     }
 }
