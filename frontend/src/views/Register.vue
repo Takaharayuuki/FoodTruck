@@ -6,17 +6,17 @@
           <h2 class="mb-6 pb-6 border-b text-center text-2xl font-extrabold text-gray-900">新規登録</h2>
           <div class="text-left mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="userEmail"> メールアドレス </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userEmail" v-model="formData.userEmail" type="email" placeholder="foodtruck@example.com" @focus="resetError" />
+            <input name="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userEmail" v-model="formData.userEmail" type="email" placeholder="foodtruck@example.com" @focus="resetError" />
             <span class="text-red-600" v-if="errors.email !== ''">{{ errors.email }}</span>
           </div>
           <div class="text-left mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="userName"> 名前 </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userName" v-model="formData.userName" type="text" placeholder="田中 太郎" @focus="resetError" />
+            <input name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userName" v-model="formData.userName" type="text" placeholder="田中 太郎" @focus="resetError" />
             <span class="text-red-600" v-if="errors.name !== ''">{{ errors.name }}</span>
           </div>
           <div class="text-left mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="password"> パスワード </label>
-            <input class="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" v-model="formData.password" type="password" placeholder="******" @focus="resetError" />
+            <input name="password" class="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" v-model="formData.password" type="password" placeholder="******" @focus="resetError" />
             <span class="text-red-600" v-if="errors.password !== ''">{{ errors.password }}</span>
           </div>
           <div class="text-left mb-6">

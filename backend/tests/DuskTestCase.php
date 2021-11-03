@@ -11,6 +11,11 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    protected function baseUrl()
+    {
+        return 'http://web';
+    }
+
     /**
      * Prepare for Dusk test execution.
      *
@@ -19,7 +24,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (! static::runningInSail()) {
+        if (!static::runningInSail()) {
             static::startChromeDriver();
         }
     }
@@ -41,11 +46,17 @@ abstract class DuskTestCase extends BaseTestCase
         })->all());
 
         return RemoteWebDriver::create(
-            $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
-            DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY, $options
-            )
+            'http://selenium:4444/wd/hub',
+            DesiredCapabilities::chrome()
         );
+
+        // return RemoteWebDriver::create(
+        //     $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
+        //     DesiredCapabilities::chrome()->setCapability(
+        //         ChromeOptions::CAPABILITY,
+        //         $options
+        //     )
+        // );
     }
 
     /**
@@ -56,6 +67,6 @@ abstract class DuskTestCase extends BaseTestCase
     protected function hasHeadlessDisabled()
     {
         return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
-               isset($_ENV['DUSK_HEADLESS_DISABLED']);
+            isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 }
