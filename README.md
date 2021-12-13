@@ -1,5 +1,5 @@
 # FoodTruck
-herokuデプロイ：　デプロイ途中 https://food-truck-22.herokuapp.com/
+herokuデプロイ：　 https://food-truck-22.herokuapp.com/
 
 
 ## ER図
