@@ -121,6 +121,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import dayjs from 'dayjs';
 import { useSwal } from '../../composable';
+import { Review , ReviewData } from '../../models'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
@@ -145,16 +146,11 @@ export default defineComponent({
     /* ログインしたユーザの情報 */
     const loginData: any = inject('loginData');
     /** クチコミ入力データ */
-    const reviewFormData = reactive({
+    const reviewFormData = reactive(new Review({
       userId: loginData.userId,
       userName: loginData.userName,
       storeId: props.id,
-      title: '',
-      comment: '',
-      rate: 3,
-      reviewDt: '' as any,
-      thumbnail_url: '',
-    });
+    }));
     let isLoading = ref(false);
 
     const errors = reactive({

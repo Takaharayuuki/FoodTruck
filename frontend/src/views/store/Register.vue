@@ -401,7 +401,7 @@ import { categoryList, prefectureOptions } from '../../data';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useSwal } from '../../composable';
-import { Store } from '../../models'
+import { Store, Product } from '../../models'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
   target: T;
@@ -413,7 +413,6 @@ export default defineComponent({
     const router = useRouter();
     const Swal: any = useSwal();
     // 出店登録データ
-    // TODO:  modelを作成して型をつける
     const storeData = reactive(new Store());
 
     // エラーデータ
@@ -440,13 +439,7 @@ export default defineComponent({
     const isStoreEnter = ref(false);
 
     // 商品登録データ
-    // TODO:  modelを作成して型をつける
-    const productData = reactive({
-      name: '',
-      price: null,
-      remark: '',
-      thumbnail_url: '',
-    });
+    const productData = reactive(new Product());
     // 商品画像データ
     const productFiles = ref<File[] | null>([]);
     const productImageData: any = reactive([]);
